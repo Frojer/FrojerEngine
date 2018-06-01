@@ -4,15 +4,20 @@
   <PropertyGroup Label="UserMacros">
     <FE_SDK_INC>..\..\SDK\Inc\</FE_SDK_INC>
     <FE_SDK_LIB>..\..\SDK\Lib\</FE_SDK_LIB>
-    <FE_INC>$(FE_SDK_INC);</FE_INC>
-    <FE_LIB>$(FE_SDK_LIB);</FE_LIB>
+    <FE_DXTK_INC>..\..\SDK\DXTK\Inc\</FE_DXTK_INC>
+    <FE_DXTK_LIB>..\..\SDK\DXTK\Lib\</FE_DXTK_LIB>
+    <FE_DXTEX_INC>..\..\SDK\DXTex\Inc\</FE_DXTEX_INC>
+    <FE_DXTEX_LIB>..\..\SDK\DXTex\Lib\</FE_DXTEX_LIB>
+    <FE_INC>$(FE_SDK_INC); $(FE_DXTK_INC); $(FE_DXTEX_INC);</FE_INC>
+    <FE_LIB>$(FE_SDK_LIB); $(FE_DXTK_LIB); $(FE_DXTEX_LIB);</FE_LIB>
     <FE_TEMP>..\..\Temp\</FE_TEMP>
     <FE_BIN>..\..\bin\</FE_BIN>
   </PropertyGroup>
   <PropertyGroup>
     <IncludePath>$(FE_INC);$(IncludePath)</IncludePath>
     <LibraryPath>$(FE_LIB);$(LibraryPath)</LibraryPath>
-    <IntDir>$(FE_TEMP)$(ProjectName)\$(Platform)\$(Configuration)</IntDir>
+    <IntDir>$(FE_TEMP)$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(FE_SDK_LIB)</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup />
   <ItemGroup>
@@ -21,6 +26,18 @@
     </BuildMacro>
     <BuildMacro Include="FE_SDK_LIB">
       <Value>$(FE_SDK_LIB)</Value>
+    </BuildMacro>
+    <BuildMacro Include="FE_DXTK_INC">
+      <Value>$(FE_DXTK_INC)</Value>
+    </BuildMacro>
+    <BuildMacro Include="FE_DXTK_LIB">
+      <Value>$(FE_DXTK_LIB)</Value>
+    </BuildMacro>
+    <BuildMacro Include="FE_DXTEX_INC">
+      <Value>$(FE_DXTEX_INC)</Value>
+    </BuildMacro>
+    <BuildMacro Include="FE_DXTEX_LIB">
+      <Value>$(FE_DXTEX_LIB)</Value>
     </BuildMacro>
     <BuildMacro Include="FE_INC">
       <Value>$(FE_INC)</Value>
