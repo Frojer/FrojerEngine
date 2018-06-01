@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <FE_SDK_INC>..\..\SDK\Inc\</FE_SDK_INC>
+    <FE_SDK_LIB>..\..\SDK\Lib\</FE_SDK_LIB>
+    <FE_INC>$(FE_SDK_INC);</FE_INC>
+    <FE_LIB>$(FE_SDK_LIB);</FE_LIB>
+    <FE_TEMP>..\..\Temp\</FE_TEMP>
+    <FE_BIN>..\..\bin\</FE_BIN>
+  </PropertyGroup>
+  <PropertyGroup>
+    <IncludePath>$(FE_INC);$(IncludePath)</IncludePath>
+    <LibraryPath>$(FE_LIB);$(LibraryPath)</LibraryPath>
+    <IntDir>$(FE_TEMP)$(ProjectName)\$(Platform)\$(Configuration)</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup />
+  <ItemGroup>
+    <BuildMacro Include="FE_SDK_INC">
+      <Value>$(FE_SDK_INC)</Value>
+    </BuildMacro>
+    <BuildMacro Include="FE_SDK_LIB">
+      <Value>$(FE_SDK_LIB)</Value>
+    </BuildMacro>
+    <BuildMacro Include="FE_INC">
+      <Value>$(FE_INC)</Value>
+    </BuildMacro>
+    <BuildMacro Include="FE_LIB">
+      <Value>$(FE_LIB)</Value>
+    </BuildMacro>
+    <BuildMacro Include="FE_TEMP">
+      <Value>$(FE_TEMP)</Value>
+    </BuildMacro>
+    <BuildMacro Include="FE_BIN">
+      <Value>$(FE_BIN)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>
