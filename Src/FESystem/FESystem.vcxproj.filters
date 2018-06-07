@@ -29,7 +29,7 @@
     <ClInclude Include="FEWinWindow.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="FEDefine.h">
+    <ClInclude Include="FESystemDefine.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

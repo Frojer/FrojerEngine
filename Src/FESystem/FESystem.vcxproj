@@ -23,7 +23,7 @@
     <ClCompile Include="FEWinWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FEDefine.h" />
+    <ClInclude Include="FESystemDefine.h" />
     <ClInclude Include="FEWindow.h" />
     <ClInclude Include="FEWinWindow.h" />
   </ItemGroup>
@@ -112,6 +112,10 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>copy FEWindow.h $(FE_SDK_INC)
+copy FESystemDefine.h $(FE_SDK_INC)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
