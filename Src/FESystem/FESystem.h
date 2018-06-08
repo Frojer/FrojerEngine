@@ -2,6 +2,22 @@
 
 #include "FEWindow.h"
 
+#pragma region FEScene.lib
+#ifdef _DEBUG
+#ifdef _WIN64
+#pragma comment(lib, "FEScene64d")
+#else
+#pragma comment(lib, "FEScened")
+#endif
+#else
+#ifdef _WIN64
+#pragma comment(lib, "FEScene64")
+#else
+#pragma comment(lib, "FEScene")
+#endif
+#endif
+#pragma endregion
+
 class FESystem
 {
 private:

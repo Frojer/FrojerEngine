@@ -1,4 +1,5 @@
 #include "FESystem.h"
+#include <FESceneManager.h>
 
 FESystem* FESystem::_pInstance = nullptr;
 
@@ -39,9 +40,9 @@ void FESystem::Run()
 	{
 		if (!_pWindow->MessagePump())		// ¸Þ¼¼Áö ÆßÇÁ.
 			break;
-/*
-		Update();
-		Render();*/
+
+		FESceneManager::GetCurrentScene()->Update();
+		FESceneManager::GetCurrentScene()->Render();
 	}
 }
 

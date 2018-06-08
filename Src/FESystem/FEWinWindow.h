@@ -5,8 +5,8 @@
 class FEWinWindow : public FEWindow
 {
 protected:
-	HWND m_hWnd;
-	tstring m_sClassName;
+	HWND _hWnd;
+	tstring _sClassName;
 
 protected:
 	virtual bool InitWindow() override;
@@ -18,4 +18,6 @@ public:
 	virtual ~FEWinWindow() override;
 
 	virtual void Release() override;
+
+	bool ResizeWindow();
 };
