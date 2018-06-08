@@ -19,10 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="FESystem.cpp" />
     <ClCompile Include="FEWindow.cpp" />
     <ClCompile Include="FEWinWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FESystem.h" />
     <ClInclude Include="FESystemDefine.h" />
     <ClInclude Include="FEWindow.h" />
     <ClInclude Include="FEWinWindow.h" />
@@ -113,7 +115,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>copy FEWindow.h $(FE_SDK_INC)
+      <Command>copy FESystem.h $(FE_SDK_INC)
+copy FEWindow.h $(FE_SDK_INC)
 copy FESystemDefine.h $(FE_SDK_INC)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -131,6 +134,10 @@ copy FESystemDefine.h $(FE_SDK_INC)</Command>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -150,6 +157,10 @@ copy FESystemDefine.h $(FE_SDK_INC)</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -169,6 +180,10 @@ copy FESystemDefine.h $(FE_SDK_INC)</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

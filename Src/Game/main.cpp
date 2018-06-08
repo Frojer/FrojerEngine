@@ -1,6 +1,8 @@
 #include <Windows.h>
-#include <FEWindow.h>
+#include <FEDefine.h>
+#include <FESystem.h>
 
+#pragma region FESystem.lib
 #ifdef _DEBUG
 	#ifdef _WIN64
 		#pragma comment(lib, "FESystem64d")
@@ -14,6 +16,8 @@
 		#pragma comment(lib, "FESystem")
 	#endif
 #endif
+#pragma endregion
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // WinMain : 메인 함수.
@@ -23,9 +27,21 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	LPSTR     lpCmdLine,
 	int       nCmdShow)
 {
-	FEWindow* window = FEWindow::CreateFEWindow(L"FE_Test", 800, 600);
+	bool result = true;
 
-	window->Run();
+	FESystem* pSystem = FESystem::GetInstance();
+
+	result = pSystem->Create(TEXT("FE_TEST"), 1600, 900);
+
+	if (!result)
+	{
+		SAFE_DELETE(pSystem);
+		return 0;
+	}
+
+	pSystem->Run();
+
+	SAFE_DELETE(pSystem);
 
 	return 0;
 }

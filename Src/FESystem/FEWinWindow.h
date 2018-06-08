@@ -6,6 +6,7 @@ class FEWinWindow : public FEWindow
 {
 protected:
 	HWND m_hWnd;
+	tstring m_sClassName;
 
 protected:
 	virtual bool InitWindow() override;
@@ -14,5 +15,7 @@ protected:
 	static LRESULT CALLBACK MsgProc(HWND i_hWnd, UINT i_uiMsg, WPARAM i_wParam, LPARAM i_lParam);
 public:
 	FEWinWindow();
-	virtual ~FEWinWindow();
+	virtual ~FEWinWindow() override;
+
+	virtual void Release() override;
 };

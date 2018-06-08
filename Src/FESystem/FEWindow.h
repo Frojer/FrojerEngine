@@ -9,7 +9,6 @@ protected:
 	tstring m_sWindowName;
 public:
 	UINT m_uiWidth, m_uiHeight;
-	bool m_bExit;
 
 protected:
 	FEWindow();
@@ -17,13 +16,12 @@ protected:
 	virtual bool InitWindow() = 0;
 	virtual bool MessagePump() = 0;
 
-	void Update();
-	void Render();
+	static FEWindow* CreateFEWindow(LPCTSTR i_sWindowName, const UINT i_width, const UINT i_height);
 
 public:
 	virtual ~FEWindow();
 
-	void Run();
+	virtual void Release() = 0;
 
-	static FEWindow* CreateFEWindow(LPCTSTR i_sWindowName, const UINT i_width, const UINT i_height);
+	friend class FESystem;
 };

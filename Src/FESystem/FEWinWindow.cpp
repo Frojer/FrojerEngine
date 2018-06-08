@@ -7,11 +7,14 @@ FEWinWindow::FEWinWindow()
 
 FEWinWindow::~FEWinWindow()
 {
+	Release();
 }
 
 
 bool FEWinWindow::InitWindow()
 {
+	m_sClassName = m_sWindowName;
+
 	WNDCLASSEX wc = {
 		sizeof(WNDCLASSEX), CS_CLASSDC, MsgProc, 0, 0,
 		::GetModuleHandle(NULL), NULL, NULL, NULL, NULL,
@@ -21,7 +24,7 @@ bool FEWinWindow::InitWindow()
 	RegisterClassEx(&wc);
 
 	//윈도우 생성.
-	m_hWnd = ::CreateWindow(m_sWindowName.c_str(), m_sWindowName.c_str(),
+	m_hWnd = ::CreateWindow(m_sClassName.c_str(), m_sWindowName.c_str(),
 		WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
 		//WS_OVERLAPPEDWINDOW, 
 		0, 0,
@@ -92,4 +95,24 @@ LRESULT CALLBACK FEWinWindow::MsgProc(HWND i_hWnd, UINT i_uiMsg, WPARAM i_wParam
 	}
 
 	return DefWindowProc(i_hWnd, i_uiMsg, i_wParam, i_lParam);
+}
+
+
+void FEWinWindow::Release()
+{
+	// 마우스 커서를 표시합니다.
+	ShowCursor(true);
+
+	/*// 풀스크린 모드를 빠져나올 때 디스플레이 설정을 바꿉니다.
+	if (FULL_SCREEN)
+	{
+	ChangeDisplaySettings(NULL, 0);
+	}*/
+
+	// 창을 제거합니다.
+	DestroyWindow(m_hWnd);
+	m_hWnd = NULL;
+
+	// 어플리케이션 인스턴스를 제거합니다.
+	UnregisterClass(m_sClassName.c_str(), ::GetModuleHandle(NULL));
 }

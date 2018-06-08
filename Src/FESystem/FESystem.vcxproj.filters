@@ -21,6 +21,9 @@
     <ClCompile Include="FEWinWindow.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="FESystem.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FEWindow.h">
@@ -30,6 +33,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="FESystemDefine.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="FESystem.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
