@@ -39,6 +39,8 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 		return 0;
 	}
 
+	result = pSystem->LoadData();
+
 	pSystem->Run();
 
 	SAFE_DELETE(pSystem);

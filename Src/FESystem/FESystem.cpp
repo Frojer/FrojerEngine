@@ -34,6 +34,18 @@ void FESystem::Release()
 }
 
 
+bool FESystem::LoadData()
+{
+	FESceneManager* pSM = FESceneManager::GetInstance();
+	
+	// ImportScene 함수를 통해 파일 형태로 저장해 놓은 씬들을 읽어 씬들을 구성하도록 만들자
+	// 효과 : FEScene 클래스 하나로 모든 씬들을 만들 수 있다. 어차피 씬들의 다른 점은 오브젝트들의 배치 및 설정이다. 이 다른점들을 파일을 읽어 씬에 적용할 수 있도록 만들자.
+	pSM->ImportScene();
+
+	return true;
+}
+
+
 void FESystem::Run()
 {
 	while (!m_bExit)
@@ -41,8 +53,8 @@ void FESystem::Run()
 		if (!_pWindow->MessagePump())		// 메세지 펌프.
 			break;
 
-		FESceneManager::GetCurrentScene()->Update();
-		FESceneManager::GetCurrentScene()->Render();
+		FESceneManager::_pCurrentScene->Update();
+		FESceneManager::_pCurrentScene->Render();
 	}
 }
 

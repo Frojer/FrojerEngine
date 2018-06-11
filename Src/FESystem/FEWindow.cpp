@@ -18,8 +18,11 @@ FEWindow* FEWindow::CreateFEWindow(LPCTSTR i_sWindowName, const UINT i_width, co
 	FEWindow* pWindow = nullptr;
 
 #ifdef _WIN32
+	// 윈도우 라면
 	pWindow = new FEWinWindow();
 #else
+	// 리눅스 라면
+	// pWindow = new FELinuxWindow();
 	#error 윈도우가 아니자낭
 #endif
 

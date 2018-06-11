@@ -37,6 +37,8 @@ public:
 
 	void Run();
 
+	bool LoadData();
+
 	void Release();
 
 	static FESystem* GetInstance();

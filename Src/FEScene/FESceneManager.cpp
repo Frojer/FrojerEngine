@@ -1,4 +1,12 @@
 #include "FESceneManager.h"
+#include "FEScene.h"
+
+//-------------------------------
+// 윈도우 폴더 내 파일 찾기
+//-------------------------------
+#include <io.h>
+#include <conio.h>
+//-------------------------------
 
 FESceneManager* FESceneManager::_pInstance = nullptr;
 IFEScene* FESceneManager::_pCurrentScene = nullptr;
@@ -12,6 +20,37 @@ FESceneManager::FESceneManager()
 FESceneManager::~FESceneManager()
 {
 	Release();
+}
+
+
+bool FESceneManager::ImportScene()
+{
+	/*
+#ifdef _WIN32
+	_finddata_t fd;
+	intptr_t handle;
+	int result = 1;
+	handle = _findfirst("..\\..\\Data\\*", &fd);  //현재 폴더 내 모든 파일을 찾는다.
+
+	// 파일이 하나도 없다면
+	if (handle == -1)
+		return false;
+
+	while (result != -1)
+	{
+		printf("File: %s\n", fd.name);
+		result = _findnext(handle, &fd);
+	}
+
+	_findclose(handle);
+#else
+#error 윈도우가 아니라구
+#endif
+	*/
+
+	_pCurrentScene = new FEScene;
+
+	return true;
 }
 
 
@@ -40,12 +79,6 @@ FESceneManager* FESceneManager::GetInstance()
 	if (_pInstance == nullptr)	_pInstance = new FESceneManager();
 
 	return _pInstance;
-}
-
-
-IFEScene* FESceneManager::GetCurrentScene()
-{
-	return _pCurrentScene;
 }
 
 

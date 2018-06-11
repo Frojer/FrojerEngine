@@ -14,8 +14,9 @@ private:
 	static IFEScene* _pCurrentScene;
 
 private:
+	bool ImportScene();
+
 	void AddScene(IFEScene* i_pScene);
-	
 	void ChangeScene();
 
 public:
@@ -23,10 +24,12 @@ public:
 	~FESceneManager();
 
 	static FESceneManager* GetInstance();
-	static IFEScene* GetCurrentScene();
 
 	bool LoadScene(LPCTSTR i_sceneName);
 	bool LoadScene(const UINT i_sceneNumber);
 
 	void Release();
+
+	//bool FESystem::LoadData()
+	friend class FESystem;
 };
