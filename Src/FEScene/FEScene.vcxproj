@@ -177,13 +177,12 @@ copy FESceneManager.h $(FE_SDK_INC)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="FEScene.h" />
     <ClInclude Include="FESceneManager.h" />
     <ClInclude Include="IFEScene.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FEScene.cpp" />
     <ClCompile Include="FESceneManager.cpp" />
+    <ClCompile Include="IFEScene.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

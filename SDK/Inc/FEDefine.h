@@ -32,3 +32,4 @@ typedef std::ofstream tofstream;
 #define SAFE_RELEASE(pObj)	if ((pObj) != nullptr)	{ (pObj)->Release();	(pObj) = nullptr; }
 #define SAFE_DELARR(pObj)	if ((pObj) != nullptr)	{ delete[] (pObj);		(pObj) = nullptr; }
 #define SAFE_DELETE(pObj)	if ((pObj) != nullptr)	{ delete (pObj);		(pObj) = nullptr; }
+#define FOR_STL(stl) for (auto iter = (stl).begin(); iter != (stl).end(); iter++)

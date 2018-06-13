@@ -18,18 +18,15 @@
     <ClInclude Include="IFEScene.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="FEScene.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="FESceneManager.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FEScene.cpp">
+    <ClCompile Include="FESceneManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="FESceneManager.cpp">
+    <ClCompile Include="IFEScene.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

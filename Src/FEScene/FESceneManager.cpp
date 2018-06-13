@@ -1,5 +1,4 @@
 #include "FESceneManager.h"
-#include "FEScene.h"
 
 //-------------------------------
 // 윈도우 폴더 내 파일 찾기
