@@ -2,6 +2,7 @@
 
 #include <tchar.h>
 #include <string>
+#include <fstream>
 
 
 ///////////////////////
@@ -13,8 +14,14 @@ typedef const TCHAR*	LPCTSTR;
 
 #ifdef _UNICODE
 typedef std::wstring tstring;
-#elif
+typedef std::wfstream tfstream;
+typedef std::wifstream tifstream;
+typedef std::wofstream tofstream;
+#else
 typedef std::string tstring;
+typedef std::fstream tfstream;
+typedef std::ifstream tifstream;
+typedef std::ofstream tofstream;
 #endif
 
 

@@ -18,7 +18,7 @@ void AnimScene::Load()
 
 void AnimScene::Initialize()
 {
-	//IFEScene::s_bkColor = FEVector4(0, 0.125f, 0.3f, 1);
+	IFEScene::s_bkColor = FEVector4(0, 0.125f, 0.3f, 1);
 }
 
 

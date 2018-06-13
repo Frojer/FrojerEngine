@@ -19,5 +19,5 @@ public:
 
 	virtual void Release() override;
 
-	bool ResizeWindow();
+	virtual bool ResizeWindow(UINT i_width, UINT i_height) override;
 };

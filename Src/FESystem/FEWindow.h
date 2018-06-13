@@ -24,6 +24,7 @@ public:
 
 	virtual void Release() = 0;
 
+	virtual bool ResizeWindow(UINT i_width, UINT i_height) = 0;
 	void* GetWindowHandle();
 
 	friend class FESystem;

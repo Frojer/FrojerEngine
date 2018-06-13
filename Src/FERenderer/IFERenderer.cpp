@@ -12,7 +12,7 @@ IFERenderer::~IFERenderer()
 }
 
 
-IFERenderer* IFERenderer::CreateRenderer(void* i_phWnd)
+IFERenderer* IFERenderer::CreateRenderer(void* i_phWnd, const FESystemSetting& i_Setting)
 {
 	IFERenderer* pRenderer = nullptr;
 #ifdef _WIN32
@@ -25,7 +25,7 @@ IFERenderer* IFERenderer::CreateRenderer(void* i_phWnd)
 
 	if (pRenderer == nullptr) return nullptr;
 #endif
-
+	pRenderer->m_Setting = i_Setting;
 	pRenderer->Create(i_phWnd);
 
 	return pRenderer;

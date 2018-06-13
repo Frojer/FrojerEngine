@@ -1,6 +1,8 @@
 #include "FESystem.h"
+#include <FEDefine.h>
 #include <FESceneManager.h>
 
+using namespace std;
 
 FESystem* FESystem::_pInstance = nullptr;
 
@@ -15,23 +17,62 @@ FESystem::~FESystem()
 	Release();
 }
 
-
-bool FESystem::Create(LPCTSTR i_sWindowName, const UINT i_width, const UINT i_height)
+FESystemSetting FESystem::LoadSetting()
 {
-	//---------------
+	FESystemSetting setting;
+
+	TCHAR str[256];
+	tifstream f(_TEXT("../../Data/SystemSetting.ini"));
+
+	if (f.fail())
+	{
+		setting.uiWindowWidth = 800;
+		setting.uiWindowHeight = 600;
+		setting.bWindowMode = false;
+		setting.bVSync = false;
+	}
+
+	while (!f.eof())
+	{
+		f >> str;
+
+		if (_tcsnicmp(_TEXT("Width"), str, 5) == 0)
+		{
+			f >> str >> setting.uiWindowWidth;
+		}
+
+		else if (_tcsnicmp(_TEXT("Height"), str, 6) == 0)
+		{
+			f >> str >> setting.uiWindowHeight;
+		}
+	}
+
+	f.close();
+
+	return setting;
+}
+
+bool FESystem::Create(LPCTSTR i_sWindowName)
+{
+	//--------------
 	// 설정 읽어오기
-	//---------------
+	//--------------
+	FESystemSetting setting = LoadSetting();
 
 
 	//------------
 	// 윈도우 생성
 	//------------
-	_pWindow = FEWindow::CreateFEWindow(i_sWindowName, i_width, i_height);
+	_pWindow = FEWindow::CreateFEWindow(i_sWindowName, setting.uiWindowWidth, setting.uiWindowHeight);
 
 	if (_pWindow == nullptr)
 		return false;
 
-	_pRenderer = IFERenderer::CreateRenderer(_pWindow->GetWindowHandle());
+
+	//------------
+	// 렌더러 생성
+	//------------
+	_pRenderer = IFERenderer::CreateRenderer(_pWindow->GetWindowHandle(), setting);
 
 	return true;
 }
@@ -69,7 +110,7 @@ void FESystem::Run()
 		FESceneManager::_pCurrentScene->Initialize();
 		FESceneManager::_pCurrentScene->Update();
 
-		//_pRenderer->ClearBackBuffer(FESceneManager::_pCurrentScene->s_bkColor);
+		_pRenderer->ClearBackBuffer(FESceneManager::_pCurrentScene->s_bkColor);
 		FESceneManager::_pCurrentScene->Render();
 		_pRenderer->Flip();
 	}

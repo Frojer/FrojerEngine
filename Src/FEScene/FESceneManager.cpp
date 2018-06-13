@@ -13,23 +13,6 @@
 //----------------
 #include <FEUserScene.h>
 
-#pragma region FEUserScene.lib
-#ifdef _DEBUG
-#ifdef _WIN64
-#pragma comment(lib, "FEUserScene64d")
-#else
-#pragma comment(lib, "FEUserScened")
-#endif
-#else
-#ifdef _WIN64
-#pragma comment(lib, "FEUserScene64")
-#else
-#pragma comment(lib, "FEUserScene")
-#endif
-#endif
-#pragma endregion
-//----------------
-
 FESceneManager* FESceneManager::_pInstance = nullptr;
 IFEScene* FESceneManager::_pCurrentScene = nullptr;
 

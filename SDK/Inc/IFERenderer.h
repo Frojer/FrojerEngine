@@ -3,7 +3,7 @@
 #include <FEDefine.h>
 #include <FEMath.h>
 
-struct SystemSetting
+struct FESystemSetting
 {
 	UINT uiWindowWidth, uiWindowHeight;
 
@@ -16,7 +16,7 @@ struct SystemSetting
 class IFERenderer
 {
 public:
-	SystemSetting m_Setting;
+	FESystemSetting m_Setting;
 
 protected:
 	virtual bool Create(void* i_phWnd) = 0;
@@ -26,7 +26,7 @@ public:
 	IFERenderer();
 	virtual ~IFERenderer();
 
-	static IFERenderer* CreateRenderer(void* i_phWnd);
+	static IFERenderer* CreateRenderer(void* i_phWnd, const FESystemSetting& i_Setting);
 
 	virtual void ClearBackBuffer(const FEVector4& i_color) = 0;
 	virtual void Flip() = 0;

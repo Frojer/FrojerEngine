@@ -120,8 +120,7 @@ copy FEWindow.h $(FE_SDK_INC)
 copy FESystemDefine.h $(FE_SDK_INC)</Command>
     </PostBuildEvent>
     <Lib>
-      <AdditionalDependencies>
-      </AdditionalDependencies>
+      <AdditionalDependencies>FERenderer64d.lib;FEScene64d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

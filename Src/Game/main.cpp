@@ -31,7 +31,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 
 	FESystem* pSystem = FESystem::GetInstance();
 
-	result = pSystem->Create(TEXT("FE_TEST"), 1600, 900);
+	result = pSystem->Create(_TEXT("FE_TEST"));
 
 	if (!result)
 	{
