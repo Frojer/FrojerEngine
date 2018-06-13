@@ -32,4 +32,5 @@ public:
 
 	//bool FESystem::LoadData()
 	friend class FESystem;
+	friend void LoadUserScene();
 };

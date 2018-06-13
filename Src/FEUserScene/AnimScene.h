@@ -1,18 +1,17 @@
 #pragma once
 
-#include <vector>
-#include "IFEScene.h"
+#include <IFEScene.h>
 
-class FEScene :	public IFEScene
+class AnimScene : public IFEScene
 {
-
 public:
-	FEScene();
-	virtual ~FEScene();
+	AnimScene();
+	~AnimScene();
 
 	virtual void Load() override;
 
 	virtual void Initialize() override;
+
 	virtual void Release() override;
 
 	virtual void Update() override;

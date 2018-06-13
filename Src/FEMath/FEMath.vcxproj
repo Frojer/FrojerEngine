@@ -18,11 +18,17 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FEMath.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="FEMath.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{7EFF56E8-0838-4D1B-B979-6F20B6777A9B}</ProjectGuid>
+    <ProjectGuid>{77A6F234-CBF4-4DC8-8505-1A91A20A0088}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>FEScene</RootNamespace>
+    <RootNamespace>FEMath</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -97,19 +103,14 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <PreBuildEvent>
-      <Command>copy IFEScene.h $(FE_SDK_INC)
-copy FESceneManager.h $(FE_SDK_INC)</Command>
-    </PreBuildEvent>
-    <Lib>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-    </Lib>
+    <PostBuildEvent>
+      <Command>copy FEMath.h $(FE_SDK_INC)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -119,16 +120,14 @@ copy FESceneManager.h $(FE_SDK_INC)</Command>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <PreBuildEvent>
-      <Command>copy IFEScene.h $(FE_SDK_INC)
-copy FESceneManager.h $(FE_SDK_INC)</Command>
-    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>copy FEMath.h $(FE_SDK_INC)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -140,7 +139,6 @@ copy FESceneManager.h $(FE_SDK_INC)</Command>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -148,10 +146,9 @@ copy FESceneManager.h $(FE_SDK_INC)</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <PreBuildEvent>
-      <Command>copy IFEScene.h $(FE_SDK_INC)
-copy FESceneManager.h $(FE_SDK_INC)</Command>
-    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>copy FEMath.h $(FE_SDK_INC)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -163,7 +160,6 @@ copy FESceneManager.h $(FE_SDK_INC)</Command>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -171,20 +167,10 @@ copy FESceneManager.h $(FE_SDK_INC)</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <PreBuildEvent>
-      <Command>copy IFEScene.h $(FE_SDK_INC)
-copy FESceneManager.h $(FE_SDK_INC)</Command>
-    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>copy FEMath.h $(FE_SDK_INC)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="FEScene.h" />
-    <ClInclude Include="FESceneManager.h" />
-    <ClInclude Include="IFEScene.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="FEScene.cpp" />
-    <ClCompile Include="FESceneManager.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

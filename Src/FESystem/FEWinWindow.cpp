@@ -13,18 +13,18 @@ FEWinWindow::~FEWinWindow()
 
 bool FEWinWindow::InitWindow()
 {
-	_sClassName = m_sWindowName;
+	_sClassName = _sWindowName;
 
 	WNDCLASSEX wc = {
 		sizeof(WNDCLASSEX), CS_CLASSDC, MsgProc, 0, 0,
 		::GetModuleHandle(NULL), NULL, NULL, NULL, NULL,
-		m_sWindowName.c_str(), NULL
+		_sWindowName.c_str(), NULL
 	};
 
 	RegisterClassEx(&wc);
 
 	//윈도우 생성.
-	_hWnd = ::CreateWindow(_sClassName.c_str(), m_sWindowName.c_str(),
+	_hWnd = ::CreateWindow(_sClassName.c_str(), _sWindowName.c_str(),
 		WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
 		//WS_OVERLAPPEDWINDOW, 
 		0, 0,
@@ -34,6 +34,8 @@ bool FEWinWindow::InitWindow()
 	);
 
 	if (_hWnd == NULL) return false;
+
+	_phWnd = &_hWnd;
 
 
 	::ShowWindow(_hWnd, SW_SHOWDEFAULT);

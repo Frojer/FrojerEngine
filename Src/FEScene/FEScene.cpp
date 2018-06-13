@@ -18,9 +18,9 @@ void FEScene::Load()
 }
 
 
-bool FEScene::Create()
+void FEScene::Initialize()
 {
-	return true;
+
 }
 
 

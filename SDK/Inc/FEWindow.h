@@ -6,7 +6,8 @@
 class FEWindow
 {
 protected:
-	tstring m_sWindowName;
+	tstring _sWindowName;
+	void* _phWnd;
 public:
 	UINT m_uiWidth, m_uiHeight;
 
@@ -22,6 +23,8 @@ public:
 	virtual ~FEWindow();
 
 	virtual void Release() = 0;
+
+	void* GetWindowHandle();
 
 	friend class FESystem;
 };

@@ -1,11 +1,13 @@
 #pragma once
 
 #include <FEDefine.h>
+#include <FEMath.h>
 
 class IFEScene
 {
 public:
 	tstring m_sName;
+	static FEVector4 s_bkColor;
 
 public:
 	IFEScene() = default;
@@ -13,7 +15,8 @@ public:
 
 	virtual void Load() = 0;
 
-	virtual bool Create() = 0;
+	virtual void Initialize() = 0;
+
 	virtual void Release() = 0;
 
 	virtual void Update() = 0;
