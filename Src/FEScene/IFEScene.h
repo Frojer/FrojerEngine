@@ -20,6 +20,7 @@ class IFEScene
 {
 protected:
 	std::unordered_map<UINT, FEObject*>	_mapObj;
+	std::list<FEObject*>	_hierarchyList;
 	//std::map<float, FEObject*>	_mapManageDrawObj[RL_NUM];
 
 	//std::vector<Camera*> _vecCam;

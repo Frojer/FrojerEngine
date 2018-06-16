@@ -21,11 +21,14 @@
   <ItemGroup>
     <ClInclude Include="FEComponent.h" />
     <ClInclude Include="FEObject.h" />
+    <ClInclude Include="FEObjectHeader.h" />
+    <ClInclude Include="FETransform.h" />
     <ClInclude Include="IFEObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FEComponent.cpp" />
     <ClCompile Include="FEObject.cpp" />
+    <ClCompile Include="FETransform.cpp" />
     <ClCompile Include="IFEObject.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -113,10 +116,11 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>copy IFEObject.h $(FE_SDK_INC)
-copy FEObject.h $(FE_SDK_INC)
-copy FEComponent.h $(FE_SDK_INC)</Command>
+      <Command>copy *.h $(FE_SDK_INC)</Command>
     </PostBuildEvent>
+    <Lib>
+      <AdditionalDependencies>FEMath64d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -132,9 +136,7 @@ copy FEComponent.h $(FE_SDK_INC)</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>copy IFEObject.h $(FE_SDK_INC)
-copy FEObject.h $(FE_SDK_INC)
-copy FEComponent.h $(FE_SDK_INC)</Command>
+      <Command>copy *.h $(FE_SDK_INC)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -155,9 +157,7 @@ copy FEComponent.h $(FE_SDK_INC)</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>copy IFEObject.h $(FE_SDK_INC)
-copy FEObject.h $(FE_SDK_INC)
-copy FEComponent.h $(FE_SDK_INC)</Command>
+      <Command>copy *.h $(FE_SDK_INC)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -178,9 +178,7 @@ copy FEComponent.h $(FE_SDK_INC)</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>copy IFEObject.h $(FE_SDK_INC)
-copy FEObject.h $(FE_SDK_INC)
-copy FEComponent.h $(FE_SDK_INC)</Command>
+      <Command>copy *.h $(FE_SDK_INC)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

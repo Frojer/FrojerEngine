@@ -2,9 +2,12 @@
 #ifndef _FE_OBJECT
 #define _FE_OBJECT
 
-#include "IFEObject.h"
-#include "FEComponent.h"
 #include <FEMath.h>
+#include <typeinfo>
+#include "FEObjectHeader.h"
+
+class FEComponent;
+class FETransform;
 
 class FEObject : public IFEObject
 {
@@ -15,6 +18,9 @@ protected:
 	FEObject* _pParent;
 	std::unordered_map<UINT, FEObject*> _children;
 	std::unordered_map<UINT, FEComponent*> _components;
+
+	FETransform* _pTransform;
+	//Renderer* _pRenderer;
 
 private:
 	FEObject(const FEObject& rhs) = delete;
@@ -31,25 +37,69 @@ protected:
 
 public:
 	FEObject();
-	FEObject(FEVector3& pos, FEVector3& rot, FEVector3& scale);
+	FEObject(const FEVector3& pos, const FEVector3& rot, const FEVector3& scale);
 	virtual ~FEObject();
 
-	//void Destroy();
-	//void Destroy(float time);
+	void Destroy();
+	void Destroy(float time);
 
-	//void SetParent(FEObject* i_pParent);
-	//FEObject* GetParent();
-	//std::unordered_map<UINT, FEObject*> GetChildren();
+	void SetParent(FEObject* i_pParent);
+	FEObject* GetParent();
+	std::unordered_map<UINT, FEObject*> GetChildren();
 
-	/*template <typename T>
+	FETransform* GetTransform();
+
+	template <typename T>
 	T* AddComponent()
+	{
+		FEComponent* pCom = nullptr;
+
+		if (!std::is_base_of<FEComponent, T>::value)
+			return nullptr;
+
+		if (std::is_base_of<FETransform, T>::value)
+		{
+			if (_pTransform == nullptr)
+			{
+				pCom = new T;
+				_pTransform = (FETransform*)pCom;
+			}
+			else
+				return nullptr;
+		}
+
+		/*else if (is_base_of<Renderer, T>::value)
+		{
+			if (m_pRenderer == nullptr)
+			{
+				pCom = new T;
+				m_pRenderer = (Renderer*)pCom;
+			}
+			else
+				return nullptr;
+		}*/
+
+		else
+		{
+			pCom = new T;
+		}
+
+		pCom->_pObj = this;
+		_components[pCom->GetID()] = pCom;
+
+		return (T*)pCom;
+	}
+
+	/*
+	template <typename T>
+	T* GetComponent()
 	{
 		FEComponent* pCom = nullptr;
 
 		if (!is_base_of<FEComponent, T>::value)
 			return nullptr;
 
-		if (is_base_of<Transform, T>::value)
+		if (is_base_of<FETransform, T>::value)
 		{
 			if (m_pTransform == nullptr)
 			{
@@ -62,13 +112,13 @@ public:
 
 		else if (is_base_of<Renderer, T>::value)
 		{
-			if (m_pRenderer == nullptr)
-			{
-				pCom = new T;
-				m_pRenderer = (Renderer*)pCom;
-			}
-			else
-				return nullptr;
+		if (m_pRenderer == nullptr)
+		{
+		pCom = new T;
+		m_pRenderer = (Renderer*)pCom;
+		}
+		else
+		return nullptr;
 		}
 
 		else
@@ -80,12 +130,16 @@ public:
 		_components.push_back(pCom);
 
 		return (T*)pCom;
-	}*/
+	}
+	*/
 
 	//FEComponent* GetComponent(const type_info& type);
-	//std::unordered_map<UINT, FEComponent*> GetComponents();
+	std::unordered_map<UINT, FEComponent*> GetComponents();
 
-	//static FEObject* Find(unsigned int id);
+	void SetEnable(bool enable);
+	bool GetEnable();
+
+	static FEObject* Find(unsigned int id);
 	//static FEObject* CopyObject(const FEObject* origin, FEVector3 pos);
 	//static FEObject* CopyObject(const FEObject* origin);
 

@@ -175,6 +175,9 @@ copy FESceneManager.h $(FE_SDK_INC)</Command>
       <Command>copy IFEScene.h $(FE_SDK_INC)
 copy FESceneManager.h $(FE_SDK_INC)</Command>
     </PreBuildEvent>
+    <Lib>
+      <AdditionalDependencies>FEUserScene64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="FESceneManager.h" />

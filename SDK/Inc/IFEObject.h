@@ -15,7 +15,10 @@ private:
 
 public:
 	tstring m_Name;
+
+private:
 	IFEObject(const IFEObject& rhs) = delete;
+	IFEObject& operator= (const IFEObject& rhs) = delete;
 
 public:
 	IFEObject();

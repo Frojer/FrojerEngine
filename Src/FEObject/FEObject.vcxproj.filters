@@ -13,6 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Component">
+      <UniqueIdentifier>{f7aa79a0-68a6-43cb-81a1-830bf2d20cc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Source File">
+      <UniqueIdentifier>{a65b4ea6-da34-4d43-8ea4-6ce33dbfbe43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Header File">
+      <UniqueIdentifier>{510b40eb-f7a6-4c1f-9177-cce01458ae06}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IFEObject.cpp">
@@ -21,8 +30,11 @@
     <ClCompile Include="FEObject.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="FETransform.cpp">
+      <Filter>Component\Source File</Filter>
+    </ClCompile>
     <ClCompile Include="FEComponent.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>Component\Source File</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -33,7 +45,11 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="FEComponent.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>Component\Header File</Filter>
     </ClInclude>
+    <ClInclude Include="FETransform.h">
+      <Filter>Component\Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="FEObjectHeader.h" />
   </ItemGroup>
 </Project>

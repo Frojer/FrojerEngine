@@ -29,10 +29,10 @@ void IFEScene::Update()
 
 void IFEScene::Render()
 {
-	auto iter = _mapObj.begin();
+	auto iter = _hierarchyList.begin();
 
-	while (iter != _mapObj.end())
-		iter++->second->Render();
+	while (iter != _hierarchyList.end())
+		(*iter++)->Render();
 }
 
 
