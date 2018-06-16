@@ -1,4 +1,6 @@
 #pragma once
+#ifndef _FE_MATH
+#define _FE_MATH
 
 class FEVector2
 {
@@ -65,3 +67,5 @@ FEVector4 operator+(const FEVector4& lhs, const float rhs);
 FEVector4 operator-(const FEVector4& lhs, const float rhs);
 FEVector4 operator*(const FEVector4& lhs, const float rhs);
 FEVector4 operator/(const FEVector4& lhs, const float rhs);
+
+#endif

@@ -1,4 +1,6 @@
 #pragma once
+#ifndef _FE_OBJECT
+#define _FE_OBJECT
 
 #include "IFEObject.h"
 #include "FEComponent.h"
@@ -89,3 +91,5 @@ public:
 
 	friend class IFEScene;
 };
+
+#endif

@@ -1,4 +1,6 @@
 #pragma once
+#ifndef _FE_DX_RENDERER_DEFINE
+#define _FE_DX_RENDERER_DEFINE
 
 #include "FEDXRenderer.h"
 
@@ -51,3 +53,5 @@ typedef ID3D11RenderTargetView*	LPRTVIEW;
 ////색상 타입: 2가지.
 ////typedef XMCOLOR		COLOR;		// r, g, b, a.  [정수형 0~255]
 //typedef DirectX::XMFLOAT4		COLOR;		// r, g, b, a.  [실수형 0~1.0]
+
+#endif

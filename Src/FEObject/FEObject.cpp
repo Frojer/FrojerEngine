@@ -1,25 +1,28 @@
 #include "FEObject.h"
+#include <FESceneManager.h>
 
 FEObject::FEObject()
 	: _bDead(false), _pParent(nullptr)
 {
-
+	FESceneManager::GetCurrentScene()->_mapObj[GetID()] = this;
 }
 FEObject::FEObject(FEVector3& pos, FEVector3& rot, FEVector3& scale)
 	: _bDead(false), _pParent(nullptr)
 {
-	
+	FESceneManager::GetCurrentScene()->_mapObj[GetID()] = this;
 }
 
 
 FEObject::~FEObject()
 {
+	FESceneManager::GetCurrentScene()->_mapObj.erase(GetID());
+
 	auto iter = _children.begin();
 	while (iter != _children.end())
 	{
 		delete iter->second;
 		iter->second = nullptr;
-		_children.erase(iter++);
+		_children.erase(iter++->first);
 	}
 
 	auto iter2 = _components.begin();
@@ -27,7 +30,7 @@ FEObject::~FEObject()
 	{
 		delete iter2->second;
 		iter2->second = nullptr;
-		_components.erase(iter2++);
+		_components.erase(iter2++->first);
 	}
 }
 

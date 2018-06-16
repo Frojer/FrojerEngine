@@ -1,4 +1,7 @@
 #pragma once
+#ifndef _FE_WIN_WINDOW
+#define _FE_WIN_WINDOW
+
 #include <Windows.h>
 #include "FEWindow.h"
 
@@ -21,3 +24,5 @@ public:
 
 	virtual bool ResizeWindow(UINT i_width, UINT i_height) override;
 };
+
+#endif

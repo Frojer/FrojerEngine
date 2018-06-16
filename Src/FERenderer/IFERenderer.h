@@ -1,4 +1,6 @@
 #pragma once
+#ifndef _FE_IRENDERER
+#define _FE_IRENDERER
 
 #include <FEDefine.h>
 #include <FEMath.h>
@@ -31,3 +33,5 @@ public:
 	virtual void ClearBackBuffer(const FEVector4& i_color) = 0;
 	virtual void Flip() = 0;
 };
+
+#endif

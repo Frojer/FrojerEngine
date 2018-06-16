@@ -1,4 +1,6 @@
 #pragma once
+#ifndef _FE_DX_RENDERER
+#define _FE_DX_RENDERER
 
 #include "IFERenderer.h"
 #include "FEDXRendererDefine.h"
@@ -30,3 +32,5 @@ public:
 	virtual void ClearBackBuffer(const FEVector4& i_color) override;
 	virtual void Flip() override;
 };
+
+#endif

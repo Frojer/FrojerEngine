@@ -1,4 +1,6 @@
 #pragma once
+#ifndef _FE_COMPONENT
+#define _FE_COMPONENT
 
 #include "IFEObject.h"
 
@@ -8,3 +10,5 @@ public:
 	FEComponent();
 	~FEComponent();
 };
+
+#endif

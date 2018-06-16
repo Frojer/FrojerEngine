@@ -1,5 +1,9 @@
 #pragma once
 
+#ifndef _FE_DEFINE
+#define _FE_DEFINE
+#endif
+
 #include <tchar.h>
 #include <string>
 #include <fstream>

@@ -1,4 +1,6 @@
 #pragma once
+#ifndef _FE_WINDOW
+#define _FE_WINDOW
 
 #include "FESystemDefine.h"
 #include <FEDefine.h>
@@ -29,3 +31,5 @@ public:
 
 	friend class FESystem;
 };
+
+#endif

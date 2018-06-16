@@ -1,4 +1,6 @@
 #pragma once
+#ifndef _FE_IOBJECT
+#define _FE_IOBJECT
 
 #include <FEDefine.h>
 #include <unordered_map>
@@ -23,3 +25,5 @@ public:
 
 	static IFEObject* FindObject(UINT id);
 };
+
+#endif

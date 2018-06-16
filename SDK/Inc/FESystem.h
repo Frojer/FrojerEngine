@@ -1,4 +1,6 @@
 #pragma once
+#ifndef _FE_SYSTEM
+#define _FE_SYSTEM
 
 #include <IFERenderer.h>
 #include "FEWindow.h"
@@ -32,3 +34,5 @@ public:
 
 	static FESystem* GetInstance();
 };
+
+#endif

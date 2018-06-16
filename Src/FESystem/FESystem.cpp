@@ -80,6 +80,9 @@ bool FESystem::Create(LPCTSTR i_sWindowName)
 
 void FESystem::Release()
 {
+	delete FESceneManager::GetInstance();
+
+	SAFE_DELETE(_pRenderer);
 	SAFE_DELETE(_pWindow);
 }
 
@@ -94,23 +97,25 @@ bool FESystem::LoadData()
 
 	pSM->LoadScene((UINT)0);
 
-	pSM->ChangeScene();
-
 	return true;
 }
 
 
 void FESystem::Run()
 {
+	FESceneManager* pSM = FESceneManager::GetInstance();
+
 	while (!m_bExit)
 	{
 		if (!_pWindow->MessagePump())		// ¸Þ¼¼Áö ÆßÇÁ.
 			break;
 
+		pSM->ChangeScene();
+
 		FESceneManager::_pCurrentScene->Initialize();
 		FESceneManager::_pCurrentScene->Update();
 
-		_pRenderer->ClearBackBuffer(FESceneManager::_pCurrentScene->s_backgroundColor);
+		_pRenderer->ClearBackBuffer(FESceneManager::_pCurrentScene->s_BGColor);
 		FESceneManager::_pCurrentScene->Render();
 		_pRenderer->Flip();
 	}

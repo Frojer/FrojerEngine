@@ -1,4 +1,6 @@
 #pragma once
+#ifndef _FE_ISCENE
+#define _FE_ISCENE
 
 #include <list>
 #include <unordered_map>
@@ -24,11 +26,11 @@ protected:
 
 public:
 	tstring m_sName;
-	static FEVector4 s_backgroundColor;
+	static FEVector4 s_BGColor;
 
 public:
 	IFEScene() = default;
-	virtual ~IFEScene() = default;
+	virtual ~IFEScene();
 
 	virtual void Load() = 0;
 
@@ -41,4 +43,8 @@ public:
 
 	//void AddCamera(Camera* pCam);
 	//Camera* GetCamera(UINT index);
+
+	friend class FEObject;
 };
+
+#endif

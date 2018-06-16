@@ -1,27 +1,38 @@
 #include "IFEScene.h"
 
-FEVector4 IFEScene::s_backgroundColor(0.0f, 0.0f, 0.0f, 1.0f);
+FEVector4 IFEScene::s_BGColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+IFEScene::~IFEScene()
+{
+	Release();
+}
 
 void IFEScene::Initialize()
 {
 	auto iter = _mapObj.begin();
-
 	while (iter != _mapObj.end())
-	{
 		iter++->second->Initialize();
-	}
 }
 
 
 void IFEScene::Update()
 {
-
+	auto iter = _mapObj.begin();
+	while (iter != _mapObj.end())
+		iter++->second->Update();
+	
+	iter = _mapObj.begin();
+	while (iter != _mapObj.end())
+		iter++->second->AfterUpdate();
 }
 
 
 void IFEScene::Render()
 {
+	auto iter = _mapObj.begin();
 
+	while (iter != _mapObj.end())
+		iter++->second->Render();
 }
 
 
@@ -29,9 +40,7 @@ void IFEScene::Release()
 {
 	auto iter = _mapObj.begin();
 	while (iter != _mapObj.end())
-	{
-		delete iter->second;
-		iter->second = nullptr;
-		_mapObj.erase((iter++)->first);
-	}
+		delete iter++->second;
+
+	_mapObj.clear();
 }

@@ -1,4 +1,6 @@
 #pragma once
+#ifndef _FE_SCENE_MANAGER
+#define _FE_SCENE_MANAGER
 
 #include <vector>
 #include <FEDefine.h>
@@ -24,6 +26,7 @@ public:
 	~FESceneManager();
 
 	static FESceneManager* GetInstance();
+	static IFEScene* GetCurrentScene();
 
 	bool LoadScene(LPCTSTR i_sceneName);
 	bool LoadScene(const UINT i_sceneNumber);
@@ -34,3 +37,5 @@ public:
 	friend class FESystem;
 	friend void LoadUserScene();
 };
+
+#endif

@@ -85,6 +85,11 @@ FESceneManager* FESceneManager::GetInstance()
 	return _pInstance;
 }
 
+IFEScene* FESceneManager::GetCurrentScene()
+{
+	return _pCurrentScene;
+}
+
 
 bool FESceneManager::LoadScene(LPCTSTR i_sceneName)
 {
