@@ -4,8 +4,11 @@
 
 #include "IFEObject.h"
 #include "FEObject.h"
+#include "FEMesh.h"
 
 #include "FEComponent.h"
+#include "FEBehaviour.h"
 #include "FETransform.h"
+#include "FERenderer.h"
 
 #endif

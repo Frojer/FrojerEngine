@@ -87,6 +87,12 @@ void FESystem::Release()
 }
 
 
+IFERenderer* FESystem::GetRenderer()
+{
+	return _pRenderer;
+}
+
+
 bool FESystem::LoadData()
 {
 	FESceneManager* pSM = FESceneManager::GetInstance();

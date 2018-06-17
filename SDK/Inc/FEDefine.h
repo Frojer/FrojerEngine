@@ -8,11 +8,15 @@
 #include <string>
 #include <fstream>
 
+typedef unsigned char		BYTE;
+typedef unsigned long       DWORD;
+typedef unsigned short      WORD;
+typedef unsigned int		UINT;
+
 
 ///////////////////////
 //    문자열 재정의    //
 ///////////////////////
-typedef unsigned int	UINT;
 typedef TCHAR*			LPTSTR;
 typedef const TCHAR*	LPCTSTR;
 

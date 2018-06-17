@@ -19,15 +19,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FEBehaviour.h" />
     <ClInclude Include="FEComponent.h" />
+    <ClInclude Include="FEMesh.h" />
     <ClInclude Include="FEObject.h" />
     <ClInclude Include="FEObjectHeader.h" />
+    <ClInclude Include="FERenderer.h" />
     <ClInclude Include="FETransform.h" />
     <ClInclude Include="IFEObject.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FEComponent.cpp" />
+    <ClCompile Include="FEBehaviour.cpp" />
+    <ClCompile Include="FEMesh.cpp" />
     <ClCompile Include="FEObject.cpp" />
+    <ClCompile Include="FERenderer.cpp" />
     <ClCompile Include="FETransform.cpp" />
     <ClCompile Include="IFEObject.cpp" />
   </ItemGroup>

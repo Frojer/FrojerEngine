@@ -29,6 +29,9 @@ public:
 	FEDXRenderer();
 	virtual ~FEDXRenderer();
 
+	virtual void SetVertexBuffers(UINT StartSlot, UINT NumBuffers, LPVERTEXBUFFER const* ppVertexBuffers, const UINT* pStrides, const UINT* pOffsets) override;
+	virtual void SetIndexBuffer(LPINDEXBUFFER pIndexBuffer, FEGI_FORMAT Format, UINT Offset) override;
+	virtual void SetPrimitiveTopology(FE_PRIMITIVE_TOPOLOGY Topology) override;
 	virtual void ClearBackBuffer(const FEVector4& i_color) override;
 	virtual void Flip() override;
 };

@@ -162,6 +162,24 @@ void FEDXRenderer::SetViewPort()
 }
 
 
+void FEDXRenderer::SetVertexBuffers(UINT StartSlot, UINT NumBuffers, LPVERTEXBUFFER const* ppVertexBuffers, const UINT* pStrides, const UINT* pOffsets)
+{
+
+}
+
+
+void FEDXRenderer::SetIndexBuffer(LPINDEXBUFFER pIndexBuffer, FEGI_FORMAT Format, UINT Offset)
+{
+
+}
+
+
+void FEDXRenderer::SetPrimitiveTopology(FE_PRIMITIVE_TOPOLOGY Topology)
+{
+
+}
+
+
 void FEDXRenderer::ClearBackBuffer(const FEVector4& i_color)
 {
 	_pDXDC->ClearRenderTargetView(_pRTView, (float*)&i_color);			//·»´õÅ¸°Ù Áö¿ì±â.

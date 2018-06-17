@@ -33,8 +33,14 @@
     <ClCompile Include="FETransform.cpp">
       <Filter>Component\Source File</Filter>
     </ClCompile>
-    <ClCompile Include="FEComponent.cpp">
+    <ClCompile Include="FERenderer.cpp">
       <Filter>Component\Source File</Filter>
+    </ClCompile>
+    <ClCompile Include="FEBehaviour.cpp">
+      <Filter>Component\Source File</Filter>
+    </ClCompile>
+    <ClCompile Include="FEMesh.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -51,5 +57,14 @@
       <Filter>Component\Header File</Filter>
     </ClInclude>
     <ClInclude Include="FEObjectHeader.h" />
+    <ClInclude Include="FERenderer.h">
+      <Filter>Component\Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="FEBehaviour.h">
+      <Filter>Component\Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="FEMesh.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

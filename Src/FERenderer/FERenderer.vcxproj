@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="FEDXRenderer.h" />
     <ClInclude Include="FEDXRendererDefine.h" />
+    <ClInclude Include="FERendererDefine.h" />
     <ClInclude Include="IFERenderer.h" />
   </ItemGroup>
   <ItemGroup>
@@ -112,7 +113,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>copy IFERenderer.h $(FE_SDK_INC)</Command>
+      <Command>copy IFERenderer.h $(FE_SDK_INC)
+copy FERendererDefine.h $(FE_SDK_INC)</Command>
     </PostBuildEvent>
     <Lib>
       <AdditionalDependencies>
@@ -133,7 +135,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>copy IFERenderer.h $(FE_SDK_INC)</Command>
+      <Command>copy IFERenderer.h $(FE_SDK_INC)
+copy FERendererDefine.h $(FE_SDK_INC)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -154,7 +157,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>copy IFERenderer.h $(FE_SDK_INC)</Command>
+      <Command>copy IFERenderer.h $(FE_SDK_INC)
+copy FERendererDefine.h $(FE_SDK_INC)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -175,7 +179,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>copy IFERenderer.h $(FE_SDK_INC)</Command>
+      <Command>copy IFERenderer.h $(FE_SDK_INC)
+copy FERendererDefine.h $(FE_SDK_INC)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

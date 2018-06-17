@@ -32,6 +32,8 @@ public:
 
 	void Release();
 
+	IFERenderer* GetRenderer();
+
 	static FESystem* GetInstance();
 };
 
