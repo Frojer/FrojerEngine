@@ -29,6 +29,8 @@ public:
 	FEDXRenderer();
 	virtual ~FEDXRenderer();
 
+	virtual LPBUFFER CreateBuffer(FE_BIND_FLAG bindFlags, FE_USAGE usage, bool cpuAccess, UINT bufferSize, const void* bufferData = nullptr) override;
+
 	virtual void SetVertexBuffers(UINT StartSlot, UINT NumBuffers, LPVERTEXBUFFER const* ppVertexBuffers, const UINT* pStrides, const UINT* pOffsets) override;
 	virtual void SetIndexBuffer(LPINDEXBUFFER pIndexBuffer, FEGI_FORMAT Format, UINT Offset) override;
 	virtual void SetPrimitiveTopology(FE_PRIMITIVE_TOPOLOGY Topology) override;

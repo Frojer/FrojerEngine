@@ -162,21 +162,47 @@ void FEDXRenderer::SetViewPort()
 }
 
 
+LPBUFFER FEDXRenderer::CreateBuffer(FE_BIND_FLAG bindFlags, FE_USAGE usage, bool cpuAccess, UINT bufferSize, const void* bufferData)
+{
+	HRESULT hr = S_OK;
+	LPBUFFER result;
+
+	D3D11_BUFFER_DESC bd;
+	ZeroMemory(&bd, sizeof(bd));
+	bd.Usage = (D3D11_USAGE)usage;					// 버퍼 사용방식
+	bd.ByteWidth = bufferSize;	// 버퍼 크기
+	bd.BindFlags = bindFlags;		// 버퍼 용도 : "정점 버퍼" 용로 설정 
+	bd.CPUAccessFlags = cpuAccess ? D3D11_CPU_ACCESS_WRITE : 0;
+
+	D3D11_SUBRESOURCE_DATA rd;
+	ZeroMemory(&rd, sizeof(rd));
+	rd.pSysMem = bufferData;						// 버퍼에 들어갈 데이터 설정 : "정점들"..
+
+													//정점 버퍼 생성.
+	hr = _pDevice->CreateBuffer(&bd, &rd, &result);
+
+	if (FAILED(hr))
+		return nullptr;
+
+	return result;
+}
+
+
 void FEDXRenderer::SetVertexBuffers(UINT StartSlot, UINT NumBuffers, LPVERTEXBUFFER const* ppVertexBuffers, const UINT* pStrides, const UINT* pOffsets)
 {
-
+	_pDXDC->IASetVertexBuffers(StartSlot, NumBuffers, ppVertexBuffers, pStrides, pOffsets);
 }
 
 
 void FEDXRenderer::SetIndexBuffer(LPINDEXBUFFER pIndexBuffer, FEGI_FORMAT Format, UINT Offset)
 {
-
+	_pDXDC->IASetIndexBuffer(pIndexBuffer, (DXGI_FORMAT)Format, Offset);		// 인덱스 버퍼 세팅
 }
 
 
 void FEDXRenderer::SetPrimitiveTopology(FE_PRIMITIVE_TOPOLOGY Topology)
 {
-
+	_pDXDC->IASetPrimitiveTopology((D3D11_PRIMITIVE_TOPOLOGY)Topology);
 }
 
 

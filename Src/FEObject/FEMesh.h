@@ -34,7 +34,7 @@ protected:
 
 public:
 	std::vector<VF_PNT>			m_verts;
-	std::vector<IndexFormat>		m_indics;
+	std::vector<IndexFormat>	m_indics;
 
 private:
 	bool CreateBuffer(std::vector<VF_PNT>& i_vertics, std::vector<IndexFormat>& i_indics);
@@ -46,17 +46,10 @@ private:
 public:
 	FEMesh();
 	FEMesh(std::vector<VF_PNT> i_verts, std::vector<IndexFormat> i_indics);
-	~FEMesh();
+	virtual ~FEMesh();
 
 	static FEMesh* Find(UINT id);
 	static FEMesh* Find(tstring name);
-
-	// void Renderer::Render()
-	friend class Renderer;
-	// FJSystemEngine::~FJSystemEngine()
-	friend class FJSystemEngine;
-
-	friend class FileLoader;
 };
 
 #endif

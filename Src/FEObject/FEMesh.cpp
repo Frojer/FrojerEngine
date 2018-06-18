@@ -1,5 +1,7 @@
 #include "FEObjectHeader.h"
 
+#include <FESystem.h>
+
 using namespace std;
 
 unordered_map<UINT, FEMesh*> FEMesh::_meshMap;
@@ -61,6 +63,8 @@ FEMesh* FEMesh::Find(wstring name)
 
 void FEMesh::Render()
 {
+	auto pRenderer = FESystem::GetInstance()->GetRenderer();
+
 	//----------------------------------------------------------------------
 	// 바른 렌더링 결과를 위해서는 아래의 조건이 동일 또는 호환되어야 합니다.★
 	// 1.정점 버퍼의 데이터.  Vertex Buffer Data
@@ -72,11 +76,11 @@ void FEMesh::Render()
 	//디바이스의 입력-조립 스테이지 (Input-Assembler Stage) 에 정점버퍼를 연결.(Binding)
 	UINT stride = sizeof(VF_PNT);
 	UINT offset = 0;
-	//_pDXDC->IASetVertexBuffers(0, 1, &_pVB, &stride, &offset);			// 버텍스 버퍼 세팅
-	//_pDXDC->IASetIndexBuffer(_pIB, DXGI_FORMAT_R32_UINT, offset);		// 인덱스 버퍼 세팅
+	pRenderer->SetVertexBuffers(0, 1, &_pVB, &stride, &offset); // 버텍스 버퍼 세팅
+	pRenderer->SetIndexBuffer(_pIB, FEGI_FORMAT_R32_UINT, offset);		// 인덱스 버퍼 세팅
 
-																		// 기하 위상 구조 설정 Set primitive topology
-	//_pDXDC->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	// 기하 위상 구조 설정 Set primitive topology
+	pRenderer->SetPrimitiveTopology(FE_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
 
@@ -85,44 +89,14 @@ bool FEMesh::CreateBuffer(vector<VF_PNT>& i_vertics, vector<IndexFormat>& i_indi
 	m_verts = i_vertics;
 	m_indics = i_indics;
 
-	//---------------------------
-	// 정점 버퍼 Vertex Buffer 생성
-	//---------------------------
-	HRESULT hr = S_OK;
-	D3D11_BUFFER_DESC bd;
-	ZeroMemory(&bd, sizeof(bd));
-	bd.Usage = D3D11_USAGE_DEFAULT;					// 버퍼 사용방식
-	bd.ByteWidth = m_verts.size() * sizeof(VF_PNT);	// 버퍼 크기
-	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;		// 버퍼 용도 : "정점 버퍼" 용로 설정 
-	bd.CPUAccessFlags = 0;
+	auto pRenderer = FESystem::GetInstance()->GetRenderer();
 
-	D3D11_SUBRESOURCE_DATA rd;
-	ZeroMemory(&rd, sizeof(rd));
-	rd.pSysMem = &m_verts[0];						// 버퍼에 들어갈 데이터 설정 : "정점들"..
-
-													//정점 버퍼 생성.
-	//hr = _pDevice->CreateBuffer(&bd, &rd, &_pVB);
-	if (FAILED(hr))
+	_pVB = pRenderer->CreateBuffer(FE_BIND_VERTEX_BUFFER, FE_USAGE_DEFAULT, false, m_verts.size() * sizeof(VF_PNT), m_verts.data());
+	if (_pVB == nullptr)
 		return false;
 
-
-
-	//---------------------------
-	// 인덱스 버퍼 Index Buffer 생성
-	//---------------------------
-	hr = S_OK;
-	ZeroMemory(&bd, sizeof(bd));
-	bd.Usage = D3D11_USAGE_DEFAULT;					// 버퍼 사용방식
-	bd.ByteWidth = m_indics.size() * sizeof(IndexFormat);	// 버퍼 크기
-	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;			// 버퍼 용도 : "인덱스 버퍼" 용로 설정 
-	bd.CPUAccessFlags = 0;
-
-	ZeroMemory(&rd, sizeof(rd));
-	rd.pSysMem = &m_indics[0];					//버퍼에 들어갈 데이터 설정 : "정점들"..
-
-												//정점 버퍼 생성.
-	//hr = _pDevice->CreateBuffer(&bd, &rd, &_pIB);
-	if (FAILED(hr))
+	_pIB = pRenderer->CreateBuffer(FE_BIND_INDEX_BUFFER, FE_USAGE_DEFAULT, false, m_indics.size() * sizeof(IndexFormat), m_indics.data());
+	if (_pIB == nullptr)
 		return false;
 
 	return true;

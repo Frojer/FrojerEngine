@@ -31,8 +31,7 @@ public:
 
 	static IFERenderer* CreateRenderer(void* i_phWnd, const FESystemSetting& i_Setting);
 
-	/*virtual LPVERTEXBUFFER CreateVertexBuffer(FE_USAGE usage, bool cpuAccess, UINT bufferSize, const void* bufferData = nullptr) = 0;
-	virtual LPINDEXBUFFER CreateIndexBuffer(FE_USAGE usage, bool cpuAccess, UINT bufferSize, const void* bufferData = nullptr) = 0;*/
+	virtual LPBUFFER CreateBuffer(FE_BIND_FLAG bindFlags, FE_USAGE usage, bool cpuAccess, UINT bufferSize, const void* bufferData = nullptr) = 0;
 
 	virtual void SetVertexBuffers(UINT StartSlot, UINT NumBuffers, LPVERTEXBUFFER const* ppVertexBuffers, const UINT* pStrides, const UINT* pOffsets) = 0;
 	virtual void SetIndexBuffer(LPINDEXBUFFER pIndexBuffer, FEGI_FORMAT Format, UINT Offset) = 0;

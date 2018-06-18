@@ -21,18 +21,24 @@
   <ItemGroup>
     <ClInclude Include="FEBehaviour.h" />
     <ClInclude Include="FEComponent.h" />
+    <ClInclude Include="FEMaterial.h" />
     <ClInclude Include="FEMesh.h" />
     <ClInclude Include="FEObject.h" />
     <ClInclude Include="FEObjectHeader.h" />
     <ClInclude Include="FERenderer.h" />
+    <ClInclude Include="FEShader.h" />
+    <ClInclude Include="FETexture.h" />
     <ClInclude Include="FETransform.h" />
     <ClInclude Include="IFEObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FEBehaviour.cpp" />
+    <ClCompile Include="FEMaterial.cpp" />
     <ClCompile Include="FEMesh.cpp" />
     <ClCompile Include="FEObject.cpp" />
     <ClCompile Include="FERenderer.cpp" />
+    <ClCompile Include="FEShader.cpp" />
+    <ClCompile Include="FETexture.cpp" />
     <ClCompile Include="FETransform.cpp" />
     <ClCompile Include="IFEObject.cpp" />
   </ItemGroup>
