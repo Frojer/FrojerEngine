@@ -9,16 +9,16 @@ class FEObject;
 class FEComponent : public IFEObject
 {
 private:
+	size_t _typeID;
+	UINT _typeSize;
 	FEObject* _pObj;
-
-protected:
 
 private:
 	FEComponent(const FEComponent& rhs) = delete;
 	FEComponent& operator= (const FEComponent& rhs) = delete;
 
 public:
-	FEComponent() : _pObj(nullptr) {}
+	FEComponent() : _typeID(0), _typeSize(0), _pObj(nullptr) {}
 	virtual ~FEComponent() = default;
 
 	FEObject* GetMyObject() { return _pObj; }

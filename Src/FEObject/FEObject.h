@@ -8,6 +8,7 @@
 
 class FEComponent;
 class FETransform;
+class FERenderer;
 
 class FEObject : public IFEObject
 {
@@ -20,7 +21,10 @@ protected:
 	std::unordered_map<UINT, FEComponent*> _components;
 
 	FETransform* _pTransform;
-	//Renderer* _pRenderer;
+	FERenderer* _pRenderer;
+
+public:
+	tstring m_Name;
 
 private:
 	FEObject(const FEObject& rhs) = delete;
@@ -68,80 +72,53 @@ public:
 				return nullptr;
 		}
 
-		/*else if (is_base_of<Renderer, T>::value)
+		else if (std::is_base_of<FERenderer, T>::value)
 		{
-			if (m_pRenderer == nullptr)
+			if (_pRenderer == nullptr)
 			{
 				pCom = new T;
-				m_pRenderer = (Renderer*)pCom;
+				_pRenderer = (FERenderer*)pCom;
 			}
 			else
 				return nullptr;
-		}*/
+		}
 
 		else
 		{
 			pCom = new T;
 		}
 
+		pCom->_typeID = typeid(*pCom).hash_code();
+		pCom->_typeSize = sizeof(T);
 		pCom->_pObj = this;
 		_components[pCom->GetID()] = pCom;
 
 		return (T*)pCom;
 	}
 
-	/*
 	template <typename T>
 	T* GetComponent()
 	{
-		FEComponent* pCom = nullptr;
-
-		if (!is_base_of<FEComponent, T>::value)
-			return nullptr;
-
-		if (is_base_of<FETransform, T>::value)
+		auto iter = _components.begin();
+		while (iter != _components.end())
 		{
-			if (m_pTransform == nullptr)
-			{
-				pCom = new T;
-				m_pTransform = (Transform*)pCom;
-			}
-			else
-				return nullptr;
+			if (iter->second->_typeID == typeid(T).hash_code())
+				return (T*)iter->second;
+
+			iter++;
 		}
 
-		else if (is_base_of<Renderer, T>::value)
-		{
-		if (m_pRenderer == nullptr)
-		{
-		pCom = new T;
-		m_pRenderer = (Renderer*)pCom;
-		}
-		else
 		return nullptr;
-		}
-
-		else
-		{
-			pCom = new T;
-		}
-
-		pCom->_pObj = this;
-		_components.push_back(pCom);
-
-		return (T*)pCom;
 	}
-	*/
 
-	//FEComponent* GetComponent(const type_info& type);
 	std::unordered_map<UINT, FEComponent*> GetComponents();
 
 	void SetEnable(bool enable);
 	bool GetEnable();
 
 	static FEObject* Find(unsigned int id);
+	static FEObject* CopyObject(const FEObject* origin);
 	//static FEObject* CopyObject(const FEObject* origin, FEVector3 pos);
-	//static FEObject* CopyObject(const FEObject* origin);
 
 	friend class IFEScene;
 };

@@ -38,9 +38,11 @@ void IFEScene::Render()
 
 void IFEScene::Release()
 {
-	auto iter = _mapObj.begin();
-	while (iter != _mapObj.end())
-		delete iter++->second;
+	auto iter = _hierarchyList.begin();
 
+	while (iter != _hierarchyList.end())
+		delete (*iter++);
+
+	_hierarchyList.clear();
 	_mapObj.clear();
 }

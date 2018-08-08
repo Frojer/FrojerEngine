@@ -5,6 +5,8 @@
 #include "IFEObject.h"
 #include "FEObject.h"
 #include "FEMesh.h"
+#include "FETexture.h"
+#include "FEShader.h"
 #include "FEMaterial.h"
 
 #include "FEComponent.h"

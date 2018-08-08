@@ -35,6 +35,7 @@ protected:
 public:
 	std::vector<VF_PNT>			m_verts;
 	std::vector<IndexFormat>	m_indics;
+	tstring m_Name;
 
 private:
 	bool CreateBuffer(std::vector<VF_PNT>& i_vertics, std::vector<IndexFormat>& i_indics);

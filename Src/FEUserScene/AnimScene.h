@@ -1,7 +1,6 @@
 #pragma once
 #ifndef _ANIM_SCENE
 #define _ANIM_SCENE
-#endif
 
 #include <IFEScene.h>
 
@@ -13,3 +12,5 @@ public:
 
 	virtual void Load() override;
 };
+
+#endif

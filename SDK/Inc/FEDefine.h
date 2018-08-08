@@ -32,7 +32,7 @@ typedef std::ifstream tifstream;
 typedef std::ofstream tofstream;
 #endif
 
-
+#define FE_TEXT(x) _TEXT(x)
 
 /////////////////////
 //    매크로 정의    //

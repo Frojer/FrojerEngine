@@ -24,12 +24,18 @@
     <ClInclude Include="AnimScene.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="FETEST.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FEUserScene.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="AnimScene.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="FETEST.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

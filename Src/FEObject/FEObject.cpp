@@ -8,6 +8,7 @@ FEObject::FEObject()
 	FESceneManager::GetCurrentScene()->_mapObj[GetID()] = this;
 	FESceneManager::GetCurrentScene()->_hierarchyList.push_back(this);
 }
+
 FEObject::FEObject(const FEVector3& pos, const FEVector3& rot, const FEVector3& scale)
 	: _bDead(false), _pParent(nullptr)
 {
@@ -25,6 +26,7 @@ FEObject::FEObject(const FEVector3& pos, const FEVector3& rot, const FEVector3& 
 FEObject::~FEObject()
 {
 	FESceneManager::GetCurrentScene()->_mapObj.erase(GetID());
+	FESceneManager::GetCurrentScene()->_hierarchyList.remove(this);
 
 	auto iter = _children.begin();
 	while (iter != _children.end())
@@ -122,14 +124,20 @@ void FEObject::Render()
 
 void FEObject::SetParent(FEObject* i_pParent)
 {
-	if (this == i_pParent)	return;
+	// 부모가 자신이거나 이미 같은 부모로 변경하려 한다면 리턴.
+	if (this == i_pParent || _pParent == i_pParent)	return;
 
+	// 부모를 가지고 있었다면, 그 부모의 자식리스트에서 제거한다.
 	if (_pParent != nullptr) _pParent->_children.erase(GetID());
+	// 부모를 가지고 있지 않았다면, 하이라치리스트에서 삭제한다.
 	else FESceneManager::GetCurrentScene()->_hierarchyList.remove(this);
 
+	// 부모를 변경해주고
 	_pParent = i_pParent;
 
+	// 변경한 부모가 존재하지 않는다면, 하이라치리스트에 넣는다.
 	if (i_pParent == nullptr) FESceneManager::GetCurrentScene()->_hierarchyList.push_back(this);
+	// 변경한 부모가 존재한다면, 그 부모의 자식으로 등록한다
 	else _pParent->_children[GetID()] = this;
 }
 
@@ -174,7 +182,44 @@ bool FEObject::GetEnable()
 
 FEObject* FEObject::Find(unsigned int id)
 {
-	FEObject* pObj = nullptr;
-
 	return FESceneManager::GetCurrentScene()->_mapObj[id];
+}
+
+
+FEObject* FEObject::CopyObject(const FEObject* origin)
+{
+	FEObject* pObj = new FEObject();
+	pObj->m_Name = origin->m_Name;
+
+	FEComponent* pCom;
+	IFEObject* pTemp;
+
+	FOR_STL(origin->_components)
+	{
+		if (iter->second->_typeID == typeid(FETransform).hash_code())
+		{
+			pObj->GetTransform()->SetPositionLocal(iter->second->GetMyObject()->GetTransform()->GetPositionLocal());
+			pObj->GetTransform()->SetRotationRadian(iter->second->GetMyObject()->GetTransform()->GetRotationRadian());
+			pObj->GetTransform()->m_vScale = iter->second->GetMyObject()->GetTransform()->m_vScale;
+		}
+
+		else
+		{
+			pTemp = new IFEObject;
+			pCom = (FEComponent*)new char[iter->second->_typeSize];
+			memcpy_s((char*)pCom, iter->second->_typeSize, (char*)iter->second, iter->second->_typeSize);
+			memcpy_s((char*)pCom + 8, sizeof(UINT), (char*)pTemp + 8, sizeof(UINT));
+			delete pTemp;
+
+			pCom->_pObj = pObj;
+			pObj->_components[pCom->GetID()] = pCom;
+		}
+	}
+
+	FOR_STL(origin->_children)
+	{
+		CopyObject(iter->second)->SetParent(pObj);
+	}
+
+	return pObj;
 }

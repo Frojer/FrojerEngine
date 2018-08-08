@@ -21,6 +21,7 @@ UINT IFEObject::GetID()
 {
 	return _ID;
 }
+
 IFEObject* IFEObject::FindObject(UINT id)
 {
 	return _mapObj[id];
