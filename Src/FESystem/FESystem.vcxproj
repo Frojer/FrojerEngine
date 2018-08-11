@@ -21,13 +21,13 @@
   <ItemGroup>
     <ClCompile Include="FESystem.cpp" />
     <ClCompile Include="FEWindow.cpp" />
-    <ClCompile Include="FEWinWindow.cpp" />
+    <ClCompile Include="FEWin32Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FESystem.h" />
     <ClInclude Include="FESystemDefine.h" />
     <ClInclude Include="FEWindow.h" />
-    <ClInclude Include="FEWinWindow.h" />
+    <ClInclude Include="FEWin32Window.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -120,7 +120,7 @@ copy FEWindow.h $(FE_SDK_INC)
 copy FESystemDefine.h $(FE_SDK_INC)</Command>
     </PostBuildEvent>
     <Lib>
-      <AdditionalDependencies>FERenderer64d.lib;FEScene64d.lib;FEObject64d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FERenderer64d.lib;FEObject64d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -142,7 +142,7 @@ copy FESystemDefine.h $(FE_SDK_INC)</Command>
       </Command>
     </PostBuildEvent>
     <Lib>
-      <AdditionalDependencies>FERendererd.lib;FEScened.lib;FEObjectd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FERendererd.lib;FEObjectd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -168,7 +168,7 @@ copy FESystemDefine.h $(FE_SDK_INC)</Command>
       </Command>
     </PostBuildEvent>
     <Lib>
-      <AdditionalDependencies>FERenderer.lib;FEScene.lib;FEObject.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FERenderer.lib;FEObject.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -194,7 +194,7 @@ copy FESystemDefine.h $(FE_SDK_INC)</Command>
       </Command>
     </PostBuildEvent>
     <Lib>
-      <AdditionalDependencies>FERenderer64.lib;FEScene64.lib;FEObject64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FERenderer64.lib;FEObject64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

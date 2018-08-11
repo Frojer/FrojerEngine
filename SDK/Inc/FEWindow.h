@@ -10,8 +10,11 @@ class FEWindow
 protected:
 	tstring _sWindowName;
 	void* _phWnd;
+
 public:
 	UINT m_uiWidth, m_uiHeight;
+	bool m_bWindowMode;
+	bool m_bBorderless;
 
 protected:
 	FEWindow();
@@ -19,7 +22,7 @@ protected:
 	virtual bool InitWindow() = 0;
 	virtual bool MessagePump() = 0;
 
-	static FEWindow* CreateFEWindow(LPCTSTR i_sWindowName, const UINT i_width, const UINT i_height);
+	static FEWindow* CreateFEWindow(LPCTSTR i_sWindowName, const UINT i_width, const UINT i_height, const bool i_bWindowMode, const bool i_bBorderless);
 
 public:
 	virtual ~FEWindow();

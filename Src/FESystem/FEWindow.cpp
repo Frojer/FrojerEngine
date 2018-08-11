@@ -1,8 +1,8 @@
 #include "FEWindow.h"
-#include "FEWinWindow.h"
+#include "FEWin32Window.h"
 
 FEWindow::FEWindow()
-	: m_uiWidth(0), m_uiHeight(0)
+	: _phWnd(nullptr), m_uiWidth(0), m_uiHeight(0), m_bWindowMode(true), m_bBorderless(false)
 {
 }
 
@@ -12,14 +12,14 @@ FEWindow::~FEWindow()
 }
 
 
-FEWindow* FEWindow::CreateFEWindow(LPCTSTR i_sWindowName, const UINT i_width, const UINT i_height)
+FEWindow* FEWindow::CreateFEWindow(LPCTSTR i_sWindowName, const UINT i_width, const UINT i_height, const bool i_bWindowMode, const bool i_bBorderless)
 {
 	bool result = false;
 	FEWindow* pWindow = nullptr;
 
 #ifdef _WIN32
 	// 윈도우 라면
-	pWindow = new FEWinWindow();
+	pWindow = new FEWin32Window();
 #else
 	// 리눅스 라면
 	// pWindow = new FELinuxWindow();
@@ -32,6 +32,8 @@ FEWindow* FEWindow::CreateFEWindow(LPCTSTR i_sWindowName, const UINT i_width, co
 	pWindow->_sWindowName = i_sWindowName;
 	pWindow->m_uiWidth = i_width;
 	pWindow->m_uiHeight = i_height;
+	pWindow->m_bWindowMode = i_bWindowMode;
+	pWindow->m_bBorderless = i_bBorderless;
 
 	result = pWindow->InitWindow();
 

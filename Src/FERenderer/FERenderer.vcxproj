@@ -19,14 +19,21 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FEDXRenderer.h" />
-    <ClInclude Include="FEDXRendererDefine.h" />
+    <ClInclude Include="FEDX11Buffer.h" />
+    <ClInclude Include="FEDX11Shader.h" />
+    <ClInclude Include="FEDX11Renderer.h" />
     <ClInclude Include="FERendererDefine.h" />
+    <ClInclude Include="IFEBuffer.h" />
     <ClInclude Include="IFERenderer.h" />
+    <ClInclude Include="IFEShader.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FEDXRenderer.cpp" />
+    <ClCompile Include="FEDX11Buffer.cpp" />
+    <ClCompile Include="FEDX11Shader.cpp" />
+    <ClCompile Include="FEDX11Renderer.cpp" />
+    <ClCompile Include="IFEBuffer.cpp" />
     <ClCompile Include="IFERenderer.cpp" />
+    <ClCompile Include="IFEShader.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -114,6 +121,8 @@
     </Link>
     <PostBuildEvent>
       <Command>copy IFERenderer.h $(FE_SDK_INC)
+copy IFEShader.h $(FE_SDK_INC)
+copy IFEBuffer.h $(FE_SDK_INC)
 copy FERendererDefine.h $(FE_SDK_INC)</Command>
     </PostBuildEvent>
     <Lib>
@@ -136,6 +145,8 @@ copy FERendererDefine.h $(FE_SDK_INC)</Command>
     </Link>
     <PostBuildEvent>
       <Command>copy IFERenderer.h $(FE_SDK_INC)
+copy IFEShader.h $(FE_SDK_INC)
+copy IFEBuffer.h $(FE_SDK_INC)
 copy FERendererDefine.h $(FE_SDK_INC)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -158,6 +169,8 @@ copy FERendererDefine.h $(FE_SDK_INC)</Command>
     </Link>
     <PostBuildEvent>
       <Command>copy IFERenderer.h $(FE_SDK_INC)
+copy IFEShader.h $(FE_SDK_INC)
+copy IFEBuffer.h $(FE_SDK_INC)
 copy FERendererDefine.h $(FE_SDK_INC)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -180,6 +193,8 @@ copy FERendererDefine.h $(FE_SDK_INC)</Command>
     </Link>
     <PostBuildEvent>
       <Command>copy IFERenderer.h $(FE_SDK_INC)
+copy IFEShader.h $(FE_SDK_INC)
+copy IFEBuffer.h $(FE_SDK_INC)
 copy FERendererDefine.h $(FE_SDK_INC)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>

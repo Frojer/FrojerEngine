@@ -17,7 +17,7 @@ FEMatrix FETransform::GetWorldMatrix()
 	FEMatrix mPos, mRot, mScale;
 	FEMatrix mWorld;
 
-	FEObject* pObj = GetMyObject();
+	FEGameObject* pObj = GetMyObject();
 
 	mPos = FEMatrixTranslation(_vPos);
 	mRot = FEMatrixRotationRollPitchYaw(_vRot);
@@ -37,7 +37,7 @@ FEMatrix FETransform::GetWorldMatrix()
 
 FEMatrix FETransform::GetPositionMatrix()
 {
-	FEObject* pObj = GetMyObject();
+	FEGameObject* pObj = GetMyObject();
 
 	FEMatrix mPos;
 	mPos = FEMatrixTranslation(_vPos);
@@ -51,7 +51,7 @@ FEMatrix FETransform::GetPositionMatrix()
 
 FEMatrix FETransform::GetRotationMatrix()
 {
-	FEObject* pObj = GetMyObject();
+	FEGameObject* pObj = GetMyObject();
 
 	FEMatrix mRot;
 	mRot = FEMatrixRotationRollPitchYaw(_vRot);
@@ -65,7 +65,7 @@ FEMatrix FETransform::GetRotationMatrix()
 
 FEMatrix FETransform::GetRotPosMatrix()
 {
-	FEObject* pObj = GetMyObject();
+	FEGameObject* pObj = GetMyObject();
 
 	FEMatrix mPos, mRot, mRP;
 	mPos = FEMatrixTranslation(_vPos);
@@ -82,7 +82,7 @@ FEMatrix FETransform::GetRotPosMatrix()
 
 FEMatrix FETransform::GetScaleMatrix()
 {
-	FEObject* pObj = GetMyObject();
+	FEGameObject* pObj = GetMyObject();
 
 	FEMatrix mScale;
 	mScale = FEMatrixScaling(m_vScale);

@@ -1,32 +1,39 @@
 #include "IFERenderer.h"
-#include "FEDXRenderer.h"
+#include "FEDX11Renderer.h"
 //#include "FEGLRenderer.h"
 
-IFERenderer::IFERenderer()
+IFERenderer* IFERenderer::_pInstance = nullptr;
+
+FE_Platform IFERenderer::GetPlatform() const
 {
+	return _platform;
+}
+
+IFERenderer* IFERenderer::CreateRenderer(void* i_phWnd, const FESystemSetting& i_setting, const FE_Platform i_platform)
+{
+	if (_pInstance != nullptr)
+		return nullptr;
+
+	switch (i_platform)
+	{
+	case FE_DX11:
+		_pInstance = new FEDX11Renderer;
+		break;
+	//case FE_GL:
+	//	pRenderer = new FEGLRenderer;
+	//	break;
+	}
+
+	if (_pInstance == nullptr) return nullptr;
+
+	_pInstance->m_setting = i_setting;
+	_pInstance->Create(i_phWnd);
+
+	return _pInstance;
 }
 
 
-IFERenderer::~IFERenderer()
+IFERenderer* IFERenderer::GetInstance()
 {
-}
-
-
-IFERenderer* IFERenderer::CreateRenderer(void* i_phWnd, const FESystemSetting& i_Setting)
-{
-	IFERenderer* pRenderer = nullptr;
-#ifdef _WIN32
-	pRenderer = new FEDXRenderer;
-
-	if (pRenderer == nullptr) return nullptr;
-#else
-#error 윈도우가 아니야아
-	//pRenderer = new FEGLRenderer;
-
-	if (pRenderer == nullptr) return nullptr;
-#endif
-	pRenderer->m_Setting = i_Setting;
-	pRenderer->Create(i_phWnd);
-
-	return pRenderer;
+	return _pInstance;
 }

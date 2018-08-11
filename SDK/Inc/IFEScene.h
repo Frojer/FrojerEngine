@@ -6,7 +6,7 @@
 #include <unordered_map>
 #include <FEDefine.h>
 #include <FEMath.h>
-#include <FEObject.h>
+#include "FEGameObject.h"
 
 enum RenderingLayer
 {
@@ -19,9 +19,9 @@ enum RenderingLayer
 class IFEScene
 {
 protected:
-	std::unordered_map<UINT, FEObject*>	_mapObj;
-	std::list<FEObject*>	_hierarchyList;
-	//std::map<float, FEObject*>	_mapManageDrawObj[RL_NUM];
+	std::unordered_map<UINT, FEGameObject*>	_mapObj;
+	std::list<FEGameObject*>	_hierarchyList;
+	//std::map<float, FEGameObject*>	_mapManageDrawObj[RL_NUM];
 
 	//std::vector<Camera*> _vecCam;
 
@@ -45,7 +45,7 @@ public:
 	//void AddCamera(Camera* pCam);
 	//Camera* GetCamera(UINT index);
 
-	friend class FEObject;
+	friend class FEGameObject;
 };
 
 #endif

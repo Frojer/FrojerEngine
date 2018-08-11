@@ -4,14 +4,14 @@
 
 #include "FEObjectHeader.h"
 
-class FEObject;
+class FEGameObject;
 
 class FEComponent : public IFEObject
 {
 private:
 	size_t _typeID;
 	UINT _typeSize;
-	FEObject* _pObj;
+	FEGameObject* _pObj;
 
 private:
 	FEComponent(const FEComponent& rhs) = delete;
@@ -21,7 +21,7 @@ public:
 	FEComponent() : _typeID(0), _typeSize(0), _pObj(nullptr) {}
 	virtual ~FEComponent() = default;
 
-	FEObject* GetMyObject() { return _pObj; }
+	FEGameObject* GetMyObject() { return _pObj; }
 
 protected:
 	virtual void Initialize() {};
@@ -29,7 +29,7 @@ protected:
 	virtual void AfterUpdate() {};
 	virtual void Render() {};
 
-	friend class FEObject;
+	friend class FEGameObject;
 };
 
 #endif

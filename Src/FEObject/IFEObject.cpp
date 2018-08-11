@@ -24,5 +24,6 @@ UINT IFEObject::GetID()
 
 IFEObject* IFEObject::FindObject(UINT id)
 {
+	if (_mapObj.find(id) == _mapObj.end()) return nullptr;
 	return _mapObj[id];
 }

@@ -3,7 +3,8 @@
 #define _FE_MESH
 
 #include "FEObjectHeader.h"
-#include <FERendererDefine.h>
+#include <FEMath.h>
+#include <IFEBuffer.h>
 
 //////////////////////////////////////////////////
 //
@@ -23,22 +24,21 @@ struct IndexFormat
 	UINT x, y, z;
 };
 
-class FEMesh : public IFEObject
+class FEMesh : public FEObject
 {
 private:
 	static std::unordered_map<UINT, FEMesh*> _meshMap;
 
 protected:
-	LPVERTEXBUFFER _pVB;
-	LPINDEXBUFFER _pIB;
+	IFEBuffer* _pVB;
+	IFEBuffer* _pIB;
 
 public:
 	std::vector<VF_PNT>			m_verts;
 	std::vector<IndexFormat>	m_indics;
-	tstring m_Name;
 
 private:
-	bool CreateBuffer(std::vector<VF_PNT>& i_vertics, std::vector<IndexFormat>& i_indics);
+	bool CreateBuffer();
 
 	void Render();
 

@@ -5,6 +5,13 @@
 #include <FEDefine.h>
 #include <FEMath.h>
 #include "FERendererDefine.h"
+#include "IFEBuffer.h"
+
+enum FE_Platform
+{
+	FE_DX11,
+	//FE_GL,
+};
 
 struct FESystemSetting
 {
@@ -12,32 +19,40 @@ struct FESystemSetting
 
 	// 전체화면 사용 여부
 	bool bWindowMode;
-	// 수직동기화 사용여부
+	// 테두리 사용 여부
+	bool bBorderless;
+	// 수직동기화 사용 여부
 	bool bVSync;
 };
 
 class IFERenderer
 {
+private:
+	FE_Platform _platform;
+
 public:
-	FESystemSetting m_Setting;
+	FESystemSetting m_setting;
 
 protected:
 	virtual bool Create(void* i_phWnd) = 0;
-	virtual void Release() = 0;
+
+private:
+	static IFERenderer* _pInstance;
 
 public:
-	IFERenderer();
-	virtual ~IFERenderer();
+	IFERenderer() = default;
+	virtual ~IFERenderer() = default;
 
-	static IFERenderer* CreateRenderer(void* i_phWnd, const FESystemSetting& i_Setting);
+	virtual void SetVertexBuffers(UINT StartSlot, UINT NumBuffers, const IFEBuffer* ppVertexBuffers, const UINT* pStrides, const UINT* pOffsets) const = 0;
+	virtual void SetIndexBuffer(const IFEBuffer* pIndexBuffer, FEGI_FORMAT Format, UINT Offset) const = 0;
+	virtual void SetPrimitiveTopology(FE_PRIMITIVE_TOPOLOGY Topology) const = 0;
+	virtual void ClearBackBuffer(const FEVector4& i_color) const = 0;
+	virtual void Flip() const = 0;
 
-	virtual LPBUFFER CreateBuffer(FE_BIND_FLAG bindFlags, FE_USAGE usage, bool cpuAccess, UINT bufferSize, const void* bufferData = nullptr) = 0;
+	FE_Platform GetPlatform() const;
 
-	virtual void SetVertexBuffers(UINT StartSlot, UINT NumBuffers, LPVERTEXBUFFER const* ppVertexBuffers, const UINT* pStrides, const UINT* pOffsets) = 0;
-	virtual void SetIndexBuffer(LPINDEXBUFFER pIndexBuffer, FEGI_FORMAT Format, UINT Offset) = 0;
-	virtual void SetPrimitiveTopology(FE_PRIMITIVE_TOPOLOGY Topology) = 0;
-	virtual void ClearBackBuffer(const FEVector4& i_color) = 0;
-	virtual void Flip() = 0;
+	static IFERenderer* CreateRenderer(void* i_phWnd, const FESystemSetting& i_setting, const FE_Platform i_platform);
+	static IFERenderer* GetInstance();
 };
 
 #endif

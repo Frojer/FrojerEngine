@@ -3,12 +3,12 @@
 //using namespace std;
 //
 //unordered_map<UINT, FEMaterial*> FEMaterial::_mtrlMap;
-//FETexture2D* FEMaterial::_pDefaultTex = nullptr;
+//FETexture* FEMaterial::_pDefaultTex = nullptr;
 //FEMaterial::WVP_Data FEMaterial::_WVPData;
 //FEMaterial::Light_Data FEMaterial::_LightData[LIGHT_SIZE];
 //
 //FEMaterial::FEMaterial(FEShader* shader)
-//	: _pShader(shader), _countTexture(0), m_diffuse(VECTOR4(1.0f, 1.0f, 1.0f, 1.0f)), m_ambient(VECTOR3(1.0f, 1.0f, 1.0f)), m_specular(VECTOR3(1.0f, 1.0f, 1.0f))
+//	: _pShader(shader), _countTexture(0), m_diffuse(FEVector4(1.0f, 1.0f, 1.0f, 1.0f)), m_ambient(FEVector3(1.0f, 1.0f, 1.0f)), m_specular(FEVector3(1.0f, 1.0f, 1.0f))
 //{
 //	ZeroMemory(m_pTexture, sizeof(m_pTexture));
 //
@@ -38,7 +38,7 @@
 //void FEMaterial::UpdateLightData()
 //{
 //	auto iter = Light::_lightList.begin();
-//	VECTOR3 vec;
+//	FEVector3 vec;
 //
 //	ZeroMemory(_LightData, sizeof(_LightData));
 //
@@ -46,23 +46,27 @@
 //	{
 //		if (!(*iter)->GetEnable())
 //			continue;
+//#ifdef _WIN32
+//		using namespace DirectX;
 //
-//		_LightData[i].diffuse = XMLoadFloat4(&(*iter)->m_diffuse);
+//		_LightData[i].diffuse = DirectX::XMLoadFloat4(&(*iter)->m_diffuse);
 //		_LightData[i].ambient = XMLoadFloat4(&(*iter)->m_ambient);
 //		_LightData[i].specular = XMLoadFloat4(&(*iter)->m_specular);
 //		_LightData[i].position = XMLoadFloat3(&(*iter)->GetMyObject()->m_pTransform->GetPositionWorld());
 //		vec = (*iter)->GetMyObject()->m_pTransform->GetRotationRadian();
-//		_LightData[i].direction = -XMVector3Transform(XMLoadFloat3(&VECTOR3(0.0f, 0.0f, 1.0f)), XMMatrixRotationRollPitchYaw(vec.x, vec.y, vec.z));
+//		_LightData[i].direction = -XMVector3Transform(XMLoadFloat3(&FEVector3(0.0f, 0.0f, 1.0f)), XMMatrixRotationRollPitchYaw(vec.x, vec.y, vec.z));
 //		_LightData[i].range = (*iter)->m_range;
 //		_LightData[i].lightType = (*iter)->m_lightType;
 //		_LightData[i].useLight = true;
+//#elif
 //
+//#endif
 //		++i;
 //	}
 //}
 //
 //
-//void FEMaterial::UpdateConstantBuffer(MATRIXA& mWorld)
+//void FEMaterial::UpdateConstantBuffer(FEMatrixA& mWorld)
 //{
 //	_WVPData.mWorld = mWorld;
 //	_WVPData.mWV = mWorld * _WVPData.mView;
@@ -70,11 +74,11 @@
 //	if (_constData.size() > 0)
 //	{
 //		if (_vecMatrix.size() > 0)
-//			memcpy_s(&_constData[0], sizeof(MATRIXA) * _vecMatrix.size(), &_vecMatrix[0], sizeof(MATRIXA) * _vecMatrix.size());
+//			memcpy_s(&_constData[0], sizeof(FEMatrixA) * _vecMatrix.size(), &_vecMatrix[0], sizeof(FEMatrixA) * _vecMatrix.size());
 //		if (_vecVector.size() > 0)
-//			memcpy_s(&_constData[_vecMatrix.size() * 4], sizeof(VECTOR) * _vecVector.size(), &_vecVector[0], sizeof(VECTOR) * _vecVector.size());
+//			memcpy_s(&_constData[_vecMatrix.size() * 4], sizeof(FEVectorA) * _vecVector.size(), &_vecVector[0], sizeof(FEVectorA) * _vecVector.size());
 //		if (_vecScalarA.size() > 0)
-//			memcpy_s(&_constData[(_vecMatrix.size() * 4) + _vecVector.size()], sizeof(VECTOR) * _vecScalarA.size(), &_vecScalarA[0], sizeof(VECTOR) * _vecScalarA.size());
+//			memcpy_s(&_constData[(_vecMatrix.size() * 4) + _vecVector.size()], sizeof(FEVectorA) * _vecScalarA.size(), &_vecScalarA[0], sizeof(FEVectorA) * _vecScalarA.size());
 //
 //		/*if (_vecScalarA.size() > 0)
 //		memcpy_s(&_constData[0], sizeof(VECTOR) * _vecScalarA.size(), &_vecScalarA[0], sizeof(VECTOR) * _vecScalarA.size());
@@ -83,7 +87,7 @@
 //		if (_vecMatrix.size() > 0)
 //		memcpy_s(&_constData[_vecScalarA.size() + _vecVector.size()], sizeof(MATRIXA) * _vecMatrix.size(), &_vecMatrix[0], sizeof(MATRIXA) * _vecMatrix.size());*/
 //
-//		_pShader->UpdateConstantBuffer(&_constData[0], _constData.size() * sizeof(VECTOR));
+//		_pShader->UpdateConstantBuffer(&_constData[0], _constData.size() * sizeof(FEVectorA));
 //	}
 //
 //	else
@@ -96,7 +100,7 @@
 //	if (_pShader == nullptr)
 //		return;
 //
-//	auto sampler = CTexture2D::GetSampler(1);
+//	auto sampler = FETexture::GetSampler(1);
 //
 //	// ¼ÀÇÃ·¯ ¼³Á¤
 //	_pShader->_pDXDC->PSSetSamplers(0, 1, &sampler);

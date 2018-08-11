@@ -18,10 +18,10 @@
     <ClCompile Include="FEWindow.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="FEWinWindow.cpp">
+    <ClCompile Include="FESystem.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="FESystem.cpp">
+    <ClCompile Include="FEWin32Window.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -29,13 +29,13 @@
     <ClInclude Include="FEWindow.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="FEWinWindow.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="FESystemDefine.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="FESystem.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="FEWin32Window.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

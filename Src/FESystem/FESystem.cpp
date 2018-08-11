@@ -1,4 +1,5 @@
 #include "FESystem.h"
+#include <IFERenderer.h>
 #include <FEDefine.h>
 #include <FESceneManager.h>
 
@@ -7,7 +8,7 @@ using namespace std;
 FESystem* FESystem::_pInstance = nullptr;
 
 FESystem::FESystem()
-	: _pWindow(nullptr), _pRenderer(nullptr), m_bExit(false)
+	: _pWindow(nullptr), m_bExit(false)
 {
 }
 
@@ -17,18 +18,19 @@ FESystem::~FESystem()
 	Release();
 }
 
-FESystemSetting FESystem::LoadSetting()
+FESystemSetting LoadSetting()
 {
 	FESystemSetting setting;
 
 	TCHAR str[256];
-	tifstream f(_TEXT("../../Data/SystemSetting.ini"));
+	tifstream f(FE_TEXT("../../Data/SystemSetting.ini"));
 
 	if (f.fail())
 	{
 		setting.uiWindowWidth = 800;
 		setting.uiWindowHeight = 600;
 		setting.bWindowMode = false;
+		setting.bBorderless = false;
 		setting.bVSync = false;
 	}
 
@@ -36,14 +38,29 @@ FESystemSetting FESystem::LoadSetting()
 	{
 		f >> str;
 
-		if (_tcsnicmp(_TEXT("Width"), str, 5) == 0)
+		if (_tcsnicmp(FE_TEXT("Width"), str, 5) == 0)
 		{
 			f >> str >> setting.uiWindowWidth;
 		}
 
-		else if (_tcsnicmp(_TEXT("Height"), str, 6) == 0)
+		else if (_tcsnicmp(FE_TEXT("Height"), str, 6) == 0)
 		{
 			f >> str >> setting.uiWindowHeight;
+		}
+
+		else if (_tcsnicmp(FE_TEXT("WindowMode"), str, 10) == 0)
+		{
+			f >> str >> setting.bWindowMode;
+		}
+
+		else if (_tcsnicmp(FE_TEXT("Borderless"), str, 10) == 0)
+		{
+			f >> str >> setting.bBorderless;
+		}
+
+		else if (_tcsnicmp(FE_TEXT("VSync"), str, 5) == 0)
+		{
+			f >> str >> setting.bVSync;
 		}
 	}
 
@@ -63,7 +80,7 @@ bool FESystem::Create(LPCTSTR i_sWindowName)
 	//------------
 	// 扩档快 积己
 	//------------
-	_pWindow = FEWindow::CreateFEWindow(i_sWindowName, setting.uiWindowWidth, setting.uiWindowHeight);
+	_pWindow = FEWindow::CreateFEWindow(i_sWindowName, setting.uiWindowWidth, setting.uiWindowHeight, setting.bWindowMode, setting.bBorderless);
 
 	if (_pWindow == nullptr)
 		return false;
@@ -72,7 +89,7 @@ bool FESystem::Create(LPCTSTR i_sWindowName)
 	//------------
 	// 坊歹矾 积己
 	//------------
-	_pRenderer = IFERenderer::CreateRenderer(_pWindow->GetWindowHandle(), setting);
+	IFERenderer::CreateRenderer(_pWindow->GetWindowHandle(), setting, FE_DX11);
 
 	return true;
 }
@@ -81,15 +98,9 @@ bool FESystem::Create(LPCTSTR i_sWindowName)
 void FESystem::Release()
 {
 	delete FESceneManager::GetInstance();
+	delete IFERenderer::GetInstance();
 
-	SAFE_DELETE(_pRenderer);
 	SAFE_DELETE(_pWindow);
-}
-
-
-IFERenderer* FESystem::GetRenderer()
-{
-	return _pRenderer;
 }
 
 
@@ -110,6 +121,7 @@ bool FESystem::LoadData()
 void FESystem::Run()
 {
 	FESceneManager* pSM = FESceneManager::GetInstance();
+	IFERenderer* pRenderer = IFERenderer::GetInstance();
 
 	while (!m_bExit)
 	{
@@ -121,9 +133,9 @@ void FESystem::Run()
 		FESceneManager::_pCurrentScene->Initialize();
 		FESceneManager::_pCurrentScene->Update();
 
-		_pRenderer->ClearBackBuffer(FESceneManager::_pCurrentScene->s_BGColor);
+		pRenderer->ClearBackBuffer(FESceneManager::_pCurrentScene->s_BGColor);
 		FESceneManager::_pCurrentScene->Render();
-		_pRenderer->Flip();
+		pRenderer->Flip();
 	}
 }
 

@@ -7,15 +7,15 @@
 //
 //#define LIGHT_SIZE 5
 //
-//class FEMaterial : public IFEObject
+//class FEMaterial : public FEObject
 //{
 //private:
 //	struct WVP_Data
 //	{
-//		MATRIXA mWorld;
-//		MATRIXA mView;
-//		MATRIXA mWV;
-//		MATRIXA mProj;
+//		FEMath::FEMatrixA mWorld;
+//		FEMath::FEMatrixA mView;
+//		FEMath::FEMatrixA mWV;
+//		FEMath::FEMatrixA mProj;
 //	};
 //
 //	struct Light_Data
@@ -23,56 +23,56 @@
 //		float range;
 //		UINT lightType;
 //		bool useLight;
-//		VECTOR diffuse;
-//		VECTOR ambient;
-//		VECTOR specular;
-//		VECTOR position;
-//		VECTOR direction;
+//		FEMath::FEVectorA diffuse;
+//		FEMath::FEVectorA ambient;
+//		FEMath::FEVectorA specular;
+//		FEMath::FEVectorA position;
+//		FEMath::FEVectorA direction;
 //	};
 //
 //	static std::unordered_map<UINT, FEMaterial*> _mtrlMap;
-//	static CTexture2D* _pDefaultTex;
+//	static FETexture* _pDefaultTex;
 //
-//	CShader* _pShader;
+//	FEShader* _pShader;
 //	UINT _countTexture;
 //	static WVP_Data _WVPData;
 //	static Light_Data _LightData[LIGHT_SIZE];
-//	std::vector<VECTOR> _constData;
+//	std::vector<FEMath::FEVectorA> _constData;
 //
-//	vector<VECTOR4>	_vecScalar;
-//	vector<VECTOR>	_vecScalarA;
-//	vector<VECTOR>	_vecVector;
-//	vector<MATRIXA>	_vecMatrix;
+//	vector<FEVector4>	_vecScalar;
+//	vector<FEMath::FEVectorA>	_vecScalarA;
+//	vector<FEMath::FEVectorA>	_vecVector;
+//	vector<FEMath::FEMatrixA>	_vecMatrix;
 //
 //public:
-//	VECTOR4 m_diffuse;
-//	VECTOR3 m_ambient;
-//	VECTOR3 m_specular;
+//	FEVector4 m_diffuse;
+//	FEVector3 m_ambient;
+//	FEVector3 m_specular;
 //
-//	CTexture2D* m_pTexture[128];
+//	FETexture* m_pTexture[128];
 //
 //private:
 //	static void ClearMap();
 //	static void UpdateLightData();
-//	void UpdateConstantBuffer(MATRIXA& mWorld);
+//	void UpdateConstantBuffer(FEMath::FEMatrixA& mWorld);
 //	void Render();
 //
 //public:
-//	FEMaterial(CShader* shader);
+//	FEMaterial(FEShader* shader);
 //	virtual ~FEMaterial();
 //
-//	void SetShader(CShader* shader);
-//	CShader* GetShader();
+//	void SetShader(FEShader* shader);
+//	FEShader* GetShader();
 //
 //	void SetScalar(UINT id, const float scalar);
 //	void SetScalar(UINT id, const int scalar);
 //	void SetScalar(UINT id, const UINT scalar);
 //	void SetScalar(UINT id, const bool scalar);
-//	void SetVector(UINT id, const VECTOR4& vector);
-//	void SetMatrix(UINT id, const MATRIX& matrix);
+//	void SetVector(UINT id, const FEVector4& vector);
+//	void SetMatrix(UINT id, const FEMatrix& matrix);
 //
 //	static FEMaterial* Find(UINT id);
-//	static FEMaterial* Find(LPCWSTR name);
+//	static FEMaterial* Find(LPCTSTR name);
 //};
 //
 //#endif

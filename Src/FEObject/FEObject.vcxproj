@@ -21,26 +21,32 @@
   <ItemGroup>
     <ClInclude Include="FEBehaviour.h" />
     <ClInclude Include="FEComponent.h" />
+    <ClInclude Include="FEGameObject.h" />
     <ClInclude Include="FEMaterial.h" />
     <ClInclude Include="FEMesh.h" />
     <ClInclude Include="FEObject.h" />
     <ClInclude Include="FEObjectHeader.h" />
     <ClInclude Include="FERenderer.h" />
+    <ClInclude Include="FESceneManager.h" />
     <ClInclude Include="FEShader.h" />
     <ClInclude Include="FETexture.h" />
     <ClInclude Include="FETransform.h" />
     <ClInclude Include="IFEObject.h" />
+    <ClInclude Include="IFEScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FEBehaviour.cpp" />
+    <ClCompile Include="FEGameObject.cpp" />
     <ClCompile Include="FEMaterial.cpp" />
     <ClCompile Include="FEMesh.cpp" />
     <ClCompile Include="FEObject.cpp" />
     <ClCompile Include="FERenderer.cpp" />
+    <ClCompile Include="FESceneManager.cpp" />
     <ClCompile Include="FEShader.cpp" />
     <ClCompile Include="FETexture.cpp" />
     <ClCompile Include="FETransform.cpp" />
     <ClCompile Include="IFEObject.cpp" />
+    <ClCompile Include="IFEScene.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -130,7 +136,7 @@
       <Command>copy *.h $(FE_SDK_INC)</Command>
     </PostBuildEvent>
     <Lib>
-      <AdditionalDependencies>FEMath64d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FEMath64d.lib;FEUserScene64d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
