@@ -7,6 +7,19 @@
 class FEMesh;
 enum BLEND_STATE;
 
+enum PRIMITIVE_TOPOLOGY
+{
+	PRIMITIVE_TOPOLOGY_POINTLIST,
+	PRIMITIVE_TOPOLOGY_LINELIST,
+	PRIMITIVE_TOPOLOGY_LINESTRIP,
+	PRIMITIVE_TOPOLOGY_TRIANGLELIST,
+	PRIMITIVE_TOPOLOGY_TRIANGLESTRIP,
+	PRIMITIVE_TOPOLOGY_LINELIST_ADJ,
+	PRIMITIVE_TOPOLOGY_LINESTRIP_ADJ,
+	PRIMITIVE_TOPOLOGY_TRIANGLELIST_ADJ,
+	PRIMITIVE_TOPOLOGY_TRIANGLESTRIP_ADJ
+};
+
 enum CULL_MODE
 {
 	CULL_NONE = 0x00,
@@ -41,6 +54,7 @@ enum COMPARISON_FUNC
 class FERenderer : public FEBehaviour
 {
 private:
+	PRIMITIVE_TOPOLOGY _PT;
 	BYTE _RSState;
 	DWORD _DSState;
 	//BLEND_STATE _BlendState;
@@ -49,19 +63,16 @@ public:
 	UINT m_stencilRef;
 
 	FEMesh* m_pMesh;
-	//FEMaterial* m_pMaterial;
+	FEMaterial* m_pMaterial;
 
 private:
-	void BufferUpdate();
-
-	//virtual void Render() override;
+	virtual void Render() override;
 
 public:
 	FERenderer();
 	virtual ~FERenderer();
 
-	void ChangeMesh(FEMesh* i_pMesh);
-	//void ChangeMaterial(FEMaterial* i_pMaterial);
+	void SetPrimitiveTopology(PRIMITIVE_TOPOLOGY i_pt);
 
 	void		SetWireFrame(bool i_bSet);
 	bool		GetWireFrame();

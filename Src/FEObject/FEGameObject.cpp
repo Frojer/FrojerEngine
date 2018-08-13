@@ -160,6 +160,12 @@ FETransform* FEGameObject::GetTransform()
 }
 
 
+FERenderer* FEGameObject::GetRenderer()
+{
+	return _pRenderer;
+}
+
+
 std::unordered_map<UINT, FEComponent*> FEGameObject::GetComponents()
 {
 	return _components;

@@ -1,0 +1,10 @@
+////////////////////////////////////////////////////////////////////////////// 
+//
+// Pixel Shader Main
+//
+float4 PS_Main(float4 pos : SV_POSITION) : SV_Target
+{
+    float4 col = { 1, 0, 1, 1 };
+
+    return col;
+}

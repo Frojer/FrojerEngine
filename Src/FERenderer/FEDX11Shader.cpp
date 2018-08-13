@@ -183,3 +183,14 @@ void FEDX11Shader::Render() const
 	pRenderer->GetDXDC()->VSSetShader(_pVS, nullptr, 0);
 	pRenderer->GetDXDC()->PSSetShader(_pPS, nullptr, 0);
 }
+
+
+void FEDX11Shader::SetConstantBuffer(UINT StartSlot, IFEBuffer* pConstantBuffers)
+{
+	FEDX11Renderer* pRenderer = (FEDX11Renderer*)IFERenderer::GetInstance();
+
+	auto pBuf = static_cast<FEDX11Buffer*>(pConstantBuffers)->GetBuffer();
+
+	pRenderer->GetDXDC()->VSSetConstantBuffers(StartSlot, 1, &pBuf);
+	pRenderer->GetDXDC()->PSSetConstantBuffers(StartSlot, 1, &pBuf);
+}

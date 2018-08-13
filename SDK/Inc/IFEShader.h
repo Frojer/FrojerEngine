@@ -4,6 +4,7 @@
 #define _FE_ISHADER
 
 #include <FEDefine.h>
+#include "IFEBuffer.h"
 
 class IFEShader
 {
@@ -12,13 +13,13 @@ protected:
 
 public:
 	IFEShader() = default;
-	virtual ~IFEShader();
+	virtual ~IFEShader() = default;
 
 	static IFEShader* CreateShader(LPCTSTR i_vsName, LPCTSTR i_psName);
 
-	virtual void Release() = 0;
-
 	virtual void Render() const = 0;
+
+	virtual void SetConstantBuffer(UINT StartSlot, IFEBuffer* pConstantBuffers) = 0;
 };
 
 #endif

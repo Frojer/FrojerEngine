@@ -42,9 +42,26 @@ void FEDX11Buffer::Release()
 }
 
 
-void FEDX11Buffer::UpdateBuffer()
+void FEDX11Buffer::UpdateBuffer(const void* pData, UINT size)
 {
+	FEDX11Renderer* _pRenderer = static_cast<FEDX11Renderer*>(IFERenderer::GetInstance());
 
+	HRESULT hr = S_OK;
+	D3D11_MAPPED_SUBRESOURCE mr;
+	ZeroMemory(&mr, sizeof(mr));
+
+	//상수버퍼 접근
+	hr = _pRenderer->GetDXDC()->Map(_pBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mr);
+	if (FAILED(hr))
+	{
+		//FEDebug::ErrorMessage(FE_TEXT("UpdateDynamicConstantBuffer : Map 실패"));
+	}
+
+	//상수 버퍼 갱신.
+	memcpy(mr.pData, pData, size);
+
+	//상수버퍼 닫기.
+	_pRenderer->GetDXDC()->Unmap(_pBuffer, 0);
 }
 
 

@@ -6,6 +6,8 @@
 #include <FEMath.h>
 #include <IFEBuffer.h>
 
+enum PRIMITIVE_TOPOLOGY;
+
 //////////////////////////////////////////////////
 //
 //  정점 데이터 구조 정의
@@ -38,19 +40,23 @@ public:
 	std::vector<IndexFormat>	m_indics;
 
 private:
+	FEMesh(std::vector<VF_PNT> i_verts, std::vector<IndexFormat> i_indics);
+
 	bool CreateBuffer();
 
-	void Render();
+	void Render(PRIMITIVE_TOPOLOGY topology);
 
 	static void ClearMap();
 
 public:
-	FEMesh();
-	FEMesh(std::vector<VF_PNT> i_verts, std::vector<IndexFormat> i_indics);
 	virtual ~FEMesh();
+
+	static FEMesh* CreateMesh(std::vector<VF_PNT> i_verts, std::vector<IndexFormat> i_indics);
 
 	static FEMesh* Find(UINT id);
 	static FEMesh* Find(tstring name);
+
+	friend class FERenderer;
 };
 
 #endif

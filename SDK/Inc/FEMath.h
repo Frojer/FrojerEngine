@@ -17,6 +17,9 @@ class FEVector3;
 class FEVector4;
 class FEMatrix;
 
+typedef DirectX::XMVECTOR FEVectorA;
+typedef DirectX::XMMATRIX FEMatrixA;
+
 namespace FEMath
 {
 	typedef FEVector2 Vector2;
@@ -27,6 +30,11 @@ namespace FEMath
 	FEMatrix FEMatrixTranslation(const FEVector3& Offset);
 	FEMatrix FEMatrixRotationRollPitchYaw(const FEVector3& Angles);
 	FEMatrix FEMatrixScaling(const FEVector3& Scale);
+
+	FEVectorA FEConvertToAlignData(const FEVector2& V);
+	FEVectorA FEConvertToAlignData(const FEVector3& V);
+	FEVectorA FEConvertToAlignData(const FEVector4& V);
+	FEMatrixA FEConvertToAlignData(const FEMatrix& M);
 }
 
 class FEVector2 : public DirectX::XMFLOAT2

@@ -6,12 +6,6 @@ using namespace std;
 
 unordered_map<UINT, FEMesh*> FEMesh::_meshMap;
 
-FEMesh::FEMesh()
-	: _pVB(nullptr), _pIB(nullptr)
-{
-	_meshMap.insert(pair<UINT, FEMesh*>(GetID(), this));
-}
-
 FEMesh::FEMesh(vector<VF_PNT> i_verts, vector<IndexFormat> i_indics)
 	: _pVB(nullptr), _pIB(nullptr), m_verts(i_verts), m_indics(i_indics)
 {
@@ -23,11 +17,32 @@ FEMesh::~FEMesh()
 {
 	_meshMap.erase(GetID());
 
-	SAFE_RELEASE(_pVB);
-	SAFE_RELEASE(_pIB);
+	SAFE_DELETE(_pVB);
+	SAFE_DELETE(_pIB);
 
 	m_verts.clear();
 	m_indics.clear();
+}
+
+
+FEMesh* FEMesh::CreateMesh(std::vector<VF_PNT> i_verts, std::vector<IndexFormat> i_indics)
+{
+	FEMesh* pMesh = new FEMesh(i_verts, i_indics);
+
+	if (pMesh == nullptr)
+	{
+		//FEDebug::WarningMessage(FE_TEXT("Failed to dynamic allocate"));
+		return nullptr;
+	}
+
+	if (!pMesh->CreateBuffer())
+	{
+		//FEDebug::WarningMessage(FE_TEXT("Failed to create mesh"));
+		delete pMesh;
+		return nullptr;
+	}
+
+	return pMesh;
 }
 
 
@@ -59,7 +74,7 @@ FEMesh* FEMesh::Find(tstring name)
 }
 
 
-void FEMesh::Render()
+void FEMesh::Render(PRIMITIVE_TOPOLOGY topology)
 {
 	IFERenderer* pRenderer = IFERenderer::GetInstance();
 
@@ -69,7 +84,44 @@ void FEMesh::Render()
 	pRenderer->SetIndexBuffer(_pIB, FEGI_FORMAT_R32_UINT, offset);		// 인덱스 버퍼 세팅
 
 	// 기하 위상 구조 설정 Set primitive topology
-	pRenderer->SetPrimitiveTopology(FE_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	switch (topology)
+	{
+	case PRIMITIVE_TOPOLOGY_POINTLIST:
+		pRenderer->SetPrimitiveTopology(FE_PRIMITIVE_TOPOLOGY_POINTLIST);
+		break;
+
+	case PRIMITIVE_TOPOLOGY_LINELIST:
+		pRenderer->SetPrimitiveTopology(FE_PRIMITIVE_TOPOLOGY_LINELIST);
+		break;
+
+	case PRIMITIVE_TOPOLOGY_LINESTRIP:
+		pRenderer->SetPrimitiveTopology(FE_PRIMITIVE_TOPOLOGY_LINESTRIP);
+		break;
+
+	case PRIMITIVE_TOPOLOGY_TRIANGLELIST:
+		pRenderer->SetPrimitiveTopology(FE_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		break;
+
+	case PRIMITIVE_TOPOLOGY_TRIANGLESTRIP:
+		pRenderer->SetPrimitiveTopology(FE_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+		break;
+
+	case PRIMITIVE_TOPOLOGY_LINELIST_ADJ:
+		pRenderer->SetPrimitiveTopology(FE_PRIMITIVE_TOPOLOGY_LINELIST_ADJ);
+		break;
+
+	case PRIMITIVE_TOPOLOGY_LINESTRIP_ADJ:
+		pRenderer->SetPrimitiveTopology(FE_PRIMITIVE_TOPOLOGY_LINESTRIP_ADJ);
+		break;
+
+	case PRIMITIVE_TOPOLOGY_TRIANGLELIST_ADJ:
+		pRenderer->SetPrimitiveTopology(FE_PRIMITIVE_TOPOLOGY_TRIANGLELIST_ADJ);
+		break;
+
+	case PRIMITIVE_TOPOLOGY_TRIANGLESTRIP_ADJ:
+		pRenderer->SetPrimitiveTopology(FE_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP_ADJ);
+		break;
+	}
 }
 
 

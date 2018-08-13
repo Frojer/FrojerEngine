@@ -33,6 +33,7 @@ typedef std::ofstream tofstream;
 #endif
 
 #define FE_TEXT(x) _TEXT(x)
+#define TCSCMP_SAME(buf, str) _tcsnicmp((buf), (str), _tcslen((str)) + 1) == 0
 
 /////////////////////
 //    매크로 정의    //

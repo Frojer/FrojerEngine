@@ -3,6 +3,7 @@
 #define _FE_DX11_SHADER
 
 #include "IFEShader.h"
+#include "FEDX11Buffer.h"
 #include <d3d11.h>
 
 class FEDX11Shader : public IFEShader
@@ -25,9 +26,10 @@ public:
 	virtual ~FEDX11Shader();
 
 	virtual bool Create(LPCTSTR i_vsName, LPCTSTR i_psName) override;
-	virtual void Release() override;
+	void Release();
 
 	virtual void Render() const override;
+	virtual void SetConstantBuffer(UINT StartSlot, IFEBuffer* pConstantBuffer) override;
 };
 
 #endif

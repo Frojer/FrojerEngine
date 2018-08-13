@@ -41,6 +41,24 @@ FEMatrix FEMath::FEMatrixScaling(const FEVector3& Scale)
 }
 
 
+FEVectorA FEMath::FEConvertToAlignData(const FEVector2& V)
+{
+	return XMLoadFloat2(&V);
+}
+FEVectorA FEMath::FEConvertToAlignData(const FEVector3& V)
+{
+	return XMLoadFloat3(&V);
+}
+FEVectorA FEMath::FEConvertToAlignData(const FEVector4& V)
+{
+	return XMLoadFloat4(&V);
+}
+FEMatrixA FEMath::FEConvertToAlignData(const FEMatrix& M)
+{
+	return XMLoadFloat4x4(&M);
+}
+
+
 FEVector2::FEVector2(const FEVector3& v) : XMFLOAT2(v.x, v.y) {};
 FEVector2::FEVector2(const FEVector4& v) : XMFLOAT2(v.x, v.y) {};
 FEVector3::FEVector3(const FEVector4& v) : XMFLOAT3(v.x, v.y, v.z) {};

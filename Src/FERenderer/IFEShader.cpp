@@ -2,11 +2,6 @@
 #include "IFEShader.h"
 #include "FEDX11Shader.h"
 
-IFEShader::~IFEShader()
-{
-	Release();
-}
-
 IFEShader* IFEShader::CreateShader(LPCTSTR i_vsName, LPCTSTR i_psName)
 {
 	IFEShader* pShader = nullptr;

@@ -3,6 +3,7 @@
 #define _FE_DX11_RENDERER
 
 #include "IFERenderer.h"
+#include <unordered_map>
 
 // DX 표준 헤더 
 #include <d3d11.h>					// DX 표준 헤더. (DX 11.0)
@@ -30,6 +31,16 @@ private:
 	//현재 사용할 DX 버전 지정. DX 렌더링 장치의 호환성 향상
 	D3D_FEATURE_LEVEL _featureLevels;// = D3D_FEATURE_LEVEL_11_0;		// DX11 대응.
 	//D3D_FEATURE_LEVEL featureLevels = D3D_FEATURE_LEVEL_9_3;			// DX9.0c 대응.
+
+	//깊이 스텐실 버퍼 관련.
+	ID3D11Texture2D*		 _pDS;			// 깊이-스텐실 버퍼.
+	ID3D11DepthStencilView*  _pDSView;		// 깊이-스텐실 뷰.
+
+	//상태 객체 배열 : "기능별" 그룹으로 관리합니다.
+	std::unordered_map<BYTE, ID3D11RasterizerState*> _RSStateMap;
+	// 깊이/스텐실 버퍼 상태객체.	
+	std::unordered_map<DWORD, ID3D11DepthStencilState*> _DSStateMap;
+
 private:
 	virtual bool Create(void* i_phWnd) override;
 	void Release();
@@ -38,14 +49,31 @@ private:
 	HRESULT CreateRenderTarget();
 	void	SetViewPort() const;
 
+	// 레스터 상태객체
+	void RasterStateCreate(BYTE flag);
+	void RasterStateRelease();
+	void RasterStateLoad();
+
+	// 깊이/스텐실 버퍼 상태객체
+	void DSStateCreate(DWORD flag);
+	void DSStateRelease();
+	void DSStateLoad();
+
 public:
 	FEDX11Renderer();
 	virtual ~FEDX11Renderer();
 
+	virtual void SetRSState(BYTE flag) override;
+	virtual void SetDSState(DWORD flag, UINT stencilRef) override;
+	//virtual void SetBlendState(BLEND_STATE bs) override;
+
 	virtual void SetVertexBuffers(UINT StartSlot, UINT NumBuffers, const IFEBuffer* ppVertexBuffers, const UINT* pStrides, const UINT* pOffsets) const override;
 	virtual void SetIndexBuffer(const IFEBuffer* pIndexBuffer, FEGI_FORMAT Format, UINT Offset) const override;
 	virtual void SetPrimitiveTopology(FE_PRIMITIVE_TOPOLOGY Topology) const override;
+
 	virtual void ClearBackBuffer(const FEVector4& i_color) const override;
+	virtual void Draw(UINT VertexCount, UINT StartVertexLocation) const override;
+	virtual void DrawIndexed(UINT IndexCount, UINT StartIndexLocation, UINT BaseVertexLocation) const override;
 	virtual void Flip() const override;
 
 	ID3D11Device* GetDevice() const;

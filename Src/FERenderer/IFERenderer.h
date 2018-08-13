@@ -43,10 +43,17 @@ public:
 	IFERenderer() = default;
 	virtual ~IFERenderer() = default;
 
+	virtual void SetRSState(BYTE flag) = 0;
+	virtual void SetDSState(DWORD flag, UINT stencilRef) = 0;
+	//virtual void SetBlendState(BLEND_STATE bs) = 0;
+
 	virtual void SetVertexBuffers(UINT StartSlot, UINT NumBuffers, const IFEBuffer* ppVertexBuffers, const UINT* pStrides, const UINT* pOffsets) const = 0;
 	virtual void SetIndexBuffer(const IFEBuffer* pIndexBuffer, FEGI_FORMAT Format, UINT Offset) const = 0;
 	virtual void SetPrimitiveTopology(FE_PRIMITIVE_TOPOLOGY Topology) const = 0;
+	
 	virtual void ClearBackBuffer(const FEVector4& i_color) const = 0;
+	virtual void Draw(UINT VertexCount, UINT StartVertexLocation) const = 0;
+	virtual void DrawIndexed(UINT IndexCount, UINT StartIndexLocation, UINT BaseVertexLocation) const = 0;
 	virtual void Flip() const = 0;
 
 	FE_Platform GetPlatform() const;

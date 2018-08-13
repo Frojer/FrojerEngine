@@ -49,6 +49,7 @@ public:
 	std::unordered_map<UINT, FEGameObject*> GetChildren();
 
 	FETransform* GetTransform();
+	FERenderer* GetRenderer();
 
 	template <typename T>
 	T* AddComponent()

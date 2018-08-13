@@ -1,0 +1,9 @@
+Demo.vso
+Demo.pso
+
+Name = DemoShader
+countTexture = 0
+countMatrix = 0
+countVector = 0
+countScalar = 0
+useLight = 0

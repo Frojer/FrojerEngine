@@ -19,7 +19,7 @@ public:
 
 	void Release();
 
-	virtual void UpdateBuffer() override;
+	virtual void UpdateBuffer(const void* pData, UINT size) override;
 
 	ID3D11Buffer* GetBuffer() const;
 };
