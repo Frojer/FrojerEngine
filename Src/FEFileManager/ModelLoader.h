@@ -5,7 +5,7 @@
 
 struct ML_INDEX
 {
-	int a, b, c;
+	unsigned int a, b, c;
 };
 
 class ModelLoader

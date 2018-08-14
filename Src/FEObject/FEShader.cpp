@@ -20,7 +20,7 @@ FEShader::~FEShader()
 }
 
 
-FEShader* FEShader::CreateShader(LPCTSTR i_vsName, LPCTSTR i_psName)
+FEShader* FEShader::CreateShader(LPCTSTR i_vsName, LPCTSTR i_psName, FE_SHADER_SEMANTICS i_semantics)
 {
 	FEShader* pShader = new FEShader;
 
@@ -30,7 +30,9 @@ FEShader* FEShader::CreateShader(LPCTSTR i_vsName, LPCTSTR i_psName)
 		return nullptr;
 	}
 
-	pShader->_pShader = IFEShader::CreateShader(i_vsName, i_psName);
+	pShader->_pShader = IFEShader::CreateShader(i_vsName, i_psName, i_semantics);
+
+	pShader->_semantics = i_semantics;
 
 	if (pShader->_pShader == nullptr)
 	{

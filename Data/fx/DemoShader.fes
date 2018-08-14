@@ -1,6 +1,17 @@
 Demo.vso
 Demo.pso
 
+POSITION = 1
+COLOR = 0
+NORMAL = 0
+TEXCOORD = 0
+BLENDINDEXCES = 0
+BLENDWEIGHT = 0
+POSITIONT = 0
+PSIZE = 0
+TANGENT = 0
+BINORMAL = 0
+
 Name = DemoShader
 countTexture = 0
 countMatrix = 0

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <vector>
 
 #include "FEDX11Shader.h"
 #include "FEDX11Renderer.h"
@@ -116,40 +117,85 @@ bool FEDX11Shader::CreateShader(LPCTSTR i_vsName, LPCTSTR i_psName)
 }
 
 
-bool FEDX11Shader::CreateInputLayout()
+bool FEDX11Shader::CreateInputLayout(FE_SHADER_SEMANTICS i_semanticsFlag)
 {
 	FEDX11Renderer* pRenderer = (FEDX11Renderer*)IFERenderer::GetInstance();
 
-	/////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	//  정점 입력구조 Input layout 
-	//  GPU 에 공급될 기하데이터 - 개별 정점의 데이터 구조와 용도등의 정보를 구성합니다.
-	//  구형 Vertex Format(DX7/8/9) 또는 Vertex Declaration(DX9) 과 동일 목적으로 사용되지만 
-	//  신형 렌더링 기술의 요구에 맞추어 구조적 및 기능적으로 확장되었습니다.
-	// 
-	//  바른 렌더링 결과를 위해서는 아래의 조건이 동일 또는 호환되어야 합니다.
-	//  1.정점 버퍼의 데이터.  Vertex Buffer Data
-	//  2.정점 구조 Vertex Format (Input Layout)
-	//  3.셰이더 함수의 입력구조.  Vertex Shader (Input Layout)
-	//
-	//////////////////////////////////////////////////////////////////////////////////////////////
-	D3D11_INPUT_ELEMENT_DESC layout[] =
+	std::vector<D3D11_INPUT_ELEMENT_DESC> layout;
+	D3D11_INPUT_ELEMENT_DESC desc;
+	UINT offset = 0;
+	
+	for (UINT i = 0; i < sizeof(i_semanticsFlag) * 8; i++)
 	{
-		//  Sementic          format                       offset         classification             
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,    0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	};
-	UINT numElements = ARRAYSIZE(layout);
+		switch (i_semanticsFlag & (2 ^ i))
+		{
+		case FE_SHADER_SEMANTIC_POSITION:
+			desc.SemanticName = "POSITION";
+			desc.SemanticIndex = 0;
+			desc.Format = DXGI_FORMAT_R32G32B32_FLOAT;
+			desc.InputSlot = 0;
+			desc.AlignedByteOffset = offset;
+			desc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+			desc.InstanceDataStepRate = 0;
+
+			layout.push_back(desc);
+
+			offset += 12;
+			break;
+
+		case FE_SHADER_SEMANTIC_COLOR:
+			desc.SemanticName = "COLOR";
+			desc.SemanticIndex = 0;
+			desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+			desc.InputSlot = 0;
+			desc.AlignedByteOffset = offset;
+			desc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+			desc.InstanceDataStepRate = 0;
+
+			layout.push_back(desc);
+
+			offset += 16;
+			break;
+
+		case FE_SHADER_SEMANTIC_NORMAL:
+			desc.SemanticName = "NORMAL";
+			desc.SemanticIndex = 0;
+			desc.Format = DXGI_FORMAT_R32G32B32_FLOAT;
+			desc.InputSlot = 0;
+			desc.AlignedByteOffset = offset;
+			desc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+			desc.InstanceDataStepRate = 0;
+
+			layout.push_back(desc);
+
+			offset += 12;
+			break;
+
+		case FE_SHADER_SEMANTIC_TEXCOORD:
+			desc.SemanticName = "TEXCOORD";
+			desc.SemanticIndex = 0;
+			desc.Format = DXGI_FORMAT_R32G32_FLOAT;
+			desc.InputSlot = 0;
+			desc.AlignedByteOffset = offset;
+			desc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+			desc.InstanceDataStepRate = 0;
+
+			layout.push_back(desc);
+
+			offset += 8;
+			break;
+		}
+	}
 
 	// 정접 입력구조 객체 생성 Create the input layout
-	HRESULT hr = pRenderer->GetDevice()->CreateInputLayout(layout, numElements, _pVSCode, _VSCodeSize, &_pVBLayout);
+	HRESULT hr = pRenderer->GetDevice()->CreateInputLayout(layout.data(), layout.size(), _pVSCode, _VSCodeSize, &_pVBLayout);
 	if (FAILED(hr))	return false;
 
 	return true;
 }
 
 
-bool FEDX11Shader::Create(LPCTSTR i_vsName, LPCTSTR i_psName)
+bool FEDX11Shader::Create(LPCTSTR i_vsName, LPCTSTR i_psName, FE_SHADER_SEMANTICS i_semanticsFlag)
 {
 	bool result;
 
@@ -157,7 +203,7 @@ bool FEDX11Shader::Create(LPCTSTR i_vsName, LPCTSTR i_psName)
 
 	if (!result) return false;
 
-	result = CreateInputLayout();
+	result = CreateInputLayout(i_semanticsFlag);
 
 	if (!result) return false;
 

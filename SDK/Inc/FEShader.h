@@ -17,6 +17,8 @@ private:
 	IFEBuffer* _pConstBuffer;
 	IFEShader* _pShader;
 
+	FE_SHADER_SEMANTICS _semantics;
+
 	UINT _countTexture;
 	UINT _countMatrix;
 	UINT _countVector;
@@ -38,7 +40,7 @@ private:
 public:
 	virtual ~FEShader();
 
-	static FEShader* CreateShader(LPCTSTR i_vsName, LPCTSTR i_psName);
+	static FEShader* CreateShader(LPCTSTR i_vsName, LPCTSTR i_psName, FE_SHADER_SEMANTICS i_semantics);
 
 	void Release();
 

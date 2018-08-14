@@ -19,13 +19,13 @@ private:
 
 private:
 	bool CreateShader(LPCTSTR i_vsName, LPCTSTR i_psName);
-	bool CreateInputLayout();
+	bool CreateInputLayout(FE_SHADER_SEMANTICS i_semanticsFlag);
 
 public:
 	FEDX11Shader();
 	virtual ~FEDX11Shader();
 
-	virtual bool Create(LPCTSTR i_vsName, LPCTSTR i_psName) override;
+	virtual bool Create(LPCTSTR i_vsName, LPCTSTR i_psName, FE_SHADER_SEMANTICS i_semanticsFlag) override;
 	void Release();
 
 	virtual void Render() const override;

@@ -5,8 +5,8 @@
 class FEModelLoader	: public ModelLoader
 {
 private:
-	FEObject* currentObject;
-	FEObject* beforeObject;
+	FEGameObject* currentObject;
+	FEGameObject* beforeObject;
 
 	int numVertex, numFaces, numTVertex, numTVFaces, numCVertex, numCVFaces;
 	UINT64 indexBeginNum;

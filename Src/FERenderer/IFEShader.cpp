@@ -2,7 +2,7 @@
 #include "IFEShader.h"
 #include "FEDX11Shader.h"
 
-IFEShader* IFEShader::CreateShader(LPCTSTR i_vsName, LPCTSTR i_psName)
+IFEShader* IFEShader::CreateShader(LPCTSTR i_vsName, LPCTSTR i_psName, FE_SHADER_SEMANTICS i_semanticsFlag)
 {
 	IFEShader* pShader = nullptr;
 
@@ -14,7 +14,7 @@ IFEShader* IFEShader::CreateShader(LPCTSTR i_vsName, LPCTSTR i_psName)
 
 	if (pShader == nullptr) return nullptr;
 
-	pShader->Create(i_vsName, i_psName);
+	pShader->Create(i_vsName, i_psName, i_semanticsFlag);
 
 	return pShader;
 }

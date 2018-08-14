@@ -37,6 +37,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FEDebug", "..\Src\FEDebug\F
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FEFileManager", "..\Src\FEFileManager\FEFileManager.vcxproj", "{1B7E4CE0-2ACF-49A4-9373-3EFFAB5FC384}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FEUtility", "..\Src\FEUtility\FEUtility.vcxproj", "{21B44D55-791E-4323-89C9-8273643F0F28}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -109,6 +111,14 @@ Global
 		{1B7E4CE0-2ACF-49A4-9373-3EFFAB5FC384}.Release|x64.Build.0 = Release|x64
 		{1B7E4CE0-2ACF-49A4-9373-3EFFAB5FC384}.Release|x86.ActiveCfg = Release|Win32
 		{1B7E4CE0-2ACF-49A4-9373-3EFFAB5FC384}.Release|x86.Build.0 = Release|Win32
+		{21B44D55-791E-4323-89C9-8273643F0F28}.Debug|x64.ActiveCfg = Debug|x64
+		{21B44D55-791E-4323-89C9-8273643F0F28}.Debug|x64.Build.0 = Debug|x64
+		{21B44D55-791E-4323-89C9-8273643F0F28}.Debug|x86.ActiveCfg = Debug|Win32
+		{21B44D55-791E-4323-89C9-8273643F0F28}.Debug|x86.Build.0 = Debug|Win32
+		{21B44D55-791E-4323-89C9-8273643F0F28}.Release|x64.ActiveCfg = Release|x64
+		{21B44D55-791E-4323-89C9-8273643F0F28}.Release|x64.Build.0 = Release|x64
+		{21B44D55-791E-4323-89C9-8273643F0F28}.Release|x86.ActiveCfg = Release|Win32
+		{21B44D55-791E-4323-89C9-8273643F0F28}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
