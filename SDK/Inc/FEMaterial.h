@@ -7,6 +7,8 @@
 
 #define LIGHT_SIZE 5
 
+class FEShader;
+
 class FEMaterial : public FEObject
 {
 private:

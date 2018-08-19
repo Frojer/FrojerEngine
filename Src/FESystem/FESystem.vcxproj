@@ -19,13 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FEFileManager.cpp" />
     <ClCompile Include="FESystem.cpp" />
     <ClCompile Include="FEWindow.cpp" />
     <ClCompile Include="FEWin32Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FEFileManager.h" />
     <ClInclude Include="FESystem.h" />
     <ClInclude Include="FESystemDefine.h" />
     <ClInclude Include="FEWindow.h" />
@@ -36,7 +34,7 @@
     <ProjectGuid>{960F5DF9-D8AE-400C-B7E1-18F55BD23BE1}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>FESystem</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
