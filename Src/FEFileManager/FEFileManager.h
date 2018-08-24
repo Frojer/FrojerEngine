@@ -1,12 +1,14 @@
 #pragma once
 
 #include <FEDefine.h>
+#include <FEMesh.h>
+#include <FEShader.h>
+#include <FEMaterial.h>
 
 namespace FEFileManager
 {
 	void ConvertAllFileInPath(tstring i_filePath);
-	void ConvertShaderFile(tstring i_fileName);
-	void ConvertASEMeshFile(tstring i_fileName);
-	void ImportFile(tstring i_fileName);
-	void ExportFile();
+	void ExportFile(tstring i_filePath, const FEMesh* i_pMtrl);
+	void ExportFile(tstring i_filePath, const FEShader* i_pShader);
+	void ExportFile(tstring i_filePath, const FEMaterial* i_pMtrl);
 }

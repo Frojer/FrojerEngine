@@ -1,17 +1,32 @@
 #include <FEDefine.h>
-#include <FEUtility.h>
 #include <FEFileManager.h>
 
+#pragma region FEFileManager.lib
+#ifdef _DEBUG
+#ifdef _WIN64
+#pragma comment(lib, "FEFileManager64d")
+#else
+#pragma comment(lib, "FEFileManagerd")
+#endif
+#else
+#ifdef _WIN64
+#pragma comment(lib, "FEFileManager64")
+#else
+#pragma comment(lib, "FEFileManager")
+#endif
+#endif
+#pragma endregion
+
 #ifdef _UNICODE
-void wmain(int argc, wchar_t* argv[])
+int wmain(int argc, wchar_t* argv[])
 #else
 void main(int argc, char* argv[])
 #endif
 {
 	if (argc != 1)
-		return;
+		return -1;
 
-	
+	FEFileManager::ConvertAllFileInPath(argv[0]);
 
-	return;
+	return 0;
 }

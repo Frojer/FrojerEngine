@@ -1,7 +1,4 @@
 #include "FEFileManager.h"
-#include <FEShader.h>
-#include <FEMaterial.h>
-#include <FEMesh.h>
 
 #include <FEUtility.h>
 
@@ -17,50 +14,7 @@
 
 #define BUFFER_SIZE 1024
 
-void FEFileManager::ConvertAllFileInPath(tstring i_filePath)
-{
-	tstring extension;
-
-#ifdef _WIN32
-	_tfinddata_t fd;
-	intptr_t handle;
-	int result = 1;
-
-	// 현재 폴더 내 모든 파일을 찾는다.
-	handle = _tfindfirst((i_filePath + FE_TEXT("*")).c_str(), &fd);
-
-	// 파일이 하나도 없다면
-	if (handle == -1)
-		return;
-
-	do
-	{
-		FileNameExtension(fd.name, extension);
-
-		if (extension.size() == 0)
-		{
-			if (!TCSCMP_SAME(fd.name, FE_TEXT(".")) && !TCSCMP_SAME(fd.name, FE_TEXT("..")))
-				FEFileManager::ConvertAllFileInPath(i_filePath + fd.name + FE_TEXT("/"));
-		}
-
-		else if (TCSCMP_SAME(extension.c_str(), FE_TEXT("fes")))
-		{
-			FEFileManager::ConvertShaderFile(i_filePath + fd.name);
-		}
-
-		else if (TCSCMP_SAME(extension.c_str(), FE_TEXT("ase")))
-		{
-			FEFileManager::ConvertASEMeshFile(i_filePath + fd.name);
-		}
-
-		result = _tfindnext(handle, &fd);
-	} while (result != -1);
-
-	_findclose(handle);
-#else
-#endif
-}
-void FEFileManager::ConvertShaderFile(tstring i_fileName)
+void ConvertShaderFile(tstring i_fileName)
 {
 	TCHAR str[BUFFER_SIZE];
 	UINT i = 0;
@@ -100,14 +54,23 @@ void FEFileManager::ConvertShaderFile(tstring i_fileName)
 		}
 	}
 }
-void FEFileManager::ConvertASEMeshFile(tstring i_fileName)
+void ConvertASEMeshFile(tstring i_fileName)
 {
 	TCHAR buf[BUFFER_SIZE];
+	TCHAR name[BUFFER_SIZE];
+	TCHAR parentName[BUFFER_SIZE];
+
+	FEVector3 pos, rot, scale;
+	FEVector3 scaleAxis;
+	float rotAngle, scaleAxisAngle;
+
 	tifstream f(i_fileName);
 
+	std::vector<FEVector4> vecColor;
 	std::vector<FEVector3> vecPos;
 	std::vector<FEVector3> vecNor;
 	std::vector<FEVector2> vecTex;
+	std::vector<IndexFormat> vecIndex;
 
 	int a, b, c, i;
 	float x, y, z, w;
@@ -196,7 +159,6 @@ void FEFileManager::ConvertASEMeshFile(tstring i_fileName)
 
 				if (TCSCMP_SAME(buf + 1, FE_TEXT("NODE_NAME")))
 				{
-					TCHAR name[BUFFER_SIZE];
 					i = 0;
 
 					f.getline(buf, BUFFER_SIZE);
@@ -210,7 +172,6 @@ void FEFileManager::ConvertASEMeshFile(tstring i_fileName)
 				}
 				else if (TCSCMP_SAME(buf + 1, FE_TEXT("NODE_PARENT")))
 				{
-					TCHAR name[BUFFER_SIZE];
 					i = 0;
 
 					f.getline(buf, BUFFER_SIZE);
@@ -220,7 +181,7 @@ void FEFileManager::ConvertASEMeshFile(tstring i_fileName)
 					while (buf[i] != FE_TEXT('"'))	i++;
 					int e = i;
 
-					_tcsncpy_s(name, buf + s, e - s);
+					_tcsncpy_s(parentName, buf + s, e - s);
 				}
 				else if (TCSCMP_SAME(buf + 1, FE_TEXT("NODE_TM")))
 				{
@@ -283,27 +244,27 @@ void FEFileManager::ConvertASEMeshFile(tstring i_fileName)
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("TM_POS")))
 						{
-							f >> x >> y >> z;
+							f >> pos.x >> pos.y >> pos.z;
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("TM_ROTAXIS")))
 						{
-							f >> x >> y >> z;
+							f >> rot.x >> rot.y >> rot.z;
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("TM_ROTANGLE")))
 						{
-							f >> x;
+							f >> rotAngle;
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("TM_SCALE")))
 						{
-							f >> x >> y >> z;
+							f >> scale.x >> scale.y >> scale.z;
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("TM_SCALEAXIS")))
 						{
-							f >> x >> y >> z;
+							f >> scaleAxis.x >> scaleAxis.y >> scaleAxis.z;
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("TM_SCALEAXISANG")))
 						{
-							f >> x;
+							f >> scaleAxisAngle;
 						}
 					}
 				}
@@ -331,16 +292,16 @@ void FEFileManager::ConvertASEMeshFile(tstring i_fileName)
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("MESH_NUMVERTEX")))
 						{
 							f >> i;
+							vecPos.resize(i);
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("MESH_NUMFACES")))
 						{
 							f >> i;
+							vecIndex.resize(i);
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("MESH_VERTEX_LIST")))
 						{
 							f >> buf;
-
-
 
 							while (true)
 							{
@@ -349,16 +310,10 @@ void FEFileManager::ConvertASEMeshFile(tstring i_fileName)
 								if (buf[0] == FE_TEXT('}'))
 									break;
 
-								else if (buf[0] != FE_TEXT('*'))
-								{
-									f.getline(buf, BUFFER_SIZE);
-									continue;
-								}
-
-								if (TCSCMP_SAME(buf + 1, FE_TEXT("MESH_VERTEX")))
-								{
-									f >> i >> x >> y >> z;
-								}
+								f >> i >> x >> y >> z;
+								vecPos[i].x = x;
+								vecPos[i].y = y;
+								vecPos[i].z = z;
 							}
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("MESH_FACE_LIST")))
@@ -372,24 +327,48 @@ void FEFileManager::ConvertASEMeshFile(tstring i_fileName)
 								if (buf[0] == FE_TEXT('}'))
 									break;
 
-								else if (buf[0] != FE_TEXT('*'))
-								{
-									f.getline(buf, BUFFER_SIZE);
-									continue;
-								}
+								f >> buf;
+
+								i = 0;
+								while (buf[i] != L'\0') i++;
+								buf[--i] = L'\0';
+								i = _wtoi(buf);
+
+								f >> buf >> a >> buf >> b >> buf >> c;
+
+								vecIndex[i].x = a;
+								vecIndex[i].y = b;
+								vecIndex[i].z = c;
+
+								f.getline(buf, BUFFER_SIZE);
 							}
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("MESH_NUMTVERTEX")))
 						{
 							f >> i;
+							vecTex.resize(i);
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("MESH_NUMCVERTEX")))
 						{
 							f >> i;
+							vecColor.resize(i);
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("MESH_CVERTLIST")))
 						{
+							f >> buf;
 
+							while (true)
+							{
+								f >> buf;
+
+								if (buf[0] == FE_TEXT('}'))
+									break;
+
+								f >> i >> x >> y >> z;
+								vecColor[i].x = x;
+								vecColor[i].y = y;
+								vecColor[i].z = z;
+							}
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("MESH_NUMCVFACES")))
 						{
@@ -397,165 +376,133 @@ void FEFileManager::ConvertASEMeshFile(tstring i_fileName)
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("MESH_CFACELIST")))
 						{
+							f >> buf;
 
+							while (true)
+							{
+								f >> buf;
+
+								if (buf[0] == FE_TEXT('}'))
+									break;
+
+								f >> i >> a >> b >> c;
+							}
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("MESH_NORMALS")))
 						{
+							f >> buf;
 
+							while (true)
+							{
+								f >> buf;
+
+								if (buf[0] == FE_TEXT('}'))
+									break;
+
+								else if (buf[0] != FE_TEXT('*'))
+								{
+									f.getline(buf, BUFFER_SIZE);
+									continue;
+								}
+
+
+								if (TCSCMP_SAME(buf + 1, FE_TEXT("MESH_FACENORMAL")))
+								{
+									f >> i >> x >> y >> z;
+								}
+								else if (TCSCMP_SAME(buf + 1, FE_TEXT("MESH_VERTEXNORMAL")))
+								{
+									f >> i >> x >> y >> z;
+								}
+							}
 						}
 					}
 				}
 				else if (TCSCMP_SAME(buf + 1, FE_TEXT("PROP_MOTIONBLUR")))
 				{
-
+					f >> i;
 				}
 				else if (TCSCMP_SAME(buf + 1, FE_TEXT("PROP_CASTSHADOW")))
 				{
-
+					f >> i;
 				}
 				else if (TCSCMP_SAME(buf + 1, FE_TEXT("PROP_RECVSHADOW")))
 				{
-
+					f >> i;
 				}
 			}
 		}
 	}
 }
-
-void LoadShader(tstring i_shaderPath)
+void FEFileManager::ConvertAllFileInPath(tstring i_filePath)
 {
-	FEShader* pShader;
-	TCHAR str[256];
-	TCHAR vs[256], ps[256];
-	UINT num;
-	UINT semantics = 0;
+	tstring extension;
 
-	tifstream f(i_shaderPath.c_str());
+#ifdef _WIN32
+	_tfinddata_t fd;
+	intptr_t handle;
+	int result = 1;
 
-	if (f.fail())
-	{
-		//FEDebug::WarningMessage(FE_TEXT("Failed to load shader."));
+	// 현재 폴더 내 모든 파일을 찾는다.
+	handle = _tfindfirst((i_filePath + FE_TEXT("*")).c_str(), &fd);
+
+	// 파일이 하나도 없다면
+	if (handle == -1)
 		return;
-	}
 
-	f >> vs >> ps;
-
+	do
 	{
-		f >> str >> str >> num;
-		while (num--) semantics |= (FE_SHADER_SEMANTIC_POSITION << num);
+		FileNameExtension(fd.name, extension);
 
-		f >> str >> str >> num;
-		while (num--) semantics |= (FE_SHADER_SEMANTIC_COLOR << num);
-
-		f >> str >> str >> num;
-		while (num--) semantics |= (FE_SHADER_SEMANTIC_NORMAL << num);
-
-		f >> str >> str >> num;
-		while (num--) semantics |= (FE_SHADER_SEMANTIC_TEXCOORD << num);
-
-		f >> str >> str >> num;
-		while (num--) semantics |= (FE_SHADER_SEMANTIC_BLENDINDEXCES << num);
-
-		f >> str >> str >> num;
-		while (num--) semantics |= (FE_SHADER_SEMANTIC_BLENDWEIGHT << num);
-
-		f >> str >> str >> num;
-		while (num--) semantics |= (FE_SHADER_SEMANTIC_POSITIONT << num);
-
-		f >> str >> str >> num;
-		while (num--) semantics |= (FE_SHADER_SEMANTIC_PSIZE << num);
-
-		f >> str >> str >> num;
-		while (num--) semantics |= (FE_SHADER_SEMANTIC_TANGENT << num);
-
-		f >> str >> str >> num;
-		while (num--) semantics |= (FE_SHADER_SEMANTIC_BINORMAL << num);
-	}
-
-	pShader = FEShader::CreateShader((i_shaderPath + vs).c_str(), (i_shaderPath + ps).c_str(), static_cast<FE_SHADER_SEMANTICS>(semantics));
-
-	if (pShader == nullptr)
-	{
-		//FEDebug::WarningMessage(FE_TEXT("Failed to load shader."));
-		return;
-	}
-
-	while (!f.eof())
-	{
-		f >> str;
-
-		if (TCSCMP_SAME(str, FE_TEXT("Name")))
+		if (extension.size() == 0)
 		{
-			f >> str >> pShader->m_Name;
+			if (!TCSCMP_SAME(fd.name, FE_TEXT(".")) && !TCSCMP_SAME(fd.name, FE_TEXT("..")))
+				FEFileManager::ConvertAllFileInPath(i_filePath + fd.name + FE_TEXT("/"));
 		}
 
-		else if (TCSCMP_SAME(str, FE_TEXT("countTexture")))
+		else if (TCSCMP_SAME(extension.c_str(), FE_TEXT("fx")))
 		{
-			f >> str >> pShader->_countTexture;
+			ConvertShaderFile(i_filePath + fd.name);
 		}
 
-		else if (TCSCMP_SAME(str, FE_TEXT("countMatrix")))
+		else if (TCSCMP_SAME(extension.c_str(), FE_TEXT("ase")))
 		{
-			f >> str >> pShader->_countMatrix;
+			ConvertASEMeshFile(i_filePath + fd.name);
 		}
 
-		else if (TCSCMP_SAME(str, FE_TEXT("countVector")))
-		{
-			f >> str >> pShader->_countVector;
-		}
+		result = _tfindnext(handle, &fd);
+	} while (result != -1);
 
-		else if (TCSCMP_SAME(str, FE_TEXT("countScalar")))
-		{
-			f >> str >> pShader->_countScalar;
-		}
+	_findclose(handle);
+#else
+#endif
+}
+void FEFileManager::ExportFile(tstring i_filePath, const FEMesh* i_pMtrl)
+{
+	
+}
+void FEFileManager::ExportFile(tstring i_filePath, const FEShader* i_pShader)
+{
+	/*tofstream f(i_filePath + i_pShader->m_Name + FE_TEXT(".fem"));
 
-		else if (TCSCMP_SAME(str, FE_TEXT("useLight")))
-		{
-			f >> str >> pShader->_useLight;
-		}
-	}
+	f << FE_TEXT("Semantics = ") << i_pShader->GetSemantics() << std::endl;
+	f << FE_TEXT("CountTexture = ") << i_pShader->GetCountTexture() << std::endl;
+	f << FE_TEXT("CountMatrix = ") << i_pShader->GetCountMatrix() << std::endl;
+	f << FE_TEXT("CountVector = ") << i_pShader->GetCountVector() << std::endl;
+	f << FE_TEXT("CountScalar = ") << i_pShader->GetCountScalar() << std::endl;
+	f << FE_TEXT("UseLight = ") << i_pShader->IsUseLight();
+
+	f.close();*/
+}
+void FEFileManager::ExportFile(tstring i_filePath, const FEMaterial* i_pMtrl)
+{
+	tofstream f(i_filePath + i_pMtrl->m_Name + FE_TEXT(".fem"));
+
+	f << FE_TEXT("Shader = ") << i_pMtrl->GetShader()->m_Name << std::endl;
 
 	f.close();
 }
-void LoadMaterial(tstring i_mtrlPath)
-{
 
-	FEMaterial* pMaterial;
-	TCHAR str[256];
-
-	tifstream f(i_mtrlPath.c_str());
-
-	if (f.fail())
-	{
-		//FEDebug::WarningMessage(FE_TEXT("Failed to load Material."));
-		return;
-	}
-
-	while (!f.eof())
-	{
-		f >> str;
-
-		if (TCSCMP_SAME(str, FE_TEXT("Shader")))
-		{
-			f >> str >> str;
-
-			pMaterial = FEMaterial::CreateMaterial(FEShader::Find(str));
-
-			if (pMaterial == nullptr)
-			{
-				//FEDebug::WarningMessage(FE_TEXT("Failed to load shader."));
-				return;
-			}
-		}
-
-		else if (TCSCMP_SAME(str, FE_TEXT("Name")))
-		{
-			f >> str >> pMaterial->m_Name;
-		}
-	}
-
-	f.close();
-}
 void ImportShader(tstring i_path)
 {
 	tstring extension;
@@ -594,59 +541,4 @@ void ImportShader(tstring i_path)
 #else
 #error 윈도우가 아니라구
 #endif
-}
-
-/*void CheckFiles(tstring i_path)
-{
-	tstring extension;
-
-#ifdef _WIN32
-	_tfinddata_t fd;
-	intptr_t handle;
-	int result = 1;
-
-	// 현재 폴더 내 모든 파일을 찾는다.
-	handle = _tfindfirst((i_path + FE_TEXT("*")).c_str(), &fd);
-
-	// 파일이 하나도 없다면
-	if (handle == -1)
-		return;
-
-	do
-	{
-		FileNameExtension(fd.name, extension);
-
-		if (extension.size() == 0)
-		{
-			LoadShader(i_path + fd.name + FE_TEXT("/"));
-		}
-
-		else if (TCSCMP_SAME(extension.c_str(), FE_TEXT("extension")))
-		{
-
-		}
-
-		result = _tfindnext(handle, &fd);
-	} while (result != -1);
-
-	_findclose(handle);
-#else
-#error 윈도우가 아니라구
-#endif
-}*/
-
-void FEFileManager::ImportFile(tstring i_fileName)
-{
-	tstring extension;
-	FileNameExtension(i_fileName, extension);
-
-	if (TCSCMP_SAME(extension.c_str(), FE_TEXT("fes")))
-	{
-		LoadShader(i_fileName);
-	}
-
-	else if (TCSCMP_SAME(extension.c_str(), FE_TEXT("fem")))
-	{
-		LoadMaterial(i_fileName);
-	}
 }

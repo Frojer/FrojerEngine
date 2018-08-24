@@ -105,6 +105,9 @@
     <PostBuildEvent>
       <Command>copy FEFileManager.h $(FE_SDK_INC)</Command>
     </PostBuildEvent>
+    <Lib>
+      <AdditionalDependencies>FEUtility64d.lib;FEObject64d.lib;FERenderer64d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

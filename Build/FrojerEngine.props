@@ -2,6 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
+    <FE_SDK>..\..\SDK\</FE_SDK>
     <FE_SDK_INC>..\..\SDK\Inc\</FE_SDK_INC>
     <FE_SDK_LIB>..\..\SDK\Lib\</FE_SDK_LIB>
     <FE_DXTK_INC>..\..\SDK\DXTK\Inc\</FE_DXTK_INC>
@@ -21,6 +22,9 @@
   </PropertyGroup>
   <ItemDefinitionGroup />
   <ItemGroup>
+    <BuildMacro Include="FE_SDK">
+      <Value>$(FE_SDK)</Value>
+    </BuildMacro>
     <BuildMacro Include="FE_SDK_INC">
       <Value>$(FE_SDK_INC)</Value>
     </BuildMacro>

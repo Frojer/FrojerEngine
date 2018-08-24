@@ -1,6 +1,13 @@
 Demo.vso
 Demo.pso
 
+Semantics = 128479123
+CountTexture = 0
+CountMatrix = 0
+CountVector = 0
+CountScalar = 0
+UseLight = 0
+
 POSITION = 1
 COLOR = 0
 NORMAL = 0
@@ -11,10 +18,3 @@ POSITIONT = 0
 PSIZE = 0
 TANGENT = 0
 BINORMAL = 0
-
-Name = DemoShader
-countTexture = 0
-countMatrix = 0
-countVector = 0
-countScalar = 0
-useLight = 0

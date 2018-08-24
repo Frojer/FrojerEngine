@@ -66,7 +66,7 @@ public:
 	static FEMaterial* CreateMaterial(FEShader* i_pShader);
 
 	void SetShader(FEShader* i_pShader);
-	FEShader* GetShader();
+	FEShader* GetShader() const;
 
 	void SetScalar(UINT id, const float scalar);
 	void SetScalar(UINT id, const int scalar);

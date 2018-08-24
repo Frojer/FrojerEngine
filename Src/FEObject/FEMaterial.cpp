@@ -181,7 +181,7 @@ void FEMaterial::SetShader(FEShader* i_pShader)
 }
 
 
-FEShader* FEMaterial::GetShader()
+FEShader* FEMaterial::GetShader() const
 {
 	return _pShader;
 }

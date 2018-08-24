@@ -58,7 +58,146 @@ FESystemSetting LoadSetting()
 
 	return setting;
 }
+void LoadShader(tstring i_shaderPath)
+{
+	FEShader* pShader;
+	TCHAR str[256];
+	TCHAR vs[256], ps[256];
+	UINT num;
+	UINT semantics = 0;
 
+	tifstream f(i_shaderPath.c_str());
+
+	if (f.fail())
+	{
+		//FEDebug::WarningMessage(FE_TEXT("Failed to load shader."));
+		return;
+	}
+
+	f >> vs >> ps;
+
+	{
+		f >> str >> str >> num;
+		while (num--) semantics |= (FE_SHADER_SEMANTIC_POSITION << num);
+
+		f >> str >> str >> num;
+		while (num--) semantics |= (FE_SHADER_SEMANTIC_COLOR << num);
+
+		f >> str >> str >> num;
+		while (num--) semantics |= (FE_SHADER_SEMANTIC_NORMAL << num);
+
+		f >> str >> str >> num;
+		while (num--) semantics |= (FE_SHADER_SEMANTIC_TEXCOORD << num);
+
+		f >> str >> str >> num;
+		while (num--) semantics |= (FE_SHADER_SEMANTIC_BLENDINDEXCES << num);
+
+		f >> str >> str >> num;
+		while (num--) semantics |= (FE_SHADER_SEMANTIC_BLENDWEIGHT << num);
+
+		f >> str >> str >> num;
+		while (num--) semantics |= (FE_SHADER_SEMANTIC_POSITIONT << num);
+
+		f >> str >> str >> num;
+		while (num--) semantics |= (FE_SHADER_SEMANTIC_PSIZE << num);
+
+		f >> str >> str >> num;
+		while (num--) semantics |= (FE_SHADER_SEMANTIC_TANGENT << num);
+
+		f >> str >> str >> num;
+		while (num--) semantics |= (FE_SHADER_SEMANTIC_BINORMAL << num);
+	}
+
+	pShader = FEShader::CreateShader((i_shaderPath + vs).c_str(), (i_shaderPath + ps).c_str(), static_cast<FE_SHADER_SEMANTICS>(semantics));
+
+	if (pShader == nullptr)
+	{
+		//FEDebug::WarningMessage(FE_TEXT("Failed to load shader."));
+		return;
+	}
+
+	while (!f.eof())
+	{
+		f >> str;
+
+		if (TCSCMP_SAME(str, FE_TEXT("Name")))
+		{
+			f >> str >> pShader->m_Name;
+		}
+
+		else if (TCSCMP_SAME(str, FE_TEXT("countTexture")))
+		{
+			f >> str >> pShader->_countTexture;
+		}
+
+		else if (TCSCMP_SAME(str, FE_TEXT("countMatrix")))
+		{
+			f >> str >> pShader->_countMatrix;
+		}
+
+		else if (TCSCMP_SAME(str, FE_TEXT("countVector")))
+		{
+			f >> str >> pShader->_countVector;
+		}
+
+		else if (TCSCMP_SAME(str, FE_TEXT("countScalar")))
+		{
+			f >> str >> pShader->_countScalar;
+		}
+
+		else if (TCSCMP_SAME(str, FE_TEXT("useLight")))
+		{
+			f >> str >> pShader->_useLight;
+		}
+	}
+
+	f.close();
+}
+void LoadMaterial(tstring i_mtrlPath)
+{
+
+	FEMaterial* pMaterial = nullptr;
+	TCHAR str[256];
+
+	tifstream f(i_mtrlPath.c_str());
+
+	if (f.fail())
+	{
+		//FEDebug::WarningMessage(FE_TEXT("Failed to load Material."));
+		return;
+	}
+
+	while (!f.eof())
+	{
+		f >> str;
+
+		if (TCSCMP_SAME(str, FE_TEXT("Shader")))
+		{
+			f >> str >> str;
+
+			pMaterial = FEMaterial::CreateMaterial(FEShader::Find(str));
+
+			if (pMaterial == nullptr)
+			{
+				//FEDebug::WarningMessage(FE_TEXT("Failed to load shader."));
+				return;
+			}
+		}
+
+		else if (TCSCMP_SAME(str, FE_TEXT("Name")))
+		{
+			if (pMaterial == nullptr)
+			{
+				//FEDebug::WarningMessage(FE_TEXT("Failed to load shader."));
+				return;
+			}
+
+			f >> str >> pMaterial->m_Name;
+		}
+	}
+
+	f.close();
+}
 
 FESystem::FESystem()
 	: _pWindow(nullptr), m_bExit(false)

@@ -123,7 +123,6 @@ void FEShader::Render() const
 }
 
 
-
 FEShader* FEShader::Find(UINT id)
 {
 	if (_shaderMap.find(id) == _shaderMap.end())
