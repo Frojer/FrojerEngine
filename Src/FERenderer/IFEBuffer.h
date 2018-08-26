@@ -7,6 +7,10 @@
 
 class IFEBuffer
 {
+public:
+	UINT stride;
+	UINT offset;
+
 protected:
 	virtual bool Create(FE_BIND_FLAG bindFlag, FE_USAGE usage, bool cpuAccess, UINT bufferSize, const void* bufferData = nullptr) = 0;
 
@@ -14,7 +18,7 @@ public:
 	IFEBuffer() = default;
 	virtual ~IFEBuffer() = default;
 
-	static IFEBuffer* CreateBuffer(FE_BIND_FLAG bindFlag, FE_USAGE usage, bool cpuAccess, UINT bufferSize, const void* bufferData = nullptr);
+	static IFEBuffer* CreateBuffer(FE_BIND_FLAG bindFlag, FE_USAGE usage, bool cpuAccess, UINT bufferSize, const void* bufferData = nullptr, UINT stride = 0, UINT offset = 0);
 
 	virtual void UpdateBuffer(const void* pData, UINT size) = 0;
 };

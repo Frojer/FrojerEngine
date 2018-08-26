@@ -54,16 +54,14 @@ public:
 	FETexture* m_pTexture[128];
 
 private:
-	FEMaterial(FEShader* i_pShader);
 	static void ClearMap();
 	static void UpdateLightData();
 	void UpdateConstantBuffer(FEMatrixA& mWorld);
 	void Render();
 
 public:
+	FEMaterial(FEShader* i_pShader);
 	virtual ~FEMaterial();
-
-	static FEMaterial* CreateMaterial(FEShader* i_pShader);
 
 	void SetShader(FEShader* i_pShader);
 	FEShader* GetShader() const;

@@ -550,9 +550,11 @@ void FEDX11Renderer::SetDSState(DWORD flag, UINT stencilRef)
 }
 
 
-void FEDX11Renderer::SetVertexBuffers(UINT StartSlot, UINT NumBuffers, const IFEBuffer* ppVertexBuffers, const UINT* pStrides, const UINT* pOffsets) const
+void FEDX11Renderer::SetVertexBuffer(UINT StartSlot, UINT NumBuffers, const IFEBuffer* ppVertexBuffers, const UINT* pStrides, const UINT* pOffsets) const
 {
-	ID3D11Buffer* pVB = static_cast<const FEDX11Buffer*>(ppVertexBuffers)->GetBuffer();
+	ID3D11Buffer* pVB;
+	if (ppVertexBuffers == nullptr)	pVB = nullptr;
+	else	pVB = static_cast<const FEDX11Buffer*>(ppVertexBuffers)->GetBuffer();
 	_pDXDC->IASetVertexBuffers(StartSlot, NumBuffers, &pVB, pStrides, pOffsets);
 }
 

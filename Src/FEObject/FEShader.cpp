@@ -20,31 +20,6 @@ FEShader::~FEShader()
 }
 
 
-FEShader* FEShader::CreateShader(LPCTSTR i_vsName, LPCTSTR i_psName, FE_SHADER_SEMANTICS i_semantics)
-{
-	FEShader* pShader = new FEShader;
-
-	if (pShader == nullptr)
-	{
-		//FEDebug::WarningMessage(FE_TEXT("Failed to dynamic allocate"));
-		return nullptr;
-	}
-
-	pShader->_pShader = IFEShader::CreateShader(i_vsName, i_psName, i_semantics);
-
-	pShader->_semantics = i_semantics;
-
-	if (pShader->_pShader == nullptr)
-	{
-		//FEDebug::WarningMessage(FE_TEXT("Failed to IFEShader::CreateShader()"));
-		delete pShader;
-		return nullptr;
-	}
-
-	return pShader;
-}
-
-
 void FEShader::ClearMap()
 {
 	auto i = _shaderMap.begin();
@@ -69,6 +44,22 @@ void FEShader::ReleaseDefaultConstantBuffer()
 {
 	SAFE_DELETE(_pWVP_CB);
 	SAFE_DELETE(_pLight_CB);
+}
+
+
+bool FEShader::CreateShader(LPCTSTR i_vsName, LPCTSTR i_psName, FE_SHADER_SEMANTICS i_semantics)
+{
+	_pShader = IFEShader::CreateShader(i_vsName, i_psName, i_semantics);
+
+	_semantics = i_semantics;
+
+	if (_pShader == nullptr)
+	{
+		//FEDebug::WarningMessage(FE_TEXT("Failed to IFEShader::CreateShader()"));
+		return false;
+	}
+
+	return true;
 }
 
 
@@ -118,8 +109,8 @@ void FEShader::Render() const
 	_pShader->Render();
 
 	_pShader->SetConstantBuffer(i++, _pWVP_CB);
-	if (_useLight)					_pShader->SetConstantBuffer(i++, _pLight_CB);
-	if (_pConstBuffer != nullptr)	_pShader->SetConstantBuffer(i++, _pConstBuffer);
+	//if (_useLight)					_pShader->SetConstantBuffer(i++, _pLight_CB);
+	//if (_pConstBuffer != nullptr)	_pShader->SetConstantBuffer(i++, _pConstBuffer);
 }
 
 

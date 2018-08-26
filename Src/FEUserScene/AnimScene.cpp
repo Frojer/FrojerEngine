@@ -40,32 +40,11 @@ void AnimScene::Load()
 	auto newSys = FEGameObject::CopyObject(pSys);
 	*/
 
-	VF_PNT v;
-	IndexFormat i;
-	memset(&v, 0, sizeof(VF_PNT));
-	std::vector<VF_PNT> verts;
-	v.pos = FEVector3(-0.5f, -0.5f, 0.0f);
-	verts.push_back(v);
-	v.pos = FEVector3(0.0f, 0.5f, 0.0f);
-	verts.push_back(v);
-	v.pos = FEVector3(0.5f, -0.5f, 0.0f);
-	verts.push_back(v);
-
-	std::vector<IndexFormat> indcs;
-	i.x = 0;
-	i.y = 1;
-	i.z = 2;
-	indcs.push_back(i);
-
-	FEMesh* pMesh = FEMesh::CreateMesh(verts, indcs);
-	pMesh->m_Name = FE_TEXT("DemoMesh");
-
 	FEGameObject* pTriangle = new FEGameObject(FEVector3::Zero, FEVector3::Zero, FEVector3::One);
 	pTriangle->m_Name = FE_TEXT("»ï°¢Çü");
 	FERenderer* renderer = pTriangle->AddComponent<FERenderer>();
 	renderer->m_pMaterial = FEMaterial::Find(FE_TEXT("DemoMaterial"));
-	renderer->m_pMesh = pMesh;
-	renderer->SetPrimitiveTopology(PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+	renderer->m_pMesh = FEMesh::Find(FE_TEXT("Line002"));
 
 	//FEShader* pShader = new FEShader;
 	//pTriangle->GetRenderer()->m_pMaterial = new FEMaterial()

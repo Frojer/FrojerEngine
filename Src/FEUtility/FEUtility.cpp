@@ -1,26 +1,28 @@
 #include "FEUtility.h"
 
-void FileNameExtension(const tstring& i_fileName, tstring& o_extension)
+tstring GetFileNameExtension(const tstring& i_fileName)
 {
+	tstring extension;
 	size_t comma = i_fileName.rfind(FE_TEXT("."), i_fileName.size() - 1);
-	if (comma == 0xffffffffffffffff) o_extension.clear();
-	else o_extension = i_fileName.substr(comma + 1, i_fileName.size() - comma);
-}
+	if (comma == 0xffffffffffffffff) extension.clear();
+	else extension = i_fileName.substr(comma + 1, i_fileName.size() - comma);
 
-void GetFilePath(const tstring& filePath, tstring& o_name)
+	return extension;
+}
+tstring GetFilePath(const tstring& filePath)
 {
 	if (filePath.back() == FE_TEXT('"'))
-		o_name = filePath.substr(1, filePath.rfind(FE_TEXT("/"), filePath.size() - 2) + 1);
+		return filePath.substr(1, filePath.rfind(FE_TEXT("/"), filePath.size() - 2) + 1);
 	else
-		o_name = filePath.substr(0, filePath.rfind(FE_TEXT("/"), filePath.size() - 1) + 1);
+		return filePath.substr(0, filePath.rfind(FE_TEXT("/"), filePath.size() - 1) + 1);
 }
-
-void GetFileName(const tstring& filePath, tstring& o_name)
+tstring GetFileName(const tstring& filePath)
 {
-	o_name = filePath.substr((filePath.rfind(FE_TEXT("/"), filePath.length() - 1) + 1), (filePath.rfind(FE_TEXT("."), filePath.length() - 1) + 1));
+	auto lpos = filePath.rfind(FE_TEXT("/"), filePath.length() - 1) + 1;
+	auto rpos = filePath.rfind(FE_TEXT("."), filePath.length() - 1);
+	return filePath.substr(lpos, rpos - lpos);
 }
-
-void GetFileNameWithExtension(const tstring& filePath, tstring& o_name)
+tstring GetFileNameWithExtension(const tstring& filePath)
 {
-	o_name = filePath.substr((filePath.rfind(FE_TEXT("/"), filePath.length() - 1) + 1), filePath.size());
+	return filePath.substr((filePath.rfind(FE_TEXT("/"), filePath.length() - 1) + 1), filePath.size());
 }

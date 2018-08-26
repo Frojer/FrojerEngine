@@ -23,10 +23,10 @@ int wmain(int argc, wchar_t* argv[])
 void main(int argc, char* argv[])
 #endif
 {
-	if (argc != 1)
+	if (argc != 3)
 		return -1;
 
-	FEFileManager::ConvertAllFileInPath(argv[0]);
+	FEFileManager::ConvertAllFileInPath(argv[1], argv[2]);
 
 	return 0;
 }

@@ -7,6 +7,7 @@
 #include <tchar.h>
 #include <string>
 #include <fstream>
+#include <sstream>
 
 typedef unsigned char		BYTE;
 typedef unsigned long       DWORD;
@@ -25,11 +26,17 @@ typedef std::wstring tstring;
 typedef std::wfstream tfstream;
 typedef std::wifstream tifstream;
 typedef std::wofstream tofstream;
+typedef std::wstringstream tstringstream;
+typedef std::wistringstream tistringstream;
+typedef std::wostringstream tostringstream;
 #else
 typedef std::string tstring;
 typedef std::fstream tfstream;
 typedef std::ifstream tifstream;
 typedef std::ofstream tofstream;
+typedef std::stringstream tstringstream;
+typedef std::istringstream tistringstream;
+typedef std::ostringstream tostringstream;
 #endif
 
 #define FE_TEXT(x) _TEXT(x)

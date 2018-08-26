@@ -67,7 +67,7 @@ public:
 	virtual void SetDSState(DWORD flag, UINT stencilRef) override;
 	//virtual void SetBlendState(BLEND_STATE bs) override;
 
-	virtual void SetVertexBuffers(UINT StartSlot, UINT NumBuffers, const IFEBuffer* ppVertexBuffers, const UINT* pStrides, const UINT* pOffsets) const override;
+	virtual void SetVertexBuffer(UINT StartSlot, UINT NumBuffers, const IFEBuffer* ppVertexBuffers, const UINT* pStrides, const UINT* pOffsets) const override;
 	virtual void SetIndexBuffer(const IFEBuffer* pIndexBuffer, FEGI_FORMAT Format, UINT Offset) const override;
 	virtual void SetPrimitiveTopology(FE_PRIMITIVE_TOPOLOGY Topology) const override;
 

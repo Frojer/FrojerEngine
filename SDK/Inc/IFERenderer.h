@@ -47,7 +47,7 @@ public:
 	virtual void SetDSState(DWORD flag, UINT stencilRef) = 0;
 	//virtual void SetBlendState(BLEND_STATE bs) = 0;
 
-	virtual void SetVertexBuffers(UINT StartSlot, UINT NumBuffers, const IFEBuffer* ppVertexBuffers, const UINT* pStrides, const UINT* pOffsets) const = 0;
+	virtual void SetVertexBuffer(UINT StartSlot, UINT NumBuffers, const IFEBuffer* ppVertexBuffers, const UINT* pStrides, const UINT* pOffsets) const = 0;
 	virtual void SetIndexBuffer(const IFEBuffer* pIndexBuffer, FEGI_FORMAT Format, UINT Offset) const = 0;
 	virtual void SetPrimitiveTopology(FE_PRIMITIVE_TOPOLOGY Topology) const = 0;
 	

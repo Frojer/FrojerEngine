@@ -2,13 +2,15 @@
 
 #include <IFERenderer.h>
 
+#define VERTEX_ELEMETN_NUM 4
 using namespace std;
 
 unordered_map<UINT, FEMesh*> FEMesh::_meshMap;
 
-FEMesh::FEMesh(vector<VF_PNT> i_verts, vector<IndexFormat> i_indics)
-	: _pVB(nullptr), _pIB(nullptr), m_verts(i_verts), m_indics(i_indics)
+FEMesh::FEMesh()
+	: _pVB(), _pIB(nullptr), m_topology(PRIMITIVE_TOPOLOGY_TRIANGLELIST)
 {
+	memset(&_pVB, 0, sizeof(_pVB));
 	_meshMap.insert(pair<UINT, FEMesh*>(GetID(), this));
 }
 
@@ -17,32 +19,27 @@ FEMesh::~FEMesh()
 {
 	_meshMap.erase(GetID());
 
-	SAFE_DELETE(_pVB);
-	SAFE_DELETE(_pIB);
+	ReleaseBuffer();
 
-	m_verts.clear();
+	m_pos.clear();
+	m_color.clear();
+	m_normal.clear();
+	m_uv.clear();
 	m_indics.clear();
 }
 
 
-FEMesh* FEMesh::CreateMesh(std::vector<VF_PNT> i_verts, std::vector<IndexFormat> i_indics)
+bool FEMesh::UpdateMeshData()
 {
-	FEMesh* pMesh = new FEMesh(i_verts, i_indics);
+	ReleaseBuffer();
 
-	if (pMesh == nullptr)
+	if (!CreateBuffer())
 	{
-		//FEDebug::WarningMessage(FE_TEXT("Failed to dynamic allocate"));
-		return nullptr;
+		//FEDebug::WarningMessage(FE_TEXT("Failed to update mesh data"));
+		return false;
 	}
 
-	if (!pMesh->CreateBuffer())
-	{
-		//FEDebug::WarningMessage(FE_TEXT("Failed to create mesh"));
-		delete pMesh;
-		return nullptr;
-	}
-
-	return pMesh;
+	return true;
 }
 
 
@@ -74,17 +71,18 @@ FEMesh* FEMesh::Find(tstring name)
 }
 
 
-void FEMesh::Render(PRIMITIVE_TOPOLOGY topology)
+void FEMesh::Render()
 {
 	IFERenderer* pRenderer = IFERenderer::GetInstance();
+	UINT zero = 0;
 
-	UINT stride = sizeof(VF_PNT);
-	UINT offset = 0;
-	pRenderer->SetVertexBuffers(0, 1, _pVB, &stride, &offset); // 버텍스 버퍼 세팅
-	pRenderer->SetIndexBuffer(_pIB, FEGI_FORMAT_R32_UINT, offset);		// 인덱스 버퍼 세팅
+	// 버텍스 버퍼 세팅
+	for (UINT i = 0; i < 1; i++)
+		pRenderer->SetVertexBuffer(i, 1, _pVB[i], _pVB[i] == nullptr ? &zero : &_pVB[i]->stride, _pVB[i] == nullptr ? &zero : &_pVB[i]->offset);
+	pRenderer->SetIndexBuffer(_pIB, FEGI_FORMAT_R32_UINT, _pIB->offset);		// 인덱스 버퍼 세팅
 
 	// 기하 위상 구조 설정 Set primitive topology
-	switch (topology)
+	switch (m_topology)
 	{
 	case PRIMITIVE_TOPOLOGY_POINTLIST:
 		pRenderer->SetPrimitiveTopology(FE_PRIMITIVE_TOPOLOGY_POINTLIST);
@@ -127,11 +125,44 @@ void FEMesh::Render(PRIMITIVE_TOPOLOGY topology)
 
 bool FEMesh::CreateBuffer()
 {
-	_pVB = IFEBuffer::CreateBuffer(FE_BIND_VERTEX_BUFFER, FE_USAGE_DEFAULT, false, m_verts.size() * sizeof(VF_PNT), m_verts.data());
-	if (_pVB == nullptr)	return false;
+	UINT i = 0;
+	IFEBuffer* pBuf = nullptr;
+	if (m_pos.size())
+	{
+		pBuf = IFEBuffer::CreateBuffer(FE_BIND_VERTEX_BUFFER, FE_USAGE_DEFAULT, false, m_pos.size() * sizeof(FEVector3), m_pos.data());
+		if (pBuf == nullptr) return false;
+		pBuf->stride = sizeof(FEVector3);
+		_pVB[i++] = pBuf;
+	}
+	if (m_color.size())
+	{
+		pBuf = IFEBuffer::CreateBuffer(FE_BIND_VERTEX_BUFFER, FE_USAGE_DEFAULT, false, m_color.size() * sizeof(FEVector4), m_color.data());
+		if (pBuf == nullptr) return false;
+		pBuf->stride = sizeof(FEVector4);
+		_pVB[i++] = pBuf;
+	}
+	if (m_normal.size())
+	{
+		pBuf = IFEBuffer::CreateBuffer(FE_BIND_VERTEX_BUFFER, FE_USAGE_DEFAULT, false, m_normal.size() * sizeof(FEVector3), m_normal.data());
+		if (pBuf == nullptr) return false;
+		pBuf->stride = sizeof(FEVector3);
+		_pVB[i++] = pBuf;
+	}
+	if (m_uv.size())
+	{
+		pBuf = IFEBuffer::CreateBuffer(FE_BIND_VERTEX_BUFFER, FE_USAGE_DEFAULT, false, m_uv.size() * sizeof(FEVector2), m_uv.data());
+		if (pBuf == nullptr) return false;
+		pBuf->stride = sizeof(FEVector2);
+		_pVB[i++] = pBuf;
+	}
 
-	_pIB = IFEBuffer::CreateBuffer(FE_BIND_INDEX_BUFFER, FE_USAGE_DEFAULT, false, m_indics.size() * sizeof(IndexFormat), m_indics.data());
+	_pIB = IFEBuffer::CreateBuffer(FE_BIND_INDEX_BUFFER, FE_USAGE_DEFAULT, false, m_indics.size() * sizeof(FE_IndexFormat), m_indics.data());
 	if (_pIB == nullptr)	return false;
 
 	return true;
+}
+void FEMesh::ReleaseBuffer()
+{
+	for(UINT i = 0; i < VERTEX_ELEMETN_NUM; i++)	SAFE_DELETE(_pVB[i]);
+	SAFE_DELETE(_pIB);
 }

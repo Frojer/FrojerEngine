@@ -27,20 +27,19 @@ private:
 	bool _useLight;
 
 private:
-	FEShader();
-
 	static void ClearMap();
 
 	static bool CreateDefaultConstantBuffer();
 	static void ReleaseDefaultConstantBuffer();
 
+	bool CreateShader(LPCTSTR i_vsName, LPCTSTR i_psName, FE_SHADER_SEMANTICS i_semantics);
+
 	bool CreateConstantBuffer();
 	void UpdateConstantBuffer(const void* pCB, UINT size);
 
 public:
+	FEShader();
 	virtual ~FEShader();
-
-	static FEShader* CreateShader(LPCTSTR i_vsName, LPCTSTR i_psName, FE_SHADER_SEMANTICS i_semantics);
 
 	void Release();
 
@@ -49,7 +48,7 @@ public:
 	static FEShader* Find(UINT id);
 	static FEShader* Find(LPCTSTR name);
 
-	friend void LoadShader(tstring i_path);
+	friend void LoadShader(tstring i_path, tstring i_name);
 	friend class FESystem;
 	friend class FEMaterial;
 };

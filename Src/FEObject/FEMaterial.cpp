@@ -24,20 +24,6 @@ FEMaterial::~FEMaterial()
 }
 
 
-FEMaterial* FEMaterial::CreateMaterial(FEShader* i_pShader)
-{
-	FEMaterial* pMaterial = new FEMaterial(i_pShader);
-
-	if (pMaterial == nullptr)
-	{
-		//FEDebug::WarningMessage(FE_TEXT("Failed to dynamic allocate"));
-		return nullptr;
-	}
-
-	return pMaterial;
-}
-
-
 void FEMaterial::ClearMap()
 {
 	auto i = _mtrlMap.begin();

@@ -1,0 +1,14 @@
+ID = 7601aa05d064643beeeebc949a7472
+VertexFormat = 7
+VertexCount = 3
+-0.5	-0.5	0
+0	1	0	0
+-0	1	0
+0	0.5	0
+1	0	0	0
+-0	1	0
+0.5	-0.5	0
+0	0	1	0
+-0	1	0
+IndexCount = 1
+0	1	2

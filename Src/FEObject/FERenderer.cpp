@@ -3,7 +3,7 @@
 #include <IFERenderer.h>
 
 FERenderer::FERenderer()
-	: _PT(PRIMITIVE_TOPOLOGY_TRIANGLELIST), _RSState(0), _DSState(0), /*_BlendState(BS_ADD),*/ m_stencilRef(0), m_pMesh(nullptr), m_pMaterial(nullptr)
+	: _RSState(0), _DSState(0), /*_BlendState(BS_ADD),*/ m_stencilRef(0), m_pMesh(nullptr), m_pMaterial(nullptr)
 {
 
 }
@@ -22,7 +22,7 @@ void FERenderer::Render()
 	{
 		m_pMaterial->UpdateConstantBuffer(FEMath::FEConvertToAlignData(GetMyObject()->GetTransform()->GetWorldMatrix()));
 
-		m_pMesh->Render(_PT);
+		m_pMesh->Render();
 		m_pMaterial->Render();
 
 		pRenderer->SetRSState(_RSState);
@@ -31,12 +31,6 @@ void FERenderer::Render()
 
 		pRenderer->DrawIndexed(m_pMesh->m_indics.size() * 3, 0, 0);
 	}
-}
-
-
-void FERenderer::SetPrimitiveTopology(PRIMITIVE_TOPOLOGY i_pt)
-{
-	_PT = i_pt;
 }
 
 

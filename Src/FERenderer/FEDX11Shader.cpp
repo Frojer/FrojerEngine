@@ -125,9 +125,9 @@ bool FEDX11Shader::CreateInputLayout(FE_SHADER_SEMANTICS i_semanticsFlag)
 	D3D11_INPUT_ELEMENT_DESC desc;
 	UINT offset = 0;
 	
-	for (UINT i = 0; i < sizeof(i_semanticsFlag) * 8; i++)
+	for (UINT i = 0; i < FE_SHADER_SEMANTIC_NUM; i++)
 	{
-		switch (i_semanticsFlag & (2 ^ i))
+		switch (i_semanticsFlag & (UINT)pow(2U, i))
 		{
 		case FE_SHADER_SEMANTIC_POSITION:
 			desc.SemanticName = "POSITION";

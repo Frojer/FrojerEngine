@@ -2,6 +2,7 @@
 #include "FEDX11Renderer.h"
 
 FEDX11Buffer::FEDX11Buffer()
+	: _pBuffer(nullptr)
 {
 }
 
