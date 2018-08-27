@@ -1,5 +1,6 @@
 #include "FESystem.h"
 #include "FEFileManager.h"
+#include "FETime.h"
 #include <IFERenderer.h>
 #include <FEDefine.h>
 #include <FEUtility.h>
@@ -415,6 +416,8 @@ void FESystem::Run()
 	{
 		if (!_pWindow->MessagePump())		// ¸Þ¼¼Áö ÆßÇÁ.
 			break;
+		
+		FETime::TimeUpdate();
 
 		pSM->ChangeScene();
 

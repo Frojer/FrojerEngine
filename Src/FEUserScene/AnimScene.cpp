@@ -43,13 +43,13 @@ void AnimScene::Load()
 	FEGameObject* pCam = new FEGameObject(FEVector3(0.0f, 0.0f, -10.0f), FEVector3::Zero, FEVector3::One);
 	pCam->m_Name = FE_TEXT("카메라");
 	pCam->AddComponent<FECamera>();
-	pCam->AddComponent<FETEST>();
 
 	FEGameObject* pTriangle = new FEGameObject(FEVector3(0.0f, 0.0f, 0.0f), FEVector3::Zero, FEVector3::One);
 	pTriangle->m_Name = FE_TEXT("삼각형");
 	FERenderer* renderer = pTriangle->AddComponent<FERenderer>();
 	renderer->m_pMaterial = FEMaterial::Find(FE_TEXT("DemoMaterial"));
-	renderer->m_pMesh = FEMesh::Find(FE_TEXT("Line003"));
+	renderer->m_pMesh = FEMesh::Find(FE_TEXT("Sphere001"));
+	pTriangle->AddComponent<FETEST>();
 	//renderer->m_pMesh->m_topology = PRIMITIVE_TOPOLOGY_LINELIST;
 
 	//FEShader* pShader = new FEShader;

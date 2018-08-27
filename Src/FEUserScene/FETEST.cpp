@@ -33,4 +33,6 @@ void FETEST::Update()
 	if (IsKeyDown('L'))		GetMyObject()->GetTransform()->Rotate(FEVector3(0.0f, 1.0f, 0.0f));
 	if (IsKeyDown('U'))		GetMyObject()->GetTransform()->Rotate(FEVector3(0.0f, 0.0f, 0.1f));
 	if (IsKeyDown('O'))		GetMyObject()->GetTransform()->Rotate(FEVector3(0.0f, 0.0f, -0.1f));
+
+	if (IsKeyDown(VK_SPACE))	GetMyObject()->GetRenderer()->SetWireFrame(GetMyObject()->GetRenderer()->GetSolidFrame());
 }

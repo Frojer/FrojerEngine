@@ -20,12 +20,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FESystem.cpp" />
+    <ClCompile Include="FETime.cpp" />
     <ClCompile Include="FEWindow.cpp" />
     <ClCompile Include="FEWin32Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FESystem.h" />
     <ClInclude Include="FESystemDefine.h" />
+    <ClInclude Include="FETime.h" />
     <ClInclude Include="FEWindow.h" />
     <ClInclude Include="FEWin32Window.h" />
   </ItemGroup>
