@@ -6,7 +6,6 @@ cbuffer DefaultConstBuffer : register(b0) //상수버퍼 0번에 등록 (최대 14개. 0~13
     matrix mView;
     matrix mWV;
     matrix mProj;
-    float4 vTest;
 }
 
 
@@ -36,12 +35,13 @@ VSOutput VS_Main(
 
 	 //변환.
     //pos = mul(pos, mWVP);
-    //pos = mul(pos, mWorld);
-    //pos = mul(pos, mView);
-    //pos = mul(pos, mProj);	 	
+    pos = mul(pos, mWorld);
+    pos = mul(pos, mView);
+    pos = mul(pos, mProj);	 	
 
     o.pos = pos; //변환된 정보 출력..
-    o.col = mView[2][0]; //색상은 변환 없이 출력.
+    o.col = col;
+    //o.col = abs(mWorld[3]); //색상은 변환 없이 출력.
 
     return o;
 }

@@ -19,12 +19,12 @@ FETEST::~FETEST()
 void FETEST::Update()
 {
 	// 이동
-	if (IsKeyDown('W'))		GetMyObject()->GetTransform()->Translate(FEVector3(0.0f, 0.0f, 0.0001f));
-	if (IsKeyDown('S'))		GetMyObject()->GetTransform()->Translate(FEVector3(0.0f, 0.0f, -0.0001f));
-	if (IsKeyDown('A'))		GetMyObject()->GetTransform()->Translate(FEVector3(-0.0001f, 0.0f, 0.0f));
-	if (IsKeyDown('D'))		GetMyObject()->GetTransform()->Translate(FEVector3(0.0001f, 0.0f, 0.0f));
-	if (IsKeyDown('Q'))		GetMyObject()->GetTransform()->Translate(FEVector3(0.0f, 0.0001f, 0.0f));
-	if (IsKeyDown('E'))		GetMyObject()->GetTransform()->Translate(FEVector3(0.0f, -0.0001f, 0.0f));
+	if (IsKeyDown('W'))		GetMyObject()->GetTransform()->Translate(FEVector3(0.0f, 0.0f, 0.01f));
+	if (IsKeyDown('S'))		GetMyObject()->GetTransform()->Translate(FEVector3(0.0f, 0.0f, -0.01f));
+	if (IsKeyDown('A'))		GetMyObject()->GetTransform()->Translate(FEVector3(-0.01f, 0.0f, 0.0f));
+	if (IsKeyDown('D'))		GetMyObject()->GetTransform()->Translate(FEVector3(0.01f, 0.0f, 0.0f));
+	if (IsKeyDown('Q'))		GetMyObject()->GetTransform()->Translate(FEVector3(0.0f, 0.01f, 0.0f));
+	if (IsKeyDown('E'))		GetMyObject()->GetTransform()->Translate(FEVector3(0.0f, -0.01f, 0.0f));
 
 	// 회전
 	if (IsKeyDown('I'))		GetMyObject()->GetTransform()->Rotate(FEVector3(1.0f, 0.0f, 0.0f));

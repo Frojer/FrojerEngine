@@ -53,7 +53,7 @@ void FEDX11Buffer::UpdateBuffer(const void* pData, UINT size)
 	switch (_usage)
 	{
 	case FE_USAGE_DEFAULT:
-		_pRenderer->GetDXDC()->UpdateSubresource(_pBuffer, 0, nullptr, &pData, 0, 0);
+		_pRenderer->GetDXDC()->UpdateSubresource(_pBuffer, 0, nullptr, pData, 0, 0);
 		break;
 
 	case FE_USAGE_DYNAMIC:

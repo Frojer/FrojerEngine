@@ -27,7 +27,7 @@ struct FESystemSetting
 
 	UINT SampleCount;
 	UINT SampleQuality;
-	DWORD SampleAnisotropy;
+	DWORD Anisotropy;
 };
 
 struct FEViewport

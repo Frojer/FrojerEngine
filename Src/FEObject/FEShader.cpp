@@ -31,9 +31,9 @@ void FEShader::ClearMap()
 
 bool FEShader::CreateDefaultConstantBuffer()
 {
-	_pWVP_CB = IFEBuffer::CreateBuffer(FE_BIND_CONSTANT_BUFFER, FE_USAGE_DYNAMIC, true, sizeof(FEMaterial::_WVPData), &FEMaterial::_WVPData);
+	_pWVP_CB = IFEBuffer::CreateBuffer(FE_BIND_CONSTANT_BUFFER, FE_USAGE_DEFAULT, false, sizeof(FEMaterial::_WVPData), &FEMaterial::_WVPData);
 	if (_pWVP_CB == nullptr) return false;
-	_pLight_CB = IFEBuffer::CreateBuffer(FE_BIND_CONSTANT_BUFFER, FE_USAGE_DYNAMIC, true, sizeof(FEMaterial::_LightData), &FEMaterial::_LightData);
+	_pLight_CB = IFEBuffer::CreateBuffer(FE_BIND_CONSTANT_BUFFER, FE_USAGE_DEFAULT, false, sizeof(FEMaterial::_LightData), &FEMaterial::_LightData);
 	if (_pLight_CB == nullptr) return false;
 
 	return true;
