@@ -64,6 +64,9 @@
     <ClCompile Include="IFEObject.cpp">
       <Filter>Object\Source File</Filter>
     </ClCompile>
+    <ClCompile Include="FECamera.cpp">
+      <Filter>Object\Component\Source File</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FEComponent.h">
@@ -105,6 +108,9 @@
     </ClInclude>
     <ClInclude Include="IFEObject.h">
       <Filter>Object\Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="FECamera.h">
+      <Filter>Object\Component\Header File</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

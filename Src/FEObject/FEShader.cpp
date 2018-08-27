@@ -59,6 +59,8 @@ bool FEShader::CreateShader(LPCTSTR i_vsName, LPCTSTR i_psName, FE_SHADER_SEMANT
 		return false;
 	}
 
+	CreateConstantBuffer();
+
 	return true;
 }
 
@@ -69,6 +71,8 @@ bool FEShader::CreateConstantBuffer()
 	UINT totalSize;
 
 	totalSize = (_countMatrix * 4) + _countVector + ((_countScalar / 4) + (_countScalar % 4 == 0 ? 0 : 1));
+
+	if (totalSize == 0) return true;
 
 	_pConstBuffer = IFEBuffer::CreateBuffer(FE_BIND_CONSTANT_BUFFER, FE_USAGE_DYNAMIC, true, sizeof(FEVectorA) * totalSize, nullptr);
 
@@ -91,7 +95,9 @@ bool FEShader::CreateConstantBuffer()
 
 void FEShader::UpdateConstantBuffer(const void* pCB, UINT size)
 {
-	_pConstBuffer->UpdateBuffer(pCB, size);
+	FEShader::_pWVP_CB->UpdateBuffer(&FEMaterial::_WVPData, sizeof(FEMaterial::_WVPData));
+	if (_useLight)	FEShader::_pLight_CB->UpdateBuffer(&FEMaterial::_LightData, sizeof(FEMaterial::_LightData));
+	if (size)		_pConstBuffer->UpdateBuffer(pCB, size);
 }
 
 
@@ -109,8 +115,8 @@ void FEShader::Render() const
 	_pShader->Render();
 
 	_pShader->SetConstantBuffer(i++, _pWVP_CB);
-	//if (_useLight)					_pShader->SetConstantBuffer(i++, _pLight_CB);
-	//if (_pConstBuffer != nullptr)	_pShader->SetConstantBuffer(i++, _pConstBuffer);
+	if (_useLight)					_pShader->SetConstantBuffer(i++, _pLight_CB);
+	if (_pConstBuffer != nullptr)	_pShader->SetConstantBuffer(i++, _pConstBuffer);
 }
 
 

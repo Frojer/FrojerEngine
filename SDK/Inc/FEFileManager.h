@@ -1,4 +1,6 @@
 #pragma once
+#ifndef _FE_FILE_MANAGER
+#define _FE_FILE_MANAGER
 
 #include <FEDefine.h>
 #include <FEMesh.h>
@@ -12,3 +14,4 @@ namespace FEFileManager
 	void ExportFile(tstring i_filePath, tstring i_outPath, const FEShader* i_pShader);
 	void ExportFile(tstring i_filePath, tstring i_outPath, const FEMaterial* i_pMtrl);
 }
+#endif

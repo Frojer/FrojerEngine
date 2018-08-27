@@ -23,8 +23,6 @@ protected:
 	std::list<FEGameObject*>	_hierarchyList;
 	//std::map<float, FEGameObject*>	_mapManageDrawObj[RL_NUM];
 
-	//std::vector<Camera*> _vecCam;
-
 public:
 	tstring m_sName;
 	static FEVector4 s_BGColor;
@@ -41,9 +39,6 @@ public:
 	void Render();
 
 	void Release();
-
-	//void AddCamera(Camera* pCam);
-	//Camera* GetCamera(UINT index);
 
 	friend class FEGameObject;
 };

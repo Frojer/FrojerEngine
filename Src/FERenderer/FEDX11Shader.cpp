@@ -123,8 +123,8 @@ bool FEDX11Shader::CreateInputLayout(FE_SHADER_SEMANTICS i_semanticsFlag)
 
 	std::vector<D3D11_INPUT_ELEMENT_DESC> layout;
 	D3D11_INPUT_ELEMENT_DESC desc;
-	UINT offset = 0;
-	
+
+#define log2(x) log(x)/log(2)
 	for (UINT i = 0; i < FE_SHADER_SEMANTIC_NUM; i++)
 	{
 		switch (i_semanticsFlag & (UINT)pow(2U, i))
@@ -133,59 +133,52 @@ bool FEDX11Shader::CreateInputLayout(FE_SHADER_SEMANTICS i_semanticsFlag)
 			desc.SemanticName = "POSITION";
 			desc.SemanticIndex = 0;
 			desc.Format = DXGI_FORMAT_R32G32B32_FLOAT;
-			desc.InputSlot = 0;
-			desc.AlignedByteOffset = offset;
+			desc.InputSlot = (UINT)(log2((UINT)FE_SHADER_SEMANTIC_POSITION));
+			desc.AlignedByteOffset = 0;
 			desc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 			desc.InstanceDataStepRate = 0;
 
 			layout.push_back(desc);
-
-			offset += 12;
 			break;
 
 		case FE_SHADER_SEMANTIC_COLOR:
 			desc.SemanticName = "COLOR";
 			desc.SemanticIndex = 0;
 			desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-			desc.InputSlot = 0;
-			desc.AlignedByteOffset = offset;
+			desc.InputSlot = (UINT)(log2((UINT)FE_SHADER_SEMANTIC_COLOR));
+			desc.AlignedByteOffset = 0;
 			desc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 			desc.InstanceDataStepRate = 0;
 
 			layout.push_back(desc);
-
-			offset += 16;
 			break;
 
 		case FE_SHADER_SEMANTIC_NORMAL:
 			desc.SemanticName = "NORMAL";
 			desc.SemanticIndex = 0;
 			desc.Format = DXGI_FORMAT_R32G32B32_FLOAT;
-			desc.InputSlot = 0;
-			desc.AlignedByteOffset = offset;
+			desc.InputSlot = (UINT)(log2((UINT)FE_SHADER_SEMANTIC_NORMAL));
+			desc.AlignedByteOffset = 0;
 			desc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 			desc.InstanceDataStepRate = 0;
 
 			layout.push_back(desc);
-
-			offset += 12;
 			break;
 
 		case FE_SHADER_SEMANTIC_TEXCOORD:
 			desc.SemanticName = "TEXCOORD";
 			desc.SemanticIndex = 0;
 			desc.Format = DXGI_FORMAT_R32G32_FLOAT;
-			desc.InputSlot = 0;
-			desc.AlignedByteOffset = offset;
+			desc.InputSlot = ((UINT)log2((UINT)FE_SHADER_SEMANTIC_TEXCOORD));
+			desc.AlignedByteOffset = 0;
 			desc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 			desc.InstanceDataStepRate = 0;
 
 			layout.push_back(desc);
-
-			offset += 8;
 			break;
 		}
 	}
+#undef log2
 
 	// 沥立 涝仿备炼 按眉 积己 Create the input layout
 	HRESULT hr = pRenderer->GetDevice()->CreateInputLayout(layout.data(), layout.size(), _pVSCode, _VSCodeSize, &_pVBLayout);

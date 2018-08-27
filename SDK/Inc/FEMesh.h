@@ -26,7 +26,7 @@ enum PRIMITIVE_TOPOLOGY
 //////////////////////////////////////////////////
 enum FE_VERTEX_FORMAT : unsigned char
 {
-	FE_VF_VERTEX = 1,
+	FE_VF_POSITION = 1,
 	FE_VF_VERTEX_COLOR = 2,
 	FE_VF_NORMAL = 4,
 	FE_VF_TEXTURE = 8,

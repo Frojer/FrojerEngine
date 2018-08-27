@@ -23,6 +23,21 @@ struct FESystemSetting
 	bool bBorderless;
 	// 수직동기화 사용 여부
 	bool bVSync;
+
+
+	UINT SampleCount;
+	UINT SampleQuality;
+	DWORD SampleAnisotropy;
+};
+
+struct FEViewport
+{
+	float TopLeftX;
+	float TopLeftY;
+	float Width;
+	float Height;
+	float MinDepth;
+	float MaxDepth;
 };
 
 class IFERenderer
@@ -46,6 +61,8 @@ public:
 	virtual void SetRSState(BYTE flag) = 0;
 	virtual void SetDSState(DWORD flag, UINT stencilRef) = 0;
 	//virtual void SetBlendState(BLEND_STATE bs) = 0;
+
+	virtual void SetViewports(UINT NumViewports, const FEViewport *pViewports) = 0;
 
 	virtual void SetVertexBuffer(UINT StartSlot, UINT NumBuffers, const IFEBuffer* ppVertexBuffers, const UINT* pStrides, const UINT* pOffsets) const = 0;
 	virtual void SetIndexBuffer(const IFEBuffer* pIndexBuffer, FEGI_FORMAT Format, UINT Offset) const = 0;

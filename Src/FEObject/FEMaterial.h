@@ -76,6 +76,7 @@ public:
 	static FEMaterial* Find(UINT id);
 	static FEMaterial* Find(LPCTSTR name);
 
+	friend class IFEScene;
 	friend class FEShader;
 	friend class FERenderer;
 };

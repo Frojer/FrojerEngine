@@ -16,6 +16,8 @@ bool FEDX11Buffer::Create(FE_BIND_FLAG bindFlag, FE_USAGE usage, bool cpuAccess,
 {
 	HRESULT hr = S_OK;
 
+	_usage = usage;
+
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(bd));
 	bd.Usage = (D3D11_USAGE)usage;		// 버퍼 사용방식
@@ -46,23 +48,32 @@ void FEDX11Buffer::Release()
 void FEDX11Buffer::UpdateBuffer(const void* pData, UINT size)
 {
 	FEDX11Renderer* _pRenderer = static_cast<FEDX11Renderer*>(IFERenderer::GetInstance());
-
 	HRESULT hr = S_OK;
-	D3D11_MAPPED_SUBRESOURCE mr;
-	ZeroMemory(&mr, sizeof(mr));
 
-	//상수버퍼 접근
-	hr = _pRenderer->GetDXDC()->Map(_pBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mr);
-	if (FAILED(hr))
+	switch (_usage)
 	{
-		//FEDebug::ErrorMessage(FE_TEXT("UpdateDynamicConstantBuffer : Map 실패"));
+	case FE_USAGE_DEFAULT:
+		_pRenderer->GetDXDC()->UpdateSubresource(_pBuffer, 0, nullptr, &pData, 0, 0);
+		break;
+
+	case FE_USAGE_DYNAMIC:
+		D3D11_MAPPED_SUBRESOURCE mr;
+		ZeroMemory(&mr, sizeof(mr));
+
+		//상수버퍼 접근
+		hr = _pRenderer->GetDXDC()->Map(_pBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mr);
+		if (FAILED(hr))
+		{
+			return;
+		}
+
+		//상수 버퍼 갱신.
+		memcpy(mr.pData, pData, size);
+
+		//상수버퍼 닫기.
+		_pRenderer->GetDXDC()->Unmap(_pBuffer, 0);
+		break;
 	}
-
-	//상수 버퍼 갱신.
-	memcpy(mr.pData, pData, size);
-
-	//상수버퍼 닫기.
-	_pRenderer->GetDXDC()->Unmap(_pBuffer, 0);
 }
 
 

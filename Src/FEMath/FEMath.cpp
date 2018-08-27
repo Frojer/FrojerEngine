@@ -61,7 +61,23 @@ FEMatrixA FEMath::FEConvertToAlignData(const FEMatrix& M)
 
 FEVector2::FEVector2(const FEVector3& v) : XMFLOAT2(v.x, v.y) {};
 FEVector2::FEVector2(const FEVector4& v) : XMFLOAT2(v.x, v.y) {};
+FEVector2::FEVector2(const FEVectorA& v)
+{
+	XMStoreFloat2(this, v);
+}
 FEVector3::FEVector3(const FEVector4& v) : XMFLOAT3(v.x, v.y, v.z) {};
+FEVector3::FEVector3(const FEVectorA& v)
+{
+	XMStoreFloat3(this, v);
+}
+FEVector4::FEVector4(const FEVectorA& v)
+{
+	XMStoreFloat4(this, v);
+}
+FEMatrix::FEMatrix(const FEMatrixA& m)
+{
+	XMStoreFloat4x4(this, m);
+}
 
 bool FEVector2::operator==(const FEVector2& rhs) const
 {
@@ -70,6 +86,12 @@ bool FEVector2::operator==(const FEVector2& rhs) const
 bool FEVector2::operator!=(const FEVector2& rhs) const
 {
 	return x != rhs.x && y != rhs.y ? true : false;
+}
+FEVector2& FEVector2::operator= (const FEVectorA& rhs)
+{
+	XMStoreFloat2(this, rhs);
+
+	return *this;
 }
 FEVector2& FEVector2::operator+=(const FEVector2& rhs)
 {
@@ -182,6 +204,12 @@ bool FEVector3::operator==(const FEVector3& rhs) const
 bool FEVector3::operator!=(const FEVector3& rhs) const
 {
 	return x != rhs.x && y != rhs.y && z == rhs.z ? true : false;
+}
+FEVector3& FEVector3::operator= (const FEVectorA& rhs)
+{
+	XMStoreFloat3(this, rhs);
+
+	return *this;
 }
 FEVector3& FEVector3::operator+=(const FEVector3& rhs)
 {
@@ -308,6 +336,12 @@ bool FEVector4::operator==(const FEVector4& rhs) const
 bool FEVector4::operator!=(const FEVector4& rhs) const
 {
 	return x != rhs.x && y != rhs.y && z == rhs.z && w == rhs.w ? true : false;
+}
+FEVector4& FEVector4::operator= (const FEVectorA& rhs)
+{
+	XMStoreFloat4(this, rhs);
+
+	return *this;
 }
 FEVector4& FEVector4::operator+=(const FEVector4& rhs)
 {
@@ -459,6 +493,12 @@ FEMatrix& FEMatrix::Inverse(FEVector4* pDeterminant)
 
 	return *this;
 }
+FEMatrix& FEMatrix::operator= (const FEMatrixA& rhs)
+{
+	XMStoreFloat4x4(this, rhs);
+
+	return *this;
+}
 FEMatrix& FEMatrix::operator*= (const FEMatrix& rhs)
 {
 	XMMATRIX m1 = XMLoadFloat4x4(this);
@@ -486,6 +526,15 @@ FEVector4 FEMatrix::operator*(const FEVector4& rhs) const
 	XMStoreFloat4(&result, XMVector4Transform(v, m));
 	return result;
 }
+FEVector3 operator*(const FEVector3& lhs, const FEMatrix& rhs)
+{
+	FEVector3 result;
+	XMVECTOR v = XMLoadFloat3(&lhs);
+	XMMATRIX m = XMLoadFloat4x4(&rhs);
+
+	XMStoreFloat3(&result, XMVector3TransformCoord(v, m));
+	return result;
+}
 FEVector4 operator*(const FEVector4& lhs, const FEMatrix& rhs)
 {
 	FEVector4 result;
@@ -494,4 +543,13 @@ FEVector4 operator*(const FEVector4& lhs, const FEMatrix& rhs)
 
 	XMStoreFloat4(&result, XMVector4Transform(v, m));
 	return result;
+}
+
+FEMatrix FEMatrixLookAtLH(FEVector4 EyePosition, FEVector4 FocusPosition, FEVector4 UpDirection)
+{
+	return XMMatrixLookAtLH(XMLoadFloat4(&EyePosition), XMLoadFloat4(&FocusPosition), XMLoadFloat4(&UpDirection));
+}
+FEMatrix FEMatrixPerspectiveFovLH(float FovAngleY, float AspectRatio, float NearZ, float FarZ)
+{
+	return XMMatrixPerspectiveFovLH(FovAngleY, AspectRatio, NearZ, FarZ);
 }

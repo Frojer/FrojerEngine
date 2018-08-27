@@ -7,4 +7,6 @@ class FETEST : public FEBehaviour
 public:
 	FETEST();
 	~FETEST();
+
+	void Update();
 };

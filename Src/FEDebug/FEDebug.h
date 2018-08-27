@@ -1,4 +1,6 @@
 #pragma once
+#ifndef _FE_DEBUG
+#define _FE_DEBUG
 
 #include <FEDefine.h>
 
@@ -14,3 +16,4 @@ public:
 	static void ErrorMessage(TCHAR* text);
 	static void WarningMessage(TCHAR* text);
 };
+#endif

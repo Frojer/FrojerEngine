@@ -41,29 +41,44 @@ FESystemSetting LoadSetting()
 	{
 		f >> str;
 
-		if (_tcsnicmp(FE_TEXT("Width"), str, 5) == 0)
+		if (TCSCMP_SAME(str, FE_TEXT("Width"), str))
 		{
 			f >> str >> setting.uiWindowWidth;
 		}
 
-		else if (_tcsnicmp(FE_TEXT("Height"), str, 6) == 0)
+		else if (TCSCMP_SAME(str, FE_TEXT("Height"), str))
 		{
 			f >> str >> setting.uiWindowHeight;
 		}
 
-		else if (_tcsnicmp(FE_TEXT("WindowMode"), str, 10) == 0)
+		else if (TCSCMP_SAME(str, FE_TEXT("WindowMode"), str0))
 		{
 			f >> str >> setting.bWindowMode;
 		}
 
-		else if (_tcsnicmp(FE_TEXT("Borderless"), str, 10) == 0)
+		else if (TCSCMP_SAME(str, FE_TEXT("Borderless"), str))
 		{
 			f >> str >> setting.bBorderless;
 		}
 
-		else if (_tcsnicmp(FE_TEXT("VSync"), str, 5) == 0)
+		else if (TCSCMP_SAME(str, FE_TEXT("VSync"), str))
 		{
 			f >> str >> setting.bVSync;
+		}
+
+		else if (TCSCMP_SAME(str, FE_TEXT("SampleCount"), str))
+		{
+			f >> str >> setting.SampleCount;
+		}
+
+		else if (TCSCMP_SAME(str, FE_TEXT("SampleQuality"), str))
+		{
+			f >> str >> setting.SampleQuality;
+		}
+		
+		else if (TCSCMP_SAME(str, FE_TEXT("Anisotropy")))
+		{
+			f >> str >> setting.Anisotropy;
 		}
 	}
 
@@ -184,7 +199,7 @@ void LoadMesh(tstring i_meshPath, tstring i_name)
 	f >> str >> str >> vc;
 
 #define VFCheck(format) (vf & format) == format
-	pMesh->m_pos.resize(vc);
+	if (VFCheck(FE_VF_POSITION))		pMesh->m_pos.resize(vc);
 	if (VFCheck(FE_VF_VERTEX_COLOR))	pMesh->m_color.resize(vc);
 	if (VFCheck(FE_VF_NORMAL))			pMesh->m_normal.resize(vc);
 	if (VFCheck(FE_VF_TEXTURE))			pMesh->m_uv.resize(vc);
@@ -192,7 +207,7 @@ void LoadMesh(tstring i_meshPath, tstring i_name)
 	// 버텍스 정보 얻기
 	for (UINT i = 0; i < vc; i++)
 	{
-		f >> pMesh->m_pos[i].x >> pMesh->m_pos[i].y >> pMesh->m_pos[i].z;
+		if (VFCheck(FE_VF_POSITION))	f >> pMesh->m_pos[i].x >> pMesh->m_pos[i].y >> pMesh->m_pos[i].z;
 		if (VFCheck(FE_VF_VERTEX_COLOR))	f >> pMesh->m_color[i].x >> pMesh->m_color[i].y >> pMesh->m_color[i].z >> pMesh->m_color[i].w;
 		if (VFCheck(FE_VF_NORMAL))			f >> pMesh->m_normal[i].x >> pMesh->m_normal[i].y >> pMesh->m_normal[i].z;
 		if (VFCheck(FE_VF_TEXTURE))			f >> pMesh->m_uv[i].x >> pMesh->m_uv[i].y;

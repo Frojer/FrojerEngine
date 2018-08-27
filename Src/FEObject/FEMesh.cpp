@@ -77,7 +77,7 @@ void FEMesh::Render()
 	UINT zero = 0;
 
 	// 버텍스 버퍼 세팅
-	for (UINT i = 0; i < 1; i++)
+	for (UINT i = 0; i < VERTEX_ELEMETN_NUM; i++)
 		pRenderer->SetVertexBuffer(i, 1, _pVB[i], _pVB[i] == nullptr ? &zero : &_pVB[i]->stride, _pVB[i] == nullptr ? &zero : &_pVB[i]->offset);
 	pRenderer->SetIndexBuffer(_pIB, FEGI_FORMAT_R32_UINT, _pIB->offset);		// 인덱스 버퍼 세팅
 
@@ -125,35 +125,41 @@ void FEMesh::Render()
 
 bool FEMesh::CreateBuffer()
 {
-	UINT i = 0;
 	IFEBuffer* pBuf = nullptr;
+	UINT inputslot;
+
+#define log2(x) log(x)/log(2)
 	if (m_pos.size())
 	{
 		pBuf = IFEBuffer::CreateBuffer(FE_BIND_VERTEX_BUFFER, FE_USAGE_DEFAULT, false, m_pos.size() * sizeof(FEVector3), m_pos.data());
 		if (pBuf == nullptr) return false;
 		pBuf->stride = sizeof(FEVector3);
-		_pVB[i++] = pBuf;
+		inputslot = (UINT)(log2((UINT)FE_SHADER_SEMANTIC_POSITION));
+		_pVB[inputslot] = pBuf;
 	}
 	if (m_color.size())
 	{
 		pBuf = IFEBuffer::CreateBuffer(FE_BIND_VERTEX_BUFFER, FE_USAGE_DEFAULT, false, m_color.size() * sizeof(FEVector4), m_color.data());
 		if (pBuf == nullptr) return false;
 		pBuf->stride = sizeof(FEVector4);
-		_pVB[i++] = pBuf;
+		inputslot = (UINT)(log2((UINT)FE_SHADER_SEMANTIC_COLOR));
+		_pVB[inputslot] = pBuf;
 	}
 	if (m_normal.size())
 	{
 		pBuf = IFEBuffer::CreateBuffer(FE_BIND_VERTEX_BUFFER, FE_USAGE_DEFAULT, false, m_normal.size() * sizeof(FEVector3), m_normal.data());
 		if (pBuf == nullptr) return false;
 		pBuf->stride = sizeof(FEVector3);
-		_pVB[i++] = pBuf;
+		inputslot = (UINT)(log2((UINT)FE_SHADER_SEMANTIC_NORMAL));
+		_pVB[inputslot] = pBuf;
 	}
 	if (m_uv.size())
 	{
 		pBuf = IFEBuffer::CreateBuffer(FE_BIND_VERTEX_BUFFER, FE_USAGE_DEFAULT, false, m_uv.size() * sizeof(FEVector2), m_uv.data());
 		if (pBuf == nullptr) return false;
 		pBuf->stride = sizeof(FEVector2);
-		_pVB[i++] = pBuf;
+		inputslot = (UINT)(log2((UINT)FE_SHADER_SEMANTIC_TEXCOORD));
+		_pVB[inputslot] = pBuf;
 	}
 
 	_pIB = IFEBuffer::CreateBuffer(FE_BIND_INDEX_BUFFER, FE_USAGE_DEFAULT, false, m_indics.size() * sizeof(FE_IndexFormat), m_indics.data());

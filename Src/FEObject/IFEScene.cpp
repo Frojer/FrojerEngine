@@ -29,10 +29,21 @@ void IFEScene::Update()
 
 void IFEScene::Render()
 {
-	auto iter = _hierarchyList.begin();
+	auto cams = FECamera::GetAllCameras();
+	for (UINT i = 0; i < cams.size(); i++)
+	{
+		if (cams[i]->GetEnable())
+		{
+			IFERenderer::GetInstance()->SetViewports(1, &cams[i]->m_viewport);
+			FEMaterial::_WVPData.mView = FEMath::FEConvertToAlignData(cams[i]->GetViewMatrixLH());
+			FEMaterial::_WVPData.mProj = FEMath::FEConvertToAlignData(cams[i]->GetPerspectiveFovLH());
 
-	while (iter != _hierarchyList.end())
-		(*iter++)->Render();
+			auto iter = _hierarchyList.begin();
+
+			while (iter != _hierarchyList.end())
+				(*iter++)->Render();
+		}
+	}
 }
 
 

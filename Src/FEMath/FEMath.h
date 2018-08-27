@@ -52,6 +52,7 @@ public:
 	FEVector2(const FEVector2& v) : XMFLOAT2(v) {};
 	FEVector2(const FEVector3& v);
 	FEVector2(const FEVector4& v);
+	FEVector2(const FEVectorA& v);
 	~FEVector2() = default;
 
 	//----------------
@@ -59,6 +60,8 @@ public:
 	//----------------
 	bool operator == (const FEVector2& rhs) const;
 	bool operator != (const FEVector2& rhs) const;
+
+	FEVector2& operator= (const FEVectorA& rhs);
 	FEVector2& operator+= (const FEVector2& rhs);
 	FEVector2& operator-= (const FEVector2& rhs);
 	FEVector2& operator*= (const FEVector2& rhs);
@@ -94,6 +97,7 @@ public:
 	FEVector3(const FEVector3& v) : XMFLOAT3(v) {};
 	FEVector3(const FEVector2& v, float z = 0.0f) : XMFLOAT3(v.x, v.y, z) {};
 	FEVector3(const FEVector4& v);
+	FEVector3(const FEVectorA& v);
 	~FEVector3() = default;
 
 	//----------------
@@ -101,6 +105,7 @@ public:
 	//----------------
 	bool operator ==(const FEVector3& rhs) const;
 	bool operator !=(const FEVector3& rhs) const;
+	FEVector3& operator= (const FEVectorA& rhs);
 	FEVector3& operator+=(const FEVector3& rhs);
 	FEVector3& operator-=(const FEVector3& rhs);
 	FEVector3& operator*=(const FEVector3& rhs);
@@ -130,6 +135,7 @@ public:
 	FEVector4(const FEVector2& xy, const FEVector2& zw) : XMFLOAT4(xy.x, xy.y, zw.x, zw.y) {};
 	FEVector4(const FEVector2& v, float z = 0.0f, float w = 0.0f) : XMFLOAT4(v.x, v.y, z, w) {};
 	FEVector4(const FEVector3& v, float w = 0.0f) : XMFLOAT4(v.x, v.y, v.z, w) {};
+	FEVector4(const FEVectorA& v);
 	~FEVector4() = default;
 
 	//----------------
@@ -137,6 +143,7 @@ public:
 	//----------------
 	bool operator ==(const FEVector4& rhs) const;
 	bool operator !=(const FEVector4& rhs) const;
+	FEVector4& operator= (const FEVectorA& rhs);
 	FEVector4& operator+=(const FEVector4& rhs);
 	FEVector4& operator-=(const FEVector4& rhs);
 	FEVector4& operator*=(const FEVector4& rhs);
@@ -166,6 +173,7 @@ public:
 					v2.x, v2.y, v2.z, v2.w,
 					v3.x, v3.y, v3.z, v3.w,
 					v4.x, v4.y, v4.z, v4.w) {};
+	FEMatrix(const FEMatrixA& m);
 	~FEMatrix() = default;
 
 	//----------
@@ -177,13 +185,18 @@ public:
 	//----------------
 	// 연산자 오버로딩
 	//----------------
+	FEMatrix& operator= (const FEMatrixA& rhs);
 	FEMatrix& operator*= (const FEMatrix& rhs);
 	FEMatrix operator*(const FEMatrix& rhs) const;
 	FEVector4 operator*(const FEVector4& rhs) const;
 };
+FEVector3 operator*(const FEVector3& lhs, const FEMatrix& rhs);
 FEVector4 operator*(const FEVector4& lhs, const FEMatrix& rhs);
+
 #elif
 // GL Math
 #endif
 
+FEMatrix FEMatrixLookAtLH(FEVector4 EyePosition, FEVector4 FocusPosition, FEVector4 UpDirection);
+FEMatrix FEMatrixPerspectiveFovLH(float FovAngleY, float AspectRatio, float NearZ, float FarZ);
 #endif

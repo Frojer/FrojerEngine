@@ -9,6 +9,7 @@ class FEDX11Buffer : public IFEBuffer
 {
 private:
 	ID3D11Buffer* _pBuffer;
+	FE_USAGE _usage;
 
 protected:
 	virtual bool Create(FE_BIND_FLAG bindFlag, FE_USAGE usage, bool cpuAccess, UINT bufferSize, const void* bufferData = nullptr) override;

@@ -1,5 +1,4 @@
 #pragma once
-
 #ifndef _FE_ISHADER
 #define _FE_ISHADER
 

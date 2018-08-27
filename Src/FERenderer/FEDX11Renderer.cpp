@@ -25,17 +25,26 @@ bool FEDX11Renderer::Create(void* i_phWnd)
 
 	// 장치-스왑체인의 렌더타겟(백버퍼) 획득
 	CreateRenderTarget();
+
+	// 깊이/스텐실 버퍼 생성.
+	CreateDepthStencil();
 	
 	
 	// 장치 출력병합기(Output Merger) 에 렌터링 타겟 및 깊이-스텐실 버퍼 등록.
 	_pDXDC->OMSetRenderTargets(
 				1,				// 렌더타겟 개수.(max: D3D11_SIMULTANEOUS_RENDER_TARGET_COUNT)
 				&_pRTView,		// 렌더타겟("백버퍼") 등록.	
-				nullptr
+				_pDSView
 				);
 	
 	// 뷰포트 설정.
 	SetViewPort();
+
+	//깊이-스텐실 렌더링 상태 객체 생성.
+	//StateObjectCreate();
+
+	//블렌드 상태 객체 생성
+	//BlendStateCreate();
 
 	return true;
 }
@@ -86,8 +95,8 @@ HRESULT FEDX11Renderer::CreateDeviceSwapChain(HWND i_hWnd)
 	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;		// 용도 설정: '렌더타겟' 
 	sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 	//sd.Flags = 0;
-	sd.SampleDesc.Count = 1;	// AA 설정
-	sd.SampleDesc.Quality = 0;
+	sd.SampleDesc.Count = m_setting.SampleCount;	// AA 설정
+	sd.SampleDesc.Quality = m_setting.SampleQuality;
 
 
 
@@ -151,6 +160,52 @@ HRESULT FEDX11Renderer::CreateRenderTarget()
 
 	//리소스 뷰 생성 후, 불필요한 DX 핸들은 해제해야 합니다.(메모리 누수 방지)
 	SAFE_RELEASE(pBackBuffer);
+
+	return hr;
+}
+
+
+HRESULT FEDX11Renderer::CreateDepthStencil()
+{
+	HRESULT hr = S_OK;
+
+	//깊이/스텐실 버퍼용 정보 구성.
+	D3D11_TEXTURE2D_DESC td;
+	ZeroMemory(&td, sizeof(td));
+	td.Width = m_setting.uiWindowWidth;
+	td.Height = m_setting.uiWindowHeight;
+	td.MipLevels = 1;
+	td.ArraySize = 1;
+	//td.Format = DXGI_FORMAT_D32_FLOAT;				// 32BIT. 깊이 버퍼
+	//td.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;		// 깊이 버퍼 (24bit) + 스텐실 (8bit) / 구형 하드웨어 (DX9)
+	td.Format = DXGI_FORMAT_D32_FLOAT_S8X24_UINT;		// 깊이 버퍼 (32bit) + 스텐실 (8bit) / 신형 하드웨어 (DX11)
+	td.SampleDesc.Count = m_setting.SampleCount;		// AA 설정 - RT 과 동일 규격 준수.
+	td.SampleDesc.Quality = m_setting.SampleQuality;
+	td.Usage = D3D11_USAGE_DEFAULT;
+	td.BindFlags = D3D11_BIND_DEPTH_STENCIL;			// 깊이-스텐실 버퍼용으로 설정.
+	td.CPUAccessFlags = 0;
+	td.MiscFlags = 0;
+
+
+	// 깊이 버퍼 생성.
+	hr = _pDevice->CreateTexture2D(&td, NULL, &_pDS);
+	if (FAILED(hr)) return hr;
+
+
+	// 깊이-스텐실버퍼용 리소스 뷰 정보 설정. 
+	D3D11_DEPTH_STENCIL_VIEW_DESC  dd;
+	ZeroMemory(&dd, sizeof(dd));
+	dd.Format = td.Format;
+	//dd.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D; //AA 없음.
+	dd.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DMS; //AA 적용.
+	dd.Texture2D.MipSlice = 0;
+
+	//깊이-스텐실 버퍼 뷰 생성.
+	hr = _pDevice->CreateDepthStencilView(_pDS, &dd, &_pDSView);
+	if (FAILED(hr))
+	{
+		return hr;
+	}
 
 	return hr;
 }
@@ -550,6 +605,24 @@ void FEDX11Renderer::SetDSState(DWORD flag, UINT stencilRef)
 }
 
 
+void FEDX11Renderer::SetViewports(UINT NumViewports, const FEViewport *pViewports)
+{
+	D3D11_VIEWPORT* viewports = new D3D11_VIEWPORT[NumViewports];
+	
+	for (UINT i = 0; i < NumViewports; i++)
+	{
+		viewports[i].TopLeftX = pViewports[i].TopLeftX;
+		viewports[i].TopLeftY = pViewports[i].TopLeftY;
+		viewports[i].Width = pViewports[i].Width;
+		viewports[i].Height = pViewports[i].Height;
+		viewports[i].MinDepth = pViewports[i].MinDepth;
+		viewports[i].MaxDepth = pViewports[i].MaxDepth;
+	}
+
+	_pDXDC->RSSetViewports(NumViewports, viewports);
+}
+
+
 void FEDX11Renderer::SetVertexBuffer(UINT StartSlot, UINT NumBuffers, const IFEBuffer* ppVertexBuffers, const UINT* pStrides, const UINT* pOffsets) const
 {
 	ID3D11Buffer* pVB;
@@ -574,6 +647,7 @@ void FEDX11Renderer::SetPrimitiveTopology(FE_PRIMITIVE_TOPOLOGY Topology) const
 void FEDX11Renderer::ClearBackBuffer(const FEVector4& i_color) const
 {
 	_pDXDC->ClearRenderTargetView(_pRTView, (float*)&i_color);			//렌더타겟 지우기.
+	_pDXDC->ClearDepthStencilView(_pDSView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);	//깊이/스텐실 지우기.
 }
 
 

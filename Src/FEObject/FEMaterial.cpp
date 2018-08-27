@@ -66,8 +66,8 @@ void FEMaterial::UpdateLightData()
 
 void FEMaterial::UpdateConstantBuffer(FEMatrixA& mWorld)
 {
-	_WVPData.mWorld = mWorld;
-	_WVPData.mWV = mWorld * _WVPData.mView;
+	FEMaterial::_WVPData.mWorld = mWorld;
+	FEMaterial::_WVPData.mWV = mWorld * FEMaterial::_WVPData.mView;
 
 	if (_constData.size() > 0)
 	{
@@ -88,8 +88,8 @@ void FEMaterial::UpdateConstantBuffer(FEMatrixA& mWorld)
 		_pShader->UpdateConstantBuffer(&_constData[0], _constData.size() * sizeof(FEVectorA));
 	}
 
-	/*else
-		_pShader->UpdateConstantBuffer(nullptr, 0);*/
+	else
+		_pShader->UpdateConstantBuffer(nullptr, 0);
 }
 
 

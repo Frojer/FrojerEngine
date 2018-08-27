@@ -555,8 +555,9 @@ bool ConvertASEMeshFile(tstring i_fileName, tstring i_outPath)
 		}
 	}
 
-	unsigned char vf = FE_VF_VERTEX;
+	unsigned char vf = 0;
 
+	if (iPos.size() != 0)			vf |= FE_VF_POSITION;
 	if (iColor.size() != 0)			vf |= FE_VF_VERTEX_COLOR;
 	if (vVertexNormal.size() != 0)	vf |= FE_VF_NORMAL;
 	if (iTex.size() != 0)			vf |= FE_VF_TEXTURE;
@@ -573,9 +574,12 @@ bool ConvertASEMeshFile(tstring i_fileName, tstring i_outPath)
 	UINT vNum = 0;
 	for (i = 0; i < iPos.size(); i++)
 	{
-		verts[vNum].position.x = vPos[iPos[i].a].x;
-		verts[vNum].position.y = vPos[iPos[i].a].y;
-		verts[vNum].position.z = vPos[iPos[i].a].z;
+		if ((vf & FE_VF_POSITION) == FE_VF_POSITION)
+		{
+			verts[vNum].position.x = vPos[iPos[i].a].x;
+			verts[vNum].position.y = vPos[iPos[i].a].y;
+			verts[vNum].position.z = vPos[iPos[i].a].z;
+		}
 		if ((vf & FE_VF_VERTEX_COLOR) == FE_VF_VERTEX_COLOR)
 		{
 			verts[vNum].color.x = vColor[iColor[i].a].x;
@@ -599,9 +603,12 @@ bool ConvertASEMeshFile(tstring i_fileName, tstring i_outPath)
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		verts[vNum].position.x = vPos[iPos[i].b].x;
-		verts[vNum].position.y = vPos[iPos[i].b].y;
-		verts[vNum].position.z = vPos[iPos[i].b].z;
+		if ((vf & FE_VF_POSITION) == FE_VF_POSITION)
+		{
+			verts[vNum].position.x = vPos[iPos[i].b].x;
+			verts[vNum].position.y = vPos[iPos[i].b].y;
+			verts[vNum].position.z = vPos[iPos[i].b].z;
+		}
 		if ((vf & FE_VF_VERTEX_COLOR) == FE_VF_VERTEX_COLOR)
 		{
 			verts[vNum].color.x = vColor[iColor[i].b].x;
@@ -625,9 +632,12 @@ bool ConvertASEMeshFile(tstring i_fileName, tstring i_outPath)
 
 		/////////////////////////////////////////////////////////////////////////////////////
 
-		verts[vNum].position.x = vPos[iPos[i].c].x;
-		verts[vNum].position.y = vPos[iPos[i].c].y;
-		verts[vNum].position.z = vPos[iPos[i].c].z;
+		if ((vf & FE_VF_POSITION) == FE_VF_POSITION)
+		{
+			verts[vNum].position.x = vPos[iPos[i].c].x;
+			verts[vNum].position.y = vPos[iPos[i].c].y;
+			verts[vNum].position.z = vPos[iPos[i].c].z;
+		}
 		if ((vf & FE_VF_VERTEX_COLOR) == FE_VF_VERTEX_COLOR)
 		{
 			verts[vNum].color.x = vColor[iColor[i].c].x;
@@ -658,7 +668,7 @@ bool ConvertASEMeshFile(tstring i_fileName, tstring i_outPath)
 
 	for (i = 0; i < verts.size(); i++)
 	{
-		o << verts[i].position.x << FE_TEXT("\t") << verts[i].position.y << FE_TEXT("\t") << verts[i].position.z << std::endl;
+		if ((vf & FE_VF_POSITION) == FE_VF_POSITION)	o << verts[i].position.x << FE_TEXT("\t") << verts[i].position.y << FE_TEXT("\t") << verts[i].position.z << std::endl;
 		if ((vf & FE_VF_VERTEX_COLOR) == FE_VF_VERTEX_COLOR)	o << verts[i].color.x << FE_TEXT("\t") << verts[i].color.y << FE_TEXT("\t") << verts[i].color.z << FE_TEXT("\t") << verts[i].color.w << std::endl;
 		if ((vf & FE_VF_NORMAL) == FE_VF_NORMAL)	o << verts[i].normal.x << FE_TEXT("\t") << verts[i].normal.y << FE_TEXT("\t") << verts[i].normal.z << std::endl;
 		if ((vf & FE_VF_TEXTURE) == FE_VF_TEXTURE)	o << verts[i].textureCoordinate.x << FE_TEXT("\t") << verts[i].textureCoordinate.y << std::endl;
@@ -746,44 +756,4 @@ void FEFileManager::ExportFile(tstring i_filePath, tstring i_outPath, const FEMa
 	f << FE_TEXT("Shader = ") << i_pMtrl->GetShader()->m_Name << std::endl;
 
 	f.close();
-}
-
-void ImportShader(tstring i_path)
-{
-	tstring extension;
-
-#ifdef _WIN32
-	_tfinddata_t fd;
-	intptr_t handle;
-	int result = 1;
-
-	// 현재 폴더 내 모든 파일을 찾는다.
-	handle = _tfindfirst((i_path + FE_TEXT("*")).c_str(), &fd);
-
-	// 파일이 하나도 없다면
-	if (handle == -1)
-		return;
-
-	do
-	{
-		extension = GetFileNameExtension(fd.name);
-
-		if (extension.size() == 0)
-		{
-			if (!TCSCMP_SAME(fd.name, FE_TEXT(".")) && !TCSCMP_SAME(fd.name, FE_TEXT("..")))
-				ImportShader(i_path + fd.name + FE_TEXT("/"));
-		}
-
-		else if (TCSCMP_SAME(extension.c_str(), FE_TEXT("fes")))
-		{
-			
-		}
-
-		result = _tfindnext(handle, &fd);
-	} while (result != -1);
-
-	_findclose(handle);
-#else
-#error 윈도우가 아니라구
-#endif
 }

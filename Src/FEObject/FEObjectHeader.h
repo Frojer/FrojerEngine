@@ -13,6 +13,7 @@
 #include "FEComponent.h"
 #include "FEBehaviour.h"
 #include "FETransform.h"
+#include "FECamera.h"
 #include "FERenderer.h"
 
 #endif

@@ -1,4 +1,6 @@
 #pragma once
+#ifndef _FE_BEHAVIOUR
+#define _FE_BEHAVIOUR
 
 #include "FEObjectHeader.h"
 
@@ -17,3 +19,4 @@ public:
 	void SetEnable(bool enable);
 	bool GetEnable();
 };
+#endif
