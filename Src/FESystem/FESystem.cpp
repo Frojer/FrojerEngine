@@ -42,37 +42,37 @@ FESystemSetting LoadSetting()
 	{
 		f >> str;
 
-		if (TCSCMP_SAME(str, FE_TEXT("Width"), str))
+		if (TCSCMP_SAME(str, FE_TEXT("Width")))
 		{
 			f >> str >> setting.uiWindowWidth;
 		}
 
-		else if (TCSCMP_SAME(str, FE_TEXT("Height"), str))
+		else if (TCSCMP_SAME(str, FE_TEXT("Height")))
 		{
 			f >> str >> setting.uiWindowHeight;
 		}
 
-		else if (TCSCMP_SAME(str, FE_TEXT("WindowMode"), str0))
+		else if (TCSCMP_SAME(str, FE_TEXT("WindowMode")))
 		{
 			f >> str >> setting.bWindowMode;
 		}
 
-		else if (TCSCMP_SAME(str, FE_TEXT("Borderless"), str))
+		else if (TCSCMP_SAME(str, FE_TEXT("Borderless")))
 		{
 			f >> str >> setting.bBorderless;
 		}
 
-		else if (TCSCMP_SAME(str, FE_TEXT("VSync"), str))
+		else if (TCSCMP_SAME(str, FE_TEXT("VSync")))
 		{
 			f >> str >> setting.bVSync;
 		}
 
-		else if (TCSCMP_SAME(str, FE_TEXT("SampleCount"), str))
+		else if (TCSCMP_SAME(str, FE_TEXT("SampleCount")))
 		{
 			f >> str >> setting.SampleCount;
 		}
 
-		else if (TCSCMP_SAME(str, FE_TEXT("SampleQuality"), str))
+		else if (TCSCMP_SAME(str, FE_TEXT("SampleQuality")))
 		{
 			f >> str >> setting.SampleQuality;
 		}
@@ -383,6 +383,7 @@ void FESystem::Release()
 {
 	delete FESceneManager::GetInstance();
 	delete IFERenderer::GetInstance();
+	delete FETime::_pInstance;
 
 	SAFE_DELETE(_pWindow);
 }
@@ -411,13 +412,14 @@ void FESystem::Run()
 {
 	FESceneManager* pSM = FESceneManager::GetInstance();
 	IFERenderer* pRenderer = IFERenderer::GetInstance();
+	FETime::_pInstance = new FETime();
 
 	while (!m_bExit)
 	{
 		if (!_pWindow->MessagePump())		// ¸Þ¼¼Áö ÆßÇÁ.
 			break;
 		
-		FETime::TimeUpdate();
+		FETime::_pInstance->TimeUpdate();
 
 		pSM->ChangeScene();
 

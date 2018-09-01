@@ -1,4 +1,5 @@
 #include "FETEST.h"
+#include <FETime.h>
 #include <windows.h>
 
 
@@ -19,20 +20,20 @@ FETEST::~FETEST()
 void FETEST::Update()
 {
 	// 이동
-	if (IsKeyDown('W'))		GetMyObject()->GetTransform()->Translate(FEVector3(0.0f, 0.0f, 0.01f));
-	if (IsKeyDown('S'))		GetMyObject()->GetTransform()->Translate(FEVector3(0.0f, 0.0f, -0.01f));
-	if (IsKeyDown('A'))		GetMyObject()->GetTransform()->Translate(FEVector3(-0.01f, 0.0f, 0.0f));
-	if (IsKeyDown('D'))		GetMyObject()->GetTransform()->Translate(FEVector3(0.01f, 0.0f, 0.0f));
-	if (IsKeyDown('Q'))		GetMyObject()->GetTransform()->Translate(FEVector3(0.0f, 0.01f, 0.0f));
-	if (IsKeyDown('E'))		GetMyObject()->GetTransform()->Translate(FEVector3(0.0f, -0.01f, 0.0f));
+	if (IsKeyDown('W'))		GetMyObject()->GetTransform()->Translate(FEVector3(0.0f, 0.0f, 1.0f) * FETime::GetDeltaTime());
+	if (IsKeyDown('S'))		GetMyObject()->GetTransform()->Translate(FEVector3(0.0f, 0.0f, -1.0f) * FETime::GetDeltaTime());
+	if (IsKeyDown('A'))		GetMyObject()->GetTransform()->Translate(FEVector3(-1.0f, 0.0f, 0.0f) * FETime::GetDeltaTime());
+	if (IsKeyDown('D'))		GetMyObject()->GetTransform()->Translate(FEVector3(1.0f, 0.0f, 0.0f) * FETime::GetDeltaTime());
+	if (IsKeyDown('Q'))		GetMyObject()->GetTransform()->Translate(FEVector3(0.0f, 1.0f, 0.0f) * FETime::GetDeltaTime());
+	if (IsKeyDown('E'))		GetMyObject()->GetTransform()->Translate(FEVector3(0.0f, -1.0f, 0.0f) * FETime::GetDeltaTime());
 
 	// 회전
-	if (IsKeyDown('I'))		GetMyObject()->GetTransform()->Rotate(FEVector3(1.0f, 0.0f, 0.0f));
-	if (IsKeyDown('K'))		GetMyObject()->GetTransform()->Rotate(FEVector3(-1.0f, 0.0f, 0.0f));
-	if (IsKeyDown('J'))		GetMyObject()->GetTransform()->Rotate(FEVector3(0.0f, -1.0f, 0.0f));
-	if (IsKeyDown('L'))		GetMyObject()->GetTransform()->Rotate(FEVector3(0.0f, 1.0f, 0.0f));
-	if (IsKeyDown('U'))		GetMyObject()->GetTransform()->Rotate(FEVector3(0.0f, 0.0f, 0.1f));
-	if (IsKeyDown('O'))		GetMyObject()->GetTransform()->Rotate(FEVector3(0.0f, 0.0f, -0.1f));
+	if (IsKeyDown('I'))		GetMyObject()->GetTransform()->Rotate(FEVector3(1.0f, 0.0f, 0.0f) * FETime::GetDeltaTime());
+	if (IsKeyDown('K'))		GetMyObject()->GetTransform()->Rotate(FEVector3(-1.0f, 0.0f, 0.0f) * FETime::GetDeltaTime());
+	if (IsKeyDown('J'))		GetMyObject()->GetTransform()->Rotate(FEVector3(0.0f, -1.0f, 0.0f) * FETime::GetDeltaTime());
+	if (IsKeyDown('L'))		GetMyObject()->GetTransform()->Rotate(FEVector3(0.0f, 1.0f, 0.0f) * FETime::GetDeltaTime());
+	if (IsKeyDown('U'))		GetMyObject()->GetTransform()->Rotate(FEVector3(0.0f, 0.0f, 0.1f) * FETime::GetDeltaTime());
+	if (IsKeyDown('O'))		GetMyObject()->GetTransform()->Rotate(FEVector3(0.0f, 0.0f, -0.1f) * FETime::GetDeltaTime());
 
 	if (IsKeyDown(VK_SPACE))	GetMyObject()->GetRenderer()->SetWireFrame(GetMyObject()->GetRenderer()->GetSolidFrame());
 }

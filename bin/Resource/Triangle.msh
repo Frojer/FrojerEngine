@@ -1,0 +1,25 @@
+ID = f2a707385a5c4659ac962952b2e3eb8
+MeshObject
+{
+	Name = Triangle
+	VertexFormat = 0
+	VertexCount = 0
+	IndexCount = 0
+	MeshObject
+	{
+		Name = Line001
+		VertexFormat = 7
+		VertexCount = 3
+		0	0	30
+		0	1	0.5	0
+		-0	0	1
+		-20	0	0
+		1	0.5	0	0
+		-0	0	1
+		20	0	0
+		0.5	0	1	0
+		-0	0	1
+		IndexCount = 1
+		0	1	2
+	}
+}

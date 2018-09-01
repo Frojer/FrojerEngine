@@ -26,7 +26,9 @@ void main(int argc, char* argv[])
 	if (argc != 3)
 		return -1;
 
-	FEFileManager::ConvertAllFileInPath(argv[1], argv[2]);
+	FEFileManager::GetInstance()->_dataPath = argv[1];
+	FEFileManager::GetInstance()->_outPath = argv[2];
+	FEFileManager::GetInstance()->Update();
 
 	return 0;
 }

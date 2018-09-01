@@ -2,17 +2,23 @@
 #ifndef _FE_TIME
 #define _FE_TIME
 
+#include <FEDefine.h>
+
 class FETime
 {
 private:
-	static float _timeScale;
-	static float _deltaTime;
+	DWORD _curTime;
+	DWORD _oldTime;
+	float _timeScale;
+	float _deltaTime;
+
+	static FETime* _pInstance;
 
 private:
-	FETime() = delete;
-	~FETime() = default;
+	FETime();
+	~FETime();
 
-	static void TimeUpdate();
+	void TimeUpdate();
 
 public:
 

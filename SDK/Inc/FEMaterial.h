@@ -22,14 +22,14 @@ private:
 
 	struct Light_Data
 	{
-		float range;
-		UINT lightType;
-		bool useLight;
 		FEVectorA diffuse;
 		FEVectorA ambient;
 		FEVectorA specular;
 		FEVectorA position;
 		FEVectorA direction;
+		float range;
+		UINT lightType;
+		bool useLight;
 	};
 
 	static std::unordered_map<UINT, FEMaterial*> _mtrlMap;
