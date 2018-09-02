@@ -8,4 +8,6 @@ tstring GetFileNameExtension(const tstring& i_fileName);
 tstring GetFilePath(const tstring& filePath);
 tstring GetFileName(const tstring& filePath);
 tstring GetFileNameWithExtension(const tstring& filePath);
+
+bool FECopyFile(tifstream& orig, tofstream& dest);
 #endif

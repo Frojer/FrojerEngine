@@ -54,6 +54,36 @@ struct ASE_MESH
 	}
 };
 
+void ConvertShaderFile(tstring i_filePath, tstring i_outPath, tstring i_fileName)
+{
+
+}
+void CompileVertexShader(tstring i_filePath, tstring i_outPath, tstring i_fileName)
+{
+	tstring command = FE_TEXT("../../SDK/FileConverter/fxc.exe");
+
+	command.append(FE_TEXT(" /E VS_Main"));
+	command.append(FE_TEXT(" /T vs_5_0"));
+	command.append(FE_TEXT(" /Fo ") + i_outPath + GetFileName(i_fileName) + FE_TEXT(".vso"));
+	command.append(i_outPath + i_fileName);
+	// 열기준 연산 행기준은 /Zpc
+	command.append(FE_TEXT(" /Zpr"));
+
+	_tsystem(command.c_str());
+}
+void CompilePixelShader(tstring i_filePath, tstring i_outPath, tstring i_fileName)
+{
+	tstring command = FE_TEXT("../../SDK/FileConverter/fxc.exe");
+
+	command.append(FE_TEXT(" /E PS_Main"));
+	command.append(FE_TEXT(" /T ps_5_0"));
+	command.append(FE_TEXT(" /Fo ") + i_outPath + GetFileName(i_fileName) + FE_TEXT(".pso"));
+	command.append(i_outPath + i_fileName);
+	// 열기준 연산 행기준은 /Zpc
+	command.append(FE_TEXT(" /Zpr"));
+
+	_tsystem(command.c_str());
+}
 void WriteMeshData(tofstream& o, ASE_MESH* mesh, UINT depth)
 {
 #define TAP for (UINT di = 0; di < depth; di++) o << FE_TEXT('\t');
@@ -65,6 +95,17 @@ void WriteMeshData(tofstream& o, ASE_MESH* mesh, UINT depth)
 
 	// 메쉬 이름 쓰기
 	TAP	o << FE_TEXT("Name = ") << mesh->name << std::endl;
+
+	// 머테리얼 ID 쓰기
+	UUID uuid;
+	ZeroMemory(&uuid, sizeof(uuid));
+	if (mesh->mtrlID != uuid)
+	{
+		TAP	o << FE_TEXT("MaterialID = ") << std::hex << mesh->mtrlID.Data1 << mesh->mtrlID.Data2 << mesh->mtrlID.Data3;
+		for (int ui = 0; ui < 8; ui++) o << (short)mesh->mtrlID.Data4[ui];
+		o << std::dec << std::endl;
+	}
+	else { TAP	o << FE_TEXT("MaterialID = ") << 0; }
 
 	// 버텍스 포맷 쓰기
 	TAP	o << FE_TEXT("VertexFormat = ") << mesh->vf << std::endl;
@@ -92,17 +133,6 @@ void WriteMeshData(tofstream& o, ASE_MESH* mesh, UINT depth)
 	{
 		WriteMeshData(o, (*iter), depth);
 	}
-
-	// 머테리얼 ID 쓰기
-	UUID uuid;
-	ZeroMemory(&uuid, sizeof(uuid));
-	if (mesh->mtrlID != uuid)
-	{
-		TAP	o << FE_TEXT("MaterialID = ") << std::hex << mesh->mtrlID.Data1 << mesh->mtrlID.Data2 << mesh->mtrlID.Data3;
-		for (int ui = 0; ui < 8; ui++) o << (short)mesh->mtrlID.Data4[ui];
-		o << std::dec << std::endl;
-	}
-	else	TAP	o << FE_TEXT("MaterialID = ") << 0;
 
 	depth--;
 	TAP	o << FE_TEXT("}") << std::endl;
@@ -145,52 +175,14 @@ void VertexWeld(std::vector<FE_VF_PositionColorNormalTexture>& verts, std::vecto
 
 	return;
 }
-void ConvertShaderFile(tstring i_fileName, tstring i_outPath)
-{
-	TCHAR str[BUFFER_SIZE];
-	UINT i = 0;
-
-	tifstream f(i_fileName.c_str());
-
-	if (f.fail())
-	{
-		//FEDebug::WarningMessage(FE_TEXT("Failed to open shader file."));
-		return;
-	}
-
-	while (f.eof())
-	{
-		f >> str;
-
-		if (TCSCMP_SAME(str, FE_TEXT("VS_Main")))
-		{
-			if (str[7] != FE_TEXT('('))
-			{
-				f.getline(str, BUFFER_SIZE);
-				while (true)
-				{
-					switch (str[i])
-					{
-					case FE_TEXT(' '):
-						break;
-					case FE_TEXT(':'):
-						break;
-					case FE_TEXT('('):
-						break;
-					case FE_TEXT(')'):
-						break;
-					}
-				}
-			}
-		}
-	}
-}
-bool ConvertASEMapFile(tifstream& f, tstring i_filePath, TCHAR buf[])
+bool ConvertASEMapFile(tifstream& f, tofstream& om, tstring i_filePath, tstring i_outPath, TCHAR buf[])
 {
 	int a, b, c, i = 0;
 	float x, y, z, w;
 
 	TCHAR mapClass[BUFFER_SIZE];
+
+	om << FE_TEXT("{") << std::endl;
 
 	f >> buf;
 	// Map Name
@@ -213,11 +205,12 @@ bool ConvertASEMapFile(tifstream& f, tstring i_filePath, TCHAR buf[])
 	f >> buf >> i;
 	// Map Amount
 	f >> buf >> x;
+	om << FE_TEXT('\t') << FE_TEXT("Amount = ") << x << std::endl;
 
 	// 머테리얼 클래스에 따른 처리
 	if (TCSCMP_SAME(mapClass, FE_TEXT("Bitmap")))
 	{
-		// BITMAP "D:\Works\Lecture01\02.ASE_Engine (ver.2.1)\Data\Box\woodbox.jpg";
+		// BITMAP "경로" : 경로 추출;
 		f >> buf;
 		i = 0;
 
@@ -229,19 +222,38 @@ bool ConvertASEMapFile(tifstream& f, tstring i_filePath, TCHAR buf[])
 		int e = i;
 
 		_tcsncpy_s(mapClass, buf + s, e - s);
-		GetFilePath(i_filePath) + GetFileNameWithExtension(mapClass);
+
+		{
+			tifstream mif(i_filePath + GetFileNameWithExtension(mapClass));
+
+			if (mif.is_open())
+			{
+				tofstream mof(i_outPath + GetFileNameWithExtension(mapClass));
+
+				if (mof.is_open())
+				{
+					FECopyFile(mif, mof);
+				}
+			}
+		}
+
+		om << FE_TEXT('\t') << FE_TEXT("Map = ") << FE_TEXT('"') + i_outPath + GetFileNameWithExtension(mapClass) + FE_TEXT('"') << std::endl;
+		
 		// MAP_TYPE Screen;
 		f >> buf >> buf;
 		// UVW_U_OFFSET 0.0000;
 		f >> buf >> x;
 		// UVW_V_OFFSET 0.0000;
-		f >> buf >> x;
+		f >> buf >> y;
+		om << FE_TEXT('\t') << FE_TEXT("Offset") << FE_TEXT('\t') << x << FE_TEXT('\t') << y << std::endl;
 		// UVW_U_TILING 1.0000;
 		f >> buf >> x;
 		// UVW_V_TILING 1.0000;
 		f >> buf >> x;
+		om << FE_TEXT('\t') << FE_TEXT("Tiling") << FE_TEXT('\t') << x << FE_TEXT('\t') << y << std::endl;
 		// UVW_ANGLE 0.0000;
 		f >> buf >> x;
+		om << FE_TEXT('\t') << FE_TEXT("Angle") << FE_TEXT('\t') << x << std::endl;
 		// UVW_BLUR 1.0000;
 		f >> buf >> x;
 		// UVW_BLUR_OFFSET 0.0000;
@@ -258,6 +270,8 @@ bool ConvertASEMapFile(tifstream& f, tstring i_filePath, TCHAR buf[])
 		f >> buf >> buf;
 	}
 	else	while (buf[0] != FE_TEXT('}')) f >> buf;
+
+	om << FE_TEXT("}") << std::endl;
 
 	return true;
 }
@@ -332,9 +346,26 @@ bool ConvertASEMaterialFile(tifstream& f, tstring i_filePath, tstring i_outPath,
 	// MATERIAL_WIRESIZE
 	f >> buf >> x;
 
+	// 머테리얼 정보 출력
+	om << FE_TEXT("Diffuse") << FE_TEXT('\t') << diffuse.x << FE_TEXT('\t') << diffuse.y << FE_TEXT('\t') << diffuse.z << FE_TEXT('\t') << 1.0f - transparency << std::endl;
+	om << FE_TEXT("Ambient") << FE_TEXT('\t') << ambient.x << FE_TEXT('\t') << ambient.y << FE_TEXT('\t') << ambient.z << FE_TEXT('\t') << 1 << std::endl;
+	om << FE_TEXT("Specular") << FE_TEXT('\t') << specular.x << FE_TEXT('\t') << specular.y << FE_TEXT('\t') << specular.z << FE_TEXT('\t') << 1 << std::endl;
+	om << FE_TEXT("Power = ") << shine * 100 << std::endl;
+
 	// 머테리얼 클래스에 따른 처리
 	if (TCSCMP_SAME(mtrlClass, FE_TEXT("Standard")))
 	{
+		// MATERIAL_SHADING
+		f >> buf >> buf;
+		// MATERIAL_XP_FALLOFF
+		f >> buf >> x;
+		// MATERIAL_SELFILLUM
+		f >> buf >> x;
+		// MATERIAL_FALLOFF
+		f >> buf >> buf;
+		// MATERIAL_XP_TYPE
+		f >> buf >> buf;
+
 		while (true)
 		{
 			f >> buf;
@@ -348,39 +379,60 @@ bool ConvertASEMaterialFile(tifstream& f, tstring i_filePath, tstring i_outPath,
 				continue;
 			}
 
-			if (TCSCMP_SAME(buf + 1, FE_TEXT("MATERIAL_SHADING")))
+			
+			if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_DIFFUSE")))
 			{
-				f >> buf;
+				om << FE_TEXT("DiffuseMap") << std::endl;
+				ConvertASEMapFile(f, om, i_filePath, i_outPath, buf);
 			}
-			else if (TCSCMP_SAME(buf + 1, FE_TEXT("MATERIAL_XP_FALLOFF")))
+			else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_SPECULAR")))
 			{
-				f >> x;
+				om << FE_TEXT("SpecularMap") << std::endl;
+				ConvertASEMapFile(f, om, i_filePath, i_outPath, buf);
 			}
-			else if (TCSCMP_SAME(buf + 1, FE_TEXT("MATERIAL_SELFILLUM")))
+			/*else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_SHINE")))
 			{
-				f >> x;
-			}
-			else if (TCSCMP_SAME(buf + 1, FE_TEXT("MATERIAL_FALLOFF")))
+				om << FE_TEXT("ShineMap") << std::endl;
+				ConvertASEMapFile(f, om, i_filePath, i_outPath, buf);
+			}*/
+			/*else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_SHINESTRENGTH")))
 			{
-				f >> buf;
-			}
-			else if (TCSCMP_SAME(buf + 1, FE_TEXT("MATERIAL_XP_TYPE")))
+				om << FE_TEXT("ShineStrengthMap") << std::endl;
+				ConvertASEMapFile(f, om, i_filePath, i_outPath, buf);
+			}*/
+			/*else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_SELFILLUM")))
 			{
-				f >> buf;
-			}
-			else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_DIFFUSE")))
+				om << FE_TEXT("SelfIllumMap") << std::endl;
+				ConvertASEMapFile(f, om, i_filePath, i_outPath, buf);
+			}*/
+			else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_OPACITY")))
 			{
-				ConvertASEMapFile(f, i_filePath, buf);
+				om << FE_TEXT("OpacityMap") << std::endl;
+				ConvertASEMapFile(f, om, i_filePath, i_outPath, buf);
 			}
+			/*else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_FILTERCOLOR")))
+			{
+				om << FE_TEXT("FilterColorMap") << std::endl;
+				ConvertASEMapFile(f, om, i_filePath, i_outPath, buf);
+			}*/
+			else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_BUMP")))
+			{
+				om << FE_TEXT("BumpMap") << std::endl;
+				ConvertASEMapFile(f, om, i_filePath, i_outPath, buf);
+			}
+			/*else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_REFLECT")))
+			{
+				om << FE_TEXT("ReflectMap") << std::endl;
+				ConvertASEMapFile(f, om, i_filePath, i_outPath, buf);
+			}*/
+			/*else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_REFRACT")))
+			{
+				om << FE_TEXT("RefractMap") << std::endl;
+				ConvertASEMapFile(f, om, i_filePath, i_outPath, buf);
+			}*/
 		}
 	}
 	else	while (buf[0] != FE_TEXT('}')) f >> buf;
-
-	// 머테리얼 정보 출력
-	om << FE_TEXT("Diffuse = ") << diffuse.x << FE_TEXT('\t') << diffuse.y << FE_TEXT('\t') << diffuse.z << FE_TEXT('\t') << 1.0f - transparency << std::endl;
-	om << FE_TEXT("Ambient = ") << ambient.x << FE_TEXT('\t') << ambient.y << FE_TEXT('\t') << ambient.z << FE_TEXT('\t') << 1 << std::endl;
-	om << FE_TEXT("Specular = ") << specular.x << FE_TEXT('\t') << specular.y << FE_TEXT('\t') << specular.z << FE_TEXT('\t') << 1 << std::endl;
-	om << FE_TEXT("Power = ") << shine * 100 << std::endl;
 
 	om.close();
 }
@@ -1052,12 +1104,21 @@ void FEFileManager::ConvertAllFileInPath(tstring i_filePath)
 				FEFileManager::ConvertAllFileInPath(i_filePath + fd.name + FE_TEXT("/"));
 		}
 
-		else if (TCSCMP_SAME(extension.c_str(), FE_TEXT("fx")))
+		else if (TCSCMP_SAME(extension.c_str(), FE_TEXT("fx")) || TCSCMP_SAME(extension.c_str(), FE_TEXT("vsh")))
 		{
 			if (_taccess((_outPath + i_filePath + fd.name + FE_TEXT(".fes")).c_str(), 0) == -1)
 				break;
 
-			ConvertShaderFile(_dataPath + i_filePath + fd.name, _outPath + i_filePath);
+			ConvertShaderFile(_dataPath + i_filePath, _outPath + i_filePath, fd.name);
+			CompileVertexShader(_dataPath + i_filePath, _outPath + i_filePath, fd.name);
+		}
+
+		else if (TCSCMP_SAME(extension.c_str(), FE_TEXT("psh")))
+		{
+			if (_taccess((_outPath + i_filePath + fd.name + FE_TEXT(".fes")).c_str(), 0) == -1)
+				break;
+
+			CompilePixelShader(_dataPath + i_filePath, _outPath + i_filePath, fd.name);
 		}
 
 		else if (TCSCMP_SAME(extension.c_str(), FE_TEXT("ase")))

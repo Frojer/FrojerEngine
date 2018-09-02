@@ -1,5 +1,7 @@
 #include "FEUtility.h"
 
+#include <fstream>
+
 tstring GetFileNameExtension(const tstring& i_fileName)
 {
 	tstring extension;
@@ -25,4 +27,24 @@ tstring GetFileName(const tstring& filePath)
 tstring GetFileNameWithExtension(const tstring& filePath)
 {
 	return filePath.substr((filePath.rfind(FE_TEXT("/"), filePath.length() - 1) + 1), filePath.size());
+}
+
+bool FECopyFile(tifstream& orig, tofstream& dest)
+{
+	// 파일을 담을 문자열
+	tstring s;
+	// 파일의 크기
+	DWORD size;
+	
+	if (!(orig.is_open() && dest.is_open())) return false;
+
+	orig.seekg(0, tios::end);
+	size = orig.tellg();
+	s.resize(size);
+	orig.seekg(0, tios::beg);
+	orig.read(&s[0], size);
+
+	dest << s;
+
+	return true;
 }

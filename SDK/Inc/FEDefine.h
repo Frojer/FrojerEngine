@@ -29,6 +29,7 @@ typedef std::wofstream tofstream;
 typedef std::wstringstream tstringstream;
 typedef std::wistringstream tistringstream;
 typedef std::wostringstream tostringstream;
+typedef std::wios tios;
 #else
 typedef std::string tstring;
 typedef std::fstream tfstream;
@@ -37,6 +38,7 @@ typedef std::ofstream tofstream;
 typedef std::stringstream tstringstream;
 typedef std::istringstream tistringstream;
 typedef std::ostringstream tostringstream;
+typedef std::ios tios;
 #endif
 
 #define FE_TEXT(x) _TEXT(x)

@@ -1,13 +1,14 @@
-ID = af57a3dbcf7c4798939e1a3ddbb31
+ID = a881df4415b40bab3a2afe0a5af845f
 MeshObject
 {
 	Name = teapot_RED
-	VertexFormat = 0
+	MaterialID = 0	VertexFormat = 0
 	VertexCount = 0
 	IndexCount = 0
 	MeshObject
 	{
 		Name = Teapot001
+		MaterialID = d53ec101b46248bab6ebe346def2051
 		VertexFormat = 13
 		VertexCount = 326
 		0.35	0	0.6
