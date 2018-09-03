@@ -1,9 +1,6 @@
 #include "FEFileManager.h"
 
 #include <map>
-#include <Windows.h>
-#include <rpcdce.h>
-#pragma comment(lib, "Rpcrt4.lib")
 
 #include <FEUtility.h>
 
@@ -32,10 +29,11 @@ FEFileManager::~FEFileManager()
 
 struct ASE_MESH
 {
+	INT64 ID;
 	tstring name;
 	tstring parentName;
 
-	UUID mtrlID;
+	INT64 mtrlID;
 
 	std::list<ASE_MESH*> children;
 
@@ -48,9 +46,9 @@ struct ASE_MESH
 	std::vector<FEVector2>		texcoord;
 
 	ASE_MESH()
-		: vf(0)
+		: mtrlID(0), vf(0)
 	{
-		ZeroMemory(&mtrlID, sizeof(mtrlID));
+		
 	}
 };
 
@@ -92,20 +90,17 @@ void WriteMeshData(tofstream& o, ASE_MESH* mesh, UINT depth)
 	TAP	o << FE_TEXT("MeshObject") << std::endl;
 	TAP	o << FE_TEXT("{") << std::endl;
 	depth++;
+	// 오프젝트 ID
+	TAP	o << FE_TEXT("ObjectID = ") << CreateUUIDHashCode64() << std::endl;
 
+	// 메쉬 ID
+	TAP	o << FE_TEXT("MeshID = ") << mesh->ID << std::endl;
 	// 메쉬 이름 쓰기
 	TAP	o << FE_TEXT("Name = ") << mesh->name << std::endl;
 
 	// 머테리얼 ID 쓰기
-	UUID uuid;
-	ZeroMemory(&uuid, sizeof(uuid));
-	if (mesh->mtrlID != uuid)
-	{
-		TAP	o << FE_TEXT("MaterialID = ") << std::hex << mesh->mtrlID.Data1 << mesh->mtrlID.Data2 << mesh->mtrlID.Data3;
-		for (int ui = 0; ui < 8; ui++) o << (short)mesh->mtrlID.Data4[ui];
-		o << std::dec << std::endl;
-	}
-	else { TAP	o << FE_TEXT("MaterialID = ") << 0; }
+	if (mesh->mtrlID != 0)	{ TAP	o << FE_TEXT("MaterialID = ") << mesh->mtrlID << std::endl;	}
+	else					{ TAP	o << FE_TEXT("MaterialID = ") << 0 << std::endl; }
 
 	// 버텍스 포맷 쓰기
 	TAP	o << FE_TEXT("VertexFormat = ") << mesh->vf << std::endl;
@@ -175,14 +170,14 @@ void VertexWeld(std::vector<FE_VF_PositionColorNormalTexture>& verts, std::vecto
 
 	return;
 }
-bool ConvertASEMapFile(tifstream& f, tofstream& om, tstring i_filePath, tstring i_outPath, TCHAR buf[])
+void ConvertASEMapFile(tifstream& f, tofstream& o, tstring i_filePath, tstring i_outPath, TCHAR buf[])
 {
 	int a, b, c, i = 0;
 	float x, y, z, w;
 
 	TCHAR mapClass[BUFFER_SIZE];
 
-	om << FE_TEXT("{") << std::endl;
+	o << FE_TEXT('\t') << FE_TEXT("{") << std::endl;
 
 	f >> buf;
 	// Map Name
@@ -205,7 +200,7 @@ bool ConvertASEMapFile(tifstream& f, tofstream& om, tstring i_filePath, tstring 
 	f >> buf >> i;
 	// Map Amount
 	f >> buf >> x;
-	om << FE_TEXT('\t') << FE_TEXT("Amount = ") << x << std::endl;
+	o << FE_TEXT('\t') << FE_TEXT('\t') << FE_TEXT("Amount = ") << x << std::endl;
 
 	// 머테리얼 클래스에 따른 처리
 	if (TCSCMP_SAME(mapClass, FE_TEXT("Bitmap")))
@@ -223,21 +218,19 @@ bool ConvertASEMapFile(tifstream& f, tofstream& om, tstring i_filePath, tstring 
 
 		_tcsncpy_s(mapClass, buf + s, e - s);
 
+		tifstream mif(i_filePath + GetFileNameWithExtension(mapClass));
+
+		if (mif.is_open())
 		{
-			tifstream mif(i_filePath + GetFileNameWithExtension(mapClass));
+			tofstream mof(i_outPath + GetFileNameWithExtension(mapClass));
 
-			if (mif.is_open())
+			if (mof.is_open())
 			{
-				tofstream mof(i_outPath + GetFileNameWithExtension(mapClass));
-
-				if (mof.is_open())
-				{
-					FECopyFile(mif, mof);
-				}
+				FECopyFile(mif, mof);
 			}
 		}
 
-		om << FE_TEXT('\t') << FE_TEXT("Map = ") << FE_TEXT('"') + i_outPath + GetFileNameWithExtension(mapClass) + FE_TEXT('"') << std::endl;
+		o << FE_TEXT('\t') << FE_TEXT('\t') << FE_TEXT("Map = ") << FE_TEXT('"') + i_outPath + GetFileNameWithExtension(mapClass) + FE_TEXT('"') << std::endl;
 		
 		// MAP_TYPE Screen;
 		f >> buf >> buf;
@@ -245,15 +238,15 @@ bool ConvertASEMapFile(tifstream& f, tofstream& om, tstring i_filePath, tstring 
 		f >> buf >> x;
 		// UVW_V_OFFSET 0.0000;
 		f >> buf >> y;
-		om << FE_TEXT('\t') << FE_TEXT("Offset") << FE_TEXT('\t') << x << FE_TEXT('\t') << y << std::endl;
+		o << FE_TEXT('\t') << FE_TEXT('\t') << FE_TEXT("Offset") << FE_TEXT('\t') << x << FE_TEXT('\t') << y << std::endl;
 		// UVW_U_TILING 1.0000;
 		f >> buf >> x;
 		// UVW_V_TILING 1.0000;
 		f >> buf >> x;
-		om << FE_TEXT('\t') << FE_TEXT("Tiling") << FE_TEXT('\t') << x << FE_TEXT('\t') << y << std::endl;
+		o << FE_TEXT('\t') << FE_TEXT('\t') << FE_TEXT("Tiling") << FE_TEXT('\t') << x << FE_TEXT('\t') << y << std::endl;
 		// UVW_ANGLE 0.0000;
 		f >> buf >> x;
-		om << FE_TEXT('\t') << FE_TEXT("Angle") << FE_TEXT('\t') << x << std::endl;
+		o << FE_TEXT('\t') << FE_TEXT('\t') << FE_TEXT("Angle") << FE_TEXT('\t') << x << std::endl;
 		// UVW_BLUR 1.0000;
 		f >> buf >> x;
 		// UVW_BLUR_OFFSET 0.0000;
@@ -271,55 +264,34 @@ bool ConvertASEMapFile(tifstream& f, tofstream& om, tstring i_filePath, tstring 
 	}
 	else	while (buf[0] != FE_TEXT('}')) f >> buf;
 
-	om << FE_TEXT("}") << std::endl;
-
-	return true;
+	o << FE_TEXT('\t') << FE_TEXT("}") << std::endl;
 }
-bool ConvertASEMaterialFile(tifstream& f, tstring i_filePath, tstring i_outPath, TCHAR buf[], std::vector<UUID>& vMtrl)
+void ConvertASEMaterialFile(tifstream& f, tofstream& o, tstring i_filePath, tstring i_outPath, TCHAR buf[], std::vector<INT64>& vMtrl)
 {
-	tofstream om;
 	tstringstream ss;
 
 	TCHAR mtrlClass[BUFFER_SIZE];
 
 	int a, b, c, i = 0;
 	float x, y, z, w;
-	UUID uuid;
 
 	FEVector4 ambient;
 	FEVector4 diffuse;
 	FEVector4 specular;
 	float shine, shineStrength, transparency;
 
+	o << FE_TEXT("Material") << std::endl;
+	o << FE_TEXT("{") << std::endl;
+
+	// UUID
 	f >> i >> buf;
-	UuidCreate(&uuid);
-	vMtrl[i] = uuid;
+	vMtrl[i] = CreateUUIDHashCode64();
+	o << FE_TEXT('\t') << FE_TEXT("ID = ") << vMtrl[i] << std::endl;
 
-#pragma region MATERIAL_NAME
-	{
-		f >> buf;
-		i = 0;
-
-		f.getline(buf, BUFFER_SIZE);
-
-		while (buf[i] != FE_TEXT('"'))	i++;
-		int s = ++i;
-		while (buf[i] != FE_TEXT('"'))	i++;
-		int e = i;
-
-		_tcsncpy_s(mtrlClass, buf + s, e - s);
-
-		// 파일 생성
-		ss << i_outPath << mtrlClass << FE_TEXT(".fem");
-		om.open(ss.str());
-		if (!om.is_open()) return false;
-	}
-#pragma endregion
-
-	// UUID 쓰기
-	om << FE_TEXT("ID = ") << std::hex << uuid.Data1 << uuid.Data2 << uuid.Data3;
-	for (int j = 0; j < 8; j++) om << (short)uuid.Data4[j];
-	om << std::dec << std::endl;
+	// MATERIAL_NAME
+	f >> buf;
+	f.getline(buf, BUFFER_SIZE);
+	o << FE_TEXT('\t') << FE_TEXT("Name = ") << buf << std::endl;
 
 #pragma region MATERIAL_CLASS
 	{
@@ -347,10 +319,10 @@ bool ConvertASEMaterialFile(tifstream& f, tstring i_filePath, tstring i_outPath,
 	f >> buf >> x;
 
 	// 머테리얼 정보 출력
-	om << FE_TEXT("Diffuse") << FE_TEXT('\t') << diffuse.x << FE_TEXT('\t') << diffuse.y << FE_TEXT('\t') << diffuse.z << FE_TEXT('\t') << 1.0f - transparency << std::endl;
-	om << FE_TEXT("Ambient") << FE_TEXT('\t') << ambient.x << FE_TEXT('\t') << ambient.y << FE_TEXT('\t') << ambient.z << FE_TEXT('\t') << 1 << std::endl;
-	om << FE_TEXT("Specular") << FE_TEXT('\t') << specular.x << FE_TEXT('\t') << specular.y << FE_TEXT('\t') << specular.z << FE_TEXT('\t') << 1 << std::endl;
-	om << FE_TEXT("Power = ") << shine * 100 << std::endl;
+	o << FE_TEXT('\t') << FE_TEXT("Diffuse") << FE_TEXT('\t') << diffuse.x << FE_TEXT('\t') << diffuse.y << FE_TEXT('\t') << diffuse.z << FE_TEXT('\t') << 1.0f - transparency << std::endl;
+	o << FE_TEXT('\t') << FE_TEXT("Ambient") << FE_TEXT('\t') << ambient.x << FE_TEXT('\t') << ambient.y << FE_TEXT('\t') << ambient.z << FE_TEXT('\t') << 1 << std::endl;
+	o << FE_TEXT('\t') << FE_TEXT("Specular") << FE_TEXT('\t') << specular.x << FE_TEXT('\t') << specular.y << FE_TEXT('\t') << specular.z << FE_TEXT('\t') << 1 << std::endl;
+	o << FE_TEXT('\t') << FE_TEXT("Power = ") << shine * 100 << std::endl;
 
 	// 머테리얼 클래스에 따른 처리
 	if (TCSCMP_SAME(mtrlClass, FE_TEXT("Standard")))
@@ -378,63 +350,62 @@ bool ConvertASEMaterialFile(tifstream& f, tstring i_filePath, tstring i_outPath,
 				f.getline(buf, BUFFER_SIZE);
 				continue;
 			}
-
 			
 			if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_DIFFUSE")))
 			{
-				om << FE_TEXT("DiffuseMap") << std::endl;
-				ConvertASEMapFile(f, om, i_filePath, i_outPath, buf);
+				o << FE_TEXT('\t') << FE_TEXT("DiffuseMap") << std::endl;
+				ConvertASEMapFile(f, o, i_filePath, i_outPath, buf);
 			}
 			else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_SPECULAR")))
 			{
-				om << FE_TEXT("SpecularMap") << std::endl;
-				ConvertASEMapFile(f, om, i_filePath, i_outPath, buf);
+				o << FE_TEXT('\t') << FE_TEXT("SpecularMap") << std::endl;
+				ConvertASEMapFile(f, o, i_filePath, i_outPath, buf);
 			}
 			/*else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_SHINE")))
 			{
-				om << FE_TEXT("ShineMap") << std::endl;
-				ConvertASEMapFile(f, om, i_filePath, i_outPath, buf);
+				o << FE_TEXT('\t') << FE_TEXT("ShineMap") << std::endl;
+				ConvertASEMapFile(f, o, i_filePath, i_outPath, buf);
 			}*/
 			/*else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_SHINESTRENGTH")))
 			{
-				om << FE_TEXT("ShineStrengthMap") << std::endl;
-				ConvertASEMapFile(f, om, i_filePath, i_outPath, buf);
+				o << FE_TEXT('\t') << FE_TEXT("ShineStrengthMap") << std::endl;
+				ConvertASEMapFile(f, o, i_filePath, i_outPath, buf);
 			}*/
 			/*else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_SELFILLUM")))
 			{
-				om << FE_TEXT("SelfIllumMap") << std::endl;
-				ConvertASEMapFile(f, om, i_filePath, i_outPath, buf);
+				o << FE_TEXT('\t') << FE_TEXT("SelfIllumMap") << std::endl;
+				ConvertASEMapFile(f, o, i_filePath, i_outPath, buf);
 			}*/
 			else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_OPACITY")))
 			{
-				om << FE_TEXT("OpacityMap") << std::endl;
-				ConvertASEMapFile(f, om, i_filePath, i_outPath, buf);
+				o << FE_TEXT('\t') << FE_TEXT("OpacityMap") << std::endl;
+				ConvertASEMapFile(f, o, i_filePath, i_outPath, buf);
 			}
 			/*else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_FILTERCOLOR")))
 			{
-				om << FE_TEXT("FilterColorMap") << std::endl;
-				ConvertASEMapFile(f, om, i_filePath, i_outPath, buf);
+				o << FE_TEXT('\t') << FE_TEXT("FilterColorMap") << std::endl;
+				ConvertASEMapFile(f, o, i_filePath, i_outPath, buf);
 			}*/
 			else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_BUMP")))
 			{
-				om << FE_TEXT("BumpMap") << std::endl;
-				ConvertASEMapFile(f, om, i_filePath, i_outPath, buf);
+				o << FE_TEXT('\t') << FE_TEXT("BumpMap") << std::endl;
+				ConvertASEMapFile(f, o, i_filePath, i_outPath, buf);
 			}
 			/*else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_REFLECT")))
 			{
-				om << FE_TEXT("ReflectMap") << std::endl;
-				ConvertASEMapFile(f, om, i_filePath, i_outPath, buf);
+				o << FE_TEXT('\t') << FE_TEXT("ReflectMap") << std::endl;
+				ConvertASEMapFile(f, o, i_filePath, i_outPath, buf);
 			}*/
 			/*else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_REFRACT")))
 			{
-				om << FE_TEXT("RefractMap") << std::endl;
-				ConvertASEMapFile(f, om, i_filePath, i_outPath, buf);
+				o << FE_TEXT('\t') << FE_TEXT("RefractMap") << std::endl;
+				ConvertASEMapFile(f, o, i_filePath, i_outPath, buf);
 			}*/
 		}
 	}
 	else	while (buf[0] != FE_TEXT('}')) f >> buf;
 
-	om.close();
+	o.close();
 }
 bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileName)
 {
@@ -444,7 +415,7 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 
 	TCHAR buf[BUFFER_SIZE];
 
-	std::vector<UUID> vMtrl;
+	std::vector<INT64> vMtrl;
 	std::list<ASE_MESH*> meshList;
 
 	std::vector<FEVector3>		vPos;
@@ -463,19 +434,11 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 	int a, b, c, i = 0;
 	float x, y, z, w;
 
-	UUID uuid;
-	UuidCreate(&uuid);
-
 	// 원본 파일과 저장할 파일에 대한 객체 생성
 	o.open(i_outPath + GetFileName(i_fileName) + FE_TEXT(".msh"));
 	if (!o.is_open())	return false;
 	f.open(i_filePath + i_fileName);
 	if (!f.is_open())	return false;
-
-	// UUID 쓰기
-	o << FE_TEXT("ID = ") << std::hex << uuid.Data1 << uuid.Data2 << uuid.Data3;
-	for (int j = 0; j < 8; j++) o << (short)uuid.Data4[j];
-	o << std::dec << std::endl;
 
 	// ASE 파싱
 	while (!f.eof())
@@ -561,7 +524,7 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 				}
 				else if (TCSCMP_SAME(buf + 1, FE_TEXT("MATERIAL")))
 				{
-					ConvertASEMaterialFile(f, i_filePath, i_outPath, buf, vMtrl);
+					ConvertASEMaterialFile(f, o, i_filePath, i_outPath, buf, vMtrl);
 				}
 			}
 		}

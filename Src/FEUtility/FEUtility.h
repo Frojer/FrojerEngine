@@ -10,4 +10,5 @@ tstring GetFileName(const tstring& filePath);
 tstring GetFileNameWithExtension(const tstring& filePath);
 
 bool FECopyFile(tifstream& orig, tofstream& dest);
+INT64 CreateUUIDHashCode64();
 #endif

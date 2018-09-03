@@ -172,12 +172,62 @@ void LoadMaterial(tstring i_mtrlPath, tstring i_name)
 
 	f.close();
 }
+void LoadMesh(tifstream &f, FEMesh* pParent)
+{
+	TCHAR str[BUFFER_SIZE];
+	TCHAR sMtrlUUID[33];
+	UINT vc, ic, vf;
+	FEMesh* pMesh = new FEMesh;
+
+	f >> str;
+	// Mesh Name
+	f >> str >> str >> pMesh->m_Name;
+	// Material ID
+	f >> str >> str >> sMtrlUUID;
+	// Vertex Format
+	f >> str >> str >> vf;
+	// Vertex Count
+	f >> str >> str >> vc;
+
+#define VFCheck(format) (vf & format) == format
+	if (VFCheck(FE_VF_POSITION))		pMesh->m_pos.resize(vc);
+	if (VFCheck(FE_VF_VERTEX_COLOR))	pMesh->m_color.resize(vc);
+	if (VFCheck(FE_VF_NORMAL))			pMesh->m_normal.resize(vc);
+	if (VFCheck(FE_VF_TEXTURE))			pMesh->m_uv.resize(vc);
+
+	// Vertex Information
+	for (UINT i = 0; i < vc; i++)
+	{
+		if (VFCheck(FE_VF_POSITION))		f >> pMesh->m_pos[i].x >> pMesh->m_pos[i].y >> pMesh->m_pos[i].z;
+		if (VFCheck(FE_VF_VERTEX_COLOR))	f >> pMesh->m_color[i].x >> pMesh->m_color[i].y >> pMesh->m_color[i].z >> pMesh->m_color[i].w;
+		if (VFCheck(FE_VF_NORMAL))			f >> pMesh->m_normal[i].x >> pMesh->m_normal[i].y >> pMesh->m_normal[i].z;
+		if (VFCheck(FE_VF_TEXTURE))			f >> pMesh->m_uv[i].x >> pMesh->m_uv[i].y;
+	}
+#undef VFCheck
+
+	// Index Count
+	f >> str >> str >> ic;
+	pMesh->m_indics.resize(ic);
+
+	// 인덱스 정보 얻기
+	for (UINT i = 0; i < ic; i++)
+		f >> pMesh->m_indics[i].a >> pMesh->m_indics[i].b >> pMesh->m_indics[i].c;
+
+	pMesh->UpdateMeshData();
+
+	do
+	{
+		f >> str;
+		if (TCSCMP_SAME(str, FE_TEXT("MeshObject")))
+		{
+			LoadMesh(f, pMesh);
+		}
+	} while (str[0] != FE_TEXT('}'));
+}
 void LoadMesh(tstring i_meshPath, tstring i_name)
 {
-	FEMesh* pMesh = new FEMesh();
 	TCHAR uuid[33];
 	TCHAR str[BUFFER_SIZE];
-	UINT vc, ic, vf;
 
 	tifstream f(i_meshPath + i_name);
 
@@ -187,43 +237,13 @@ void LoadMesh(tstring i_meshPath, tstring i_name)
 		return;
 	}
 
-	// 이름 저장
-	pMesh->m_Name = GetFileName(i_name);
-
 	// UUID 얻기
 	f >> str >> str >> uuid;
 
-	// 버텍스 포멧 얻기
-	f >> str >> str >> vf;
-
-	// 버텍스 개수 얻기
-	f >> str >> str >> vc;
-
-#define VFCheck(format) (vf & format) == format
-	if (VFCheck(FE_VF_POSITION))		pMesh->m_pos.resize(vc);
-	if (VFCheck(FE_VF_VERTEX_COLOR))	pMesh->m_color.resize(vc);
-	if (VFCheck(FE_VF_NORMAL))			pMesh->m_normal.resize(vc);
-	if (VFCheck(FE_VF_TEXTURE))			pMesh->m_uv.resize(vc);
-
-	// 버텍스 정보 얻기
-	for (UINT i = 0; i < vc; i++)
+	while (true)
 	{
-		if (VFCheck(FE_VF_POSITION))	f >> pMesh->m_pos[i].x >> pMesh->m_pos[i].y >> pMesh->m_pos[i].z;
-		if (VFCheck(FE_VF_VERTEX_COLOR))	f >> pMesh->m_color[i].x >> pMesh->m_color[i].y >> pMesh->m_color[i].z >> pMesh->m_color[i].w;
-		if (VFCheck(FE_VF_NORMAL))			f >> pMesh->m_normal[i].x >> pMesh->m_normal[i].y >> pMesh->m_normal[i].z;
-		if (VFCheck(FE_VF_TEXTURE))			f >> pMesh->m_uv[i].x >> pMesh->m_uv[i].y;
+
 	}
-#undef VFCheck
-
-	// 인덱스 개수 얻기
-	f >> str >> str >> ic;
-	pMesh->m_indics.resize(ic);
-
-	// 인덱스 정보 얻기
-	for (UINT i = 0; i < ic; i++)
-		f >> pMesh->m_indics[i].a >> pMesh->m_indics[i].b >> pMesh->m_indics[i].c;
-
-	pMesh->UpdateMeshData();
 
 	f.close();
 }

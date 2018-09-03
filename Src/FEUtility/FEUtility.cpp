@@ -48,3 +48,20 @@ bool FECopyFile(tifstream& orig, tofstream& dest)
 
 	return true;
 }
+
+
+#ifdef _WIN32
+#include <Windows.h>
+#include <rpcdce.h>
+#pragma comment(lib, "Rpcrt4.lib")
+INT64 CreateUUIDHashCode64()
+{
+	UUID uuid;
+	UuidCreate(&uuid);
+	long long f = *((long long*)&uuid);
+	long long b = *((long long*)uuid.Data4);
+
+	return (f ^ b);
+}
+#elif
+#endif

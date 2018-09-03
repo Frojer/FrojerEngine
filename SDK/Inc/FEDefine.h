@@ -13,6 +13,7 @@ typedef unsigned char		BYTE;
 typedef unsigned long       DWORD;
 typedef unsigned short      WORD;
 typedef unsigned int		UINT;
+typedef long long			INT64;
 
 
 ///////////////////////
