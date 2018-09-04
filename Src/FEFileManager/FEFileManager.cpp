@@ -312,8 +312,8 @@ void ConvertASEMaterialFile(tifstream& f, tofstream& o, tstring i_filePath, tstr
 
 	// 머테리얼 정보 출력
 	o << FE_TEXT('\t') << FE_TEXT("Diffuse") << FE_TEXT('\t') << diffuse.x << FE_TEXT('\t') << diffuse.y << FE_TEXT('\t') << diffuse.z << FE_TEXT('\t') << 1.0f - transparency << std::endl;
-	o << FE_TEXT('\t') << FE_TEXT("Ambient") << FE_TEXT('\t') << ambient.x << FE_TEXT('\t') << ambient.y << FE_TEXT('\t') << ambient.z << FE_TEXT('\t') << std::endl;
-	o << FE_TEXT('\t') << FE_TEXT("Specular") << FE_TEXT('\t') << specular.x << FE_TEXT('\t') << specular.y << FE_TEXT('\t') << specular.z << FE_TEXT('\t') << std::endl;
+	o << FE_TEXT('\t') << FE_TEXT("Ambient") << FE_TEXT('\t') << ambient.x << FE_TEXT('\t') << ambient.y << FE_TEXT('\t') << ambient.z << std::endl;
+	o << FE_TEXT('\t') << FE_TEXT("Specular") << FE_TEXT('\t') << specular.x << FE_TEXT('\t') << specular.y << FE_TEXT('\t') << specular.z << std::endl;
 	o << FE_TEXT('\t') << FE_TEXT("Power = ") << shine * 100 << std::endl;
 
 	// 머테리얼 클래스에 따른 처리
@@ -346,52 +346,52 @@ void ConvertASEMaterialFile(tifstream& f, tofstream& o, tstring i_filePath, tstr
 			
 			if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_DIFFUSE")))
 			{
-				o << FE_TEXT('\t') << FE_TEXT("DiffuseMap") << std::endl;
+				o << FE_TEXT('\t') << FE_TEXT("Map ") << 0 << std::endl;
 				ConvertASEMapFile(f, o, i_filePath, i_outPath, buf);
 			}
 			else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_SPECULAR")))
 			{
-				o << FE_TEXT('\t') << FE_TEXT("SpecularMap") << std::endl;
+				o << FE_TEXT('\t') << FE_TEXT("Map ") << 1 << std::endl;
 				ConvertASEMapFile(f, o, i_filePath, i_outPath, buf);
 			}
 			else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_SHINE")))
 			{
-				o << FE_TEXT('\t') << FE_TEXT("ShineMap") << std::endl;
+				o << FE_TEXT('\t') << FE_TEXT("Map ") << 2 << std::endl;
 				ConvertASEMapFile(f, o, i_filePath, i_outPath, buf);
 			}
 			else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_SHINESTRENGTH")))
 			{
-				o << FE_TEXT('\t') << FE_TEXT("ShineStrengthMap") << std::endl;
+				o << FE_TEXT('\t') << FE_TEXT("Map ") << 3 << std::endl;
 				ConvertASEMapFile(f, o, i_filePath, i_outPath, buf);
 			}
 			else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_SELFILLUM")))
 			{
-				o << FE_TEXT('\t') << FE_TEXT("SelfIllumMap") << std::endl;
+				o << FE_TEXT('\t') << FE_TEXT("Map ") << 4 << std::endl;
 				ConvertASEMapFile(f, o, i_filePath, i_outPath, buf);
 			}
 			else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_OPACITY")))
 			{
-				o << FE_TEXT('\t') << FE_TEXT("OpacityMap") << std::endl;
+				o << FE_TEXT('\t') << FE_TEXT("Map ") << 5 << std::endl;
 				ConvertASEMapFile(f, o, i_filePath, i_outPath, buf);
 			}
 			else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_FILTERCOLOR")))
 			{
-				o << FE_TEXT('\t') << FE_TEXT("FilterColorMap") << std::endl;
+				o << FE_TEXT('\t') << FE_TEXT("Map ") << 6 << std::endl;
 				ConvertASEMapFile(f, o, i_filePath, i_outPath, buf);
 			}
 			else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_BUMP")))
 			{
-				o << FE_TEXT('\t') << FE_TEXT("BumpMap") << std::endl;
+				o << FE_TEXT('\t') << FE_TEXT("Map ") << 7 << std::endl;
 				ConvertASEMapFile(f, o, i_filePath, i_outPath, buf);
 			}
 			else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_REFLECT")))
 			{
-				o << FE_TEXT('\t') << FE_TEXT("ReflectMap") << std::endl;
+				o << FE_TEXT('\t') << FE_TEXT("Map ") << 8 << std::endl;
 				ConvertASEMapFile(f, o, i_filePath, i_outPath, buf);
 			}
 			else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_REFRACT")))
 			{
-				o << FE_TEXT('\t') << FE_TEXT("RefractMap") << std::endl;
+				o << FE_TEXT('\t') << FE_TEXT("Map ") << 9 << std::endl;
 				ConvertASEMapFile(f, o, i_filePath, i_outPath, buf);
 			}
 		}

@@ -166,6 +166,7 @@ void FELoader::LoadMaterial(tstring i_mtrlPath, tstring i_name)
 }
 void FELoader::LoadMaterialInMesh(tifstream &f)
 {
+	UINT i = 0;
 	FEMaterial* pMaterial = nullptr;
 	TCHAR str[BUFFER_SIZE];
 
@@ -198,9 +199,25 @@ void FELoader::LoadMaterialInMesh(tifstream &f)
 	{
 		f >> str;
 
-		if (TCSCMP_SAME(str, FE_TEXT("Name")))
+		if (TCSCMP_SAME(str, FE_TEXT("Map")))
 		{
-			
+			// MapIndex >> '{'
+			f >> i >> str;
+			// Amount
+			f >> str >> str >> i;
+			// Map Path
+			f >> str >> str;
+			f.getline(str, BUFFER_SIZE);
+			// Texture Load ÇÊ¿ä
+			StripQuotes(str);
+			// Offset
+			f >> str >> str >> str;
+			// Tiling
+			f >> str >> str >> str;
+			// Angle
+			f >> str >> str;
+			// '}'
+			f >> str;
 		}
 	} while (str[0] != FE_TEXT('}'));
 }
