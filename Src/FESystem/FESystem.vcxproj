@@ -19,12 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="FELoader.cpp" />
     <ClCompile Include="FESystem.cpp" />
     <ClCompile Include="FETime.cpp" />
     <ClCompile Include="FEWindow.cpp" />
     <ClCompile Include="FEWin32Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FELoader.h" />
     <ClInclude Include="FESystem.h" />
     <ClInclude Include="FESystemDefine.h" />
     <ClInclude Include="FETime.h" />

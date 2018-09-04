@@ -32,7 +32,7 @@ private:
 		bool useLight;
 	};
 
-	static std::unordered_map<UINT, FEMaterial*> _mtrlMap;
+	static std::unordered_map<INT64, FEMaterial*> _mtrlMap;
 	static FETexture* _pDefaultTex;
 
 	FEShader* _pShader;
@@ -50,6 +50,7 @@ public:
 	FEVector4 m_diffuse;
 	FEVector3 m_ambient;
 	FEVector3 m_specular;
+	float m_power;
 
 	FETexture* m_pTexture[128];
 
@@ -73,7 +74,7 @@ public:
 	void SetVector(UINT id, const FEVector4& vector);
 	void SetMatrix(UINT id, const FEMatrix& matrix);
 
-	static FEMaterial* Find(UINT id);
+	static FEMaterial* Find(INT64 id);
 	static FEMaterial* Find(LPCTSTR name);
 
 	friend class IFEScene;

@@ -5,13 +5,13 @@
 #define VERTEX_ELEMETN_NUM 4
 using namespace std;
 
-unordered_map<UINT, FEMesh*> FEMesh::_meshMap;
+unordered_map<INT64, FEMesh*> FEMesh::_meshMap;
 
 FEMesh::FEMesh()
 	: _pVB(), _pIB(nullptr), m_topology(PRIMITIVE_TOPOLOGY_TRIANGLELIST)
 {
 	memset(&_pVB, 0, sizeof(_pVB));
-	_meshMap.insert(pair<UINT, FEMesh*>(GetID(), this));
+	_meshMap.insert(pair<INT64, FEMesh*>(GetID(), this));
 }
 
 
@@ -52,7 +52,7 @@ void FEMesh::ClearMap()
 }
 
 
-FEMesh* FEMesh::Find(UINT id)
+FEMesh* FEMesh::Find(INT64 id)
 {
 	if (_meshMap.find(id) == _meshMap.end())	return nullptr;
 	return _meshMap[id];

@@ -2,8 +2,8 @@
 
 using namespace std;
 
-UINT IFEObject::_countID = 0;
-unordered_map<UINT, IFEObject*> IFEObject::_mapObj;
+INT64 IFEObject::_countID = 0;
+unordered_map<INT64, IFEObject*> IFEObject::_mapObj;
 
 IFEObject::IFEObject()
 {
@@ -17,12 +17,12 @@ IFEObject::~IFEObject()
 	_mapObj.erase(_ID);
 }
 
-UINT IFEObject::GetID()
+INT64 IFEObject::GetID()
 {
 	return _ID;
 }
 
-IFEObject* IFEObject::FindObject(UINT id)
+IFEObject* IFEObject::FindObject(INT64 id)
 {
 	if (_mapObj.find(id) == _mapObj.end()) return nullptr;
 	return _mapObj[id];

@@ -8,10 +8,10 @@
 class IFEObject
 {
 private:
-	static UINT _countID;
-	UINT  _ID;
+	static INT64 _countID;
+	INT64  _ID;
 
-	static std::unordered_map<UINT, IFEObject*> _mapObj;
+	static std::unordered_map<INT64, IFEObject*> _mapObj;
 
 private:
 	IFEObject(const IFEObject& rhs) = delete;
@@ -21,9 +21,11 @@ public:
 	IFEObject();
 	virtual ~IFEObject();
 
-	UINT GetID();
+	INT64 GetID();
 
-	static IFEObject* FindObject(UINT id);
+	static IFEObject* FindObject(INT64 id);
+
+	friend class FELoader;
 };
 
 #endif

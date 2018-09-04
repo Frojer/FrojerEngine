@@ -19,7 +19,7 @@ enum RenderingLayer
 class IFEScene
 {
 protected:
-	std::unordered_map<UINT, FEGameObject*>	_mapObj;
+	std::unordered_map<INT64, FEGameObject*>	_mapObj;
 	std::list<FEGameObject*>	_hierarchyList;
 	//std::map<float, FEGameObject*>	_mapManageDrawObj[RL_NUM];
 

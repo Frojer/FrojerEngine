@@ -46,7 +46,7 @@ struct ASE_MESH
 	std::vector<FEVector2>		texcoord;
 
 	ASE_MESH()
-		: mtrlID(0), vf(0)
+		: ID(0), mtrlID(0), vf(0)
 	{
 		
 	}
@@ -96,7 +96,7 @@ void WriteMeshData(tofstream& o, ASE_MESH* mesh, UINT depth)
 	// 메쉬 ID
 	TAP	o << FE_TEXT("MeshID = ") << mesh->ID << std::endl;
 	// 메쉬 이름 쓰기
-	TAP	o << FE_TEXT("Name = ") << mesh->name << std::endl;
+	TAP	o << FE_TEXT("Name =") << mesh->name << std::endl;
 
 	// 머테리얼 ID 쓰기
 	if (mesh->mtrlID != 0)	{ TAP	o << FE_TEXT("MaterialID = ") << mesh->mtrlID << std::endl;	}
@@ -181,6 +181,7 @@ void ConvertASEMapFile(tifstream& f, tofstream& o, tstring i_filePath, tstring i
 
 	f >> buf;
 	// Map Name
+	f >> buf;
 	f.getline(buf, BUFFER_SIZE);
 	// Map Class
 #pragma region MAP_CLASS
@@ -218,11 +219,11 @@ void ConvertASEMapFile(tifstream& f, tofstream& o, tstring i_filePath, tstring i
 
 		_tcsncpy_s(mapClass, buf + s, e - s);
 
-		tifstream mif(i_filePath + GetFileNameWithExtension(mapClass));
+		tifstream mif(i_filePath + GetFileNameWithExtension(mapClass), std::ios::binary);
 
 		if (mif.is_open())
 		{
-			tofstream mof(i_outPath + GetFileNameWithExtension(mapClass));
+			tofstream mof(i_outPath + GetFileNameWithExtension(mapClass), std::ios::binary);
 
 			if (mof.is_open())
 			{
@@ -261,6 +262,8 @@ void ConvertASEMapFile(tifstream& f, tofstream& o, tstring i_filePath, tstring i
 		f >> buf >> x;
 		// BITMAP_FILTER
 		f >> buf >> buf;
+		// '}'
+		f >> buf;
 	}
 	else	while (buf[0] != FE_TEXT('}')) f >> buf;
 
@@ -270,7 +273,7 @@ void ConvertASEMaterialFile(tifstream& f, tofstream& o, tstring i_filePath, tstr
 {
 	tstringstream ss;
 
-	TCHAR mtrlClass[BUFFER_SIZE];
+	tstring mtrlClass;
 
 	int a, b, c, i = 0;
 	float x, y, z, w;
@@ -291,23 +294,12 @@ void ConvertASEMaterialFile(tifstream& f, tofstream& o, tstring i_filePath, tstr
 	// MATERIAL_NAME
 	f >> buf;
 	f.getline(buf, BUFFER_SIZE);
-	o << FE_TEXT('\t') << FE_TEXT("Name = ") << buf << std::endl;
+	o << FE_TEXT('\t') << FE_TEXT("Name =") << buf << std::endl;
 
-#pragma region MATERIAL_CLASS
-	{
-		f >> buf;
-		i = 0;
-
-		f.getline(buf, BUFFER_SIZE);
-
-		while (buf[i] != FE_TEXT('"'))	i++;
-		int s = ++i;
-		while (buf[i] != FE_TEXT('"'))	i++;
-		int e = i;
-
-		_tcsncpy_s(mtrlClass, buf + s, e - s);
-	}
-#pragma endregion
+	// MATERIAL_CLASS
+	f >> buf;
+	f.getline(buf, BUFFER_SIZE);
+	mtrlClass = StripQuotes(buf);
 
 	f >> buf >> ambient.x >> ambient.y >> ambient.z;
 	f >> buf >> diffuse.x >> diffuse.y >> diffuse.z;
@@ -320,12 +312,13 @@ void ConvertASEMaterialFile(tifstream& f, tofstream& o, tstring i_filePath, tstr
 
 	// 머테리얼 정보 출력
 	o << FE_TEXT('\t') << FE_TEXT("Diffuse") << FE_TEXT('\t') << diffuse.x << FE_TEXT('\t') << diffuse.y << FE_TEXT('\t') << diffuse.z << FE_TEXT('\t') << 1.0f - transparency << std::endl;
-	o << FE_TEXT('\t') << FE_TEXT("Ambient") << FE_TEXT('\t') << ambient.x << FE_TEXT('\t') << ambient.y << FE_TEXT('\t') << ambient.z << FE_TEXT('\t') << 1 << std::endl;
-	o << FE_TEXT('\t') << FE_TEXT("Specular") << FE_TEXT('\t') << specular.x << FE_TEXT('\t') << specular.y << FE_TEXT('\t') << specular.z << FE_TEXT('\t') << 1 << std::endl;
+	o << FE_TEXT('\t') << FE_TEXT("Ambient") << FE_TEXT('\t') << ambient.x << FE_TEXT('\t') << ambient.y << FE_TEXT('\t') << ambient.z << FE_TEXT('\t') << std::endl;
+	o << FE_TEXT('\t') << FE_TEXT("Specular") << FE_TEXT('\t') << specular.x << FE_TEXT('\t') << specular.y << FE_TEXT('\t') << specular.z << FE_TEXT('\t') << std::endl;
 	o << FE_TEXT('\t') << FE_TEXT("Power = ") << shine * 100 << std::endl;
 
 	// 머테리얼 클래스에 따른 처리
-	if (TCSCMP_SAME(mtrlClass, FE_TEXT("Standard")))
+	//if (TCSCMP_SAME(mtrlClass.c_str(), FE_TEXT("Standard")))
+	if (mtrlClass == FE_TEXT("Standard"))
 	{
 		// MATERIAL_SHADING
 		f >> buf >> buf;
@@ -361,51 +354,50 @@ void ConvertASEMaterialFile(tifstream& f, tofstream& o, tstring i_filePath, tstr
 				o << FE_TEXT('\t') << FE_TEXT("SpecularMap") << std::endl;
 				ConvertASEMapFile(f, o, i_filePath, i_outPath, buf);
 			}
-			/*else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_SHINE")))
+			else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_SHINE")))
 			{
 				o << FE_TEXT('\t') << FE_TEXT("ShineMap") << std::endl;
 				ConvertASEMapFile(f, o, i_filePath, i_outPath, buf);
-			}*/
-			/*else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_SHINESTRENGTH")))
+			}
+			else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_SHINESTRENGTH")))
 			{
 				o << FE_TEXT('\t') << FE_TEXT("ShineStrengthMap") << std::endl;
 				ConvertASEMapFile(f, o, i_filePath, i_outPath, buf);
-			}*/
-			/*else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_SELFILLUM")))
+			}
+			else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_SELFILLUM")))
 			{
 				o << FE_TEXT('\t') << FE_TEXT("SelfIllumMap") << std::endl;
 				ConvertASEMapFile(f, o, i_filePath, i_outPath, buf);
-			}*/
+			}
 			else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_OPACITY")))
 			{
 				o << FE_TEXT('\t') << FE_TEXT("OpacityMap") << std::endl;
 				ConvertASEMapFile(f, o, i_filePath, i_outPath, buf);
 			}
-			/*else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_FILTERCOLOR")))
+			else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_FILTERCOLOR")))
 			{
 				o << FE_TEXT('\t') << FE_TEXT("FilterColorMap") << std::endl;
 				ConvertASEMapFile(f, o, i_filePath, i_outPath, buf);
-			}*/
+			}
 			else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_BUMP")))
 			{
 				o << FE_TEXT('\t') << FE_TEXT("BumpMap") << std::endl;
 				ConvertASEMapFile(f, o, i_filePath, i_outPath, buf);
 			}
-			/*else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_REFLECT")))
+			else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_REFLECT")))
 			{
 				o << FE_TEXT('\t') << FE_TEXT("ReflectMap") << std::endl;
 				ConvertASEMapFile(f, o, i_filePath, i_outPath, buf);
-			}*/
-			/*else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_REFRACT")))
+			}
+			else if (TCSCMP_SAME(buf + 1, FE_TEXT("MAP_REFRACT")))
 			{
 				o << FE_TEXT('\t') << FE_TEXT("RefractMap") << std::endl;
 				ConvertASEMapFile(f, o, i_filePath, i_outPath, buf);
-			}*/
+			}
 		}
 	}
 	else	while (buf[0] != FE_TEXT('}')) f >> buf;
-
-	o.close();
+	o << FE_TEXT("}") << std::endl;
 }
 bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileName)
 {
@@ -532,6 +524,8 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 		{
 			ASE_MESH* mesh = new ASE_MESH;
 
+			mesh->ID = CreateUUIDHashCode64();
+
 			f >> buf;
 
 			while (true)
@@ -549,30 +543,12 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 
 				if (TCSCMP_SAME(buf + 1, FE_TEXT("NODE_NAME")))
 				{
-					i = 0;
-
 					f.getline(buf, BUFFER_SIZE);
-
-					while (buf[i] != FE_TEXT('"'))	i++;
-					int s = ++i;
-					while (buf[i] != FE_TEXT('"'))	i++;
-					int e = i;
-
-					_tcsncpy_s(buf, buf + s, e - s);
 					mesh->name = buf;
 				}
 				else if (TCSCMP_SAME(buf + 1, FE_TEXT("NODE_PARENT")))
 				{
-					i = 0;
-
 					f.getline(buf, BUFFER_SIZE);
-
-					while (buf[i] != FE_TEXT('"'))	i++;
-					int s = ++i;
-					while (buf[i] != FE_TEXT('"'))	i++;
-					int e = i;
-
-					_tcsncpy_s(buf, buf + s, e - s);
 					mesh->parentName = buf;
 				}
 				else if (TCSCMP_SAME(buf + 1, FE_TEXT("NODE_TM")))
@@ -594,17 +570,7 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 
 						/*if (TCSCMP_SAME(buf + 1, FE_TEXT("NODE_NAME")))
 						{
-							TCHAR name[BUFFER_SIZE];
-							i = 0;
-
 							f.getline(buf, BUFFER_SIZE);
-
-							while (buf[i] != FE_TEXT('"'))	i++;
-							int s = ++i;
-							while (buf[i] != FE_TEXT('"'))	i++;
-							int e = i;
-
-							_tcsncpy_s(name, buf + s, e - s);
 						}*/
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("INHERIT_POS")))
 						{
@@ -1009,7 +975,7 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 
 	// 메쉬 계층구조의 루트
 	ASE_MESH root;
-	root.name = GetFileName(i_fileName);
+	root.name = FE_TEXT(" \"") + GetFileName(i_fileName) + FE_TEXT('"');
 
 	// 매쉬 계층구조 만들기
 	for (auto iter = meshList.begin(); iter != meshList.end(); iter++)

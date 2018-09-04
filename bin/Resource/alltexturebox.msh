@@ -1,0 +1,222 @@
+Material
+{
+	ID = 6617205421847886818
+	Name = "01 - Default"
+	Diffuse	0.5882	0.5882	0.5882	1
+	Ambient	0.5882	0.5882	0.5882	
+	Specular	0.9	0.9	0.9	
+	Power = 10
+	DiffuseMap
+	{
+		Amount = 1
+		Map = "../../bin/Resource/woodbox.jpg"
+		Offset	0	0
+		Tiling	2	0
+		Angle	0
+	}
+	SpecularMap
+	{
+		Amount = 1
+		Map = "../../bin/Resource/brickwork-texture.jpg"
+		Offset	0	0
+		Tiling	1.5	0
+		Angle	0
+	}
+	ShineMap
+	{
+		Amount = 1
+		Map = "../../bin/Resource/earth.bmp"
+		Offset	0	0
+		Tiling	1	0
+		Angle	0
+	}
+	ShineStrengthMap
+	{
+		Amount = 1
+		Map = "../../bin/Resource/sonim.jpg"
+		Offset	0	0
+		Tiling	1	0
+		Angle	0
+	}
+	SelfIllumMap
+	{
+		Amount = 1
+		Map = "../../bin/Resource/boxbox.png"
+		Offset	0	0
+		Tiling	1	0
+		Angle	0
+	}
+	OpacityMap
+	{
+		Amount = 1
+		Map = "../../bin/Resource/sonimBox.png"
+		Offset	0	0
+		Tiling	1	0
+		Angle	0
+	}
+	FilterColorMap
+	{
+		Amount = 1
+		Map = "../../bin/Resource/sonim.jpg"
+		Offset	0	0
+		Tiling	1	0
+		Angle	0
+	}
+	BumpMap
+	{
+		Amount = 0.3
+		Map = "../../bin/Resource/woodBox.png"
+		Offset	0	0
+		Tiling	1	0
+		Angle	0
+	}
+	ReflectMap
+	{
+		Amount = 1
+		Map = "../../bin/Resource/earth.bmp"
+		Offset	0	0
+		Tiling	1	0
+		Angle	0
+	}
+	RefractMap
+	{
+		Amount = 1
+		Map = "../../bin/Resource/sonim.jpg"
+		Offset	0	0
+		Tiling	1	0
+		Angle	0
+	}
+	RefractMap
+	{
+		Amount = 1
+		Map = "../../bin/Resource/woodBox.png"
+		Offset	0	0
+		Tiling	1	0
+		Angle	0
+	}
+}
+MeshObject
+{
+	ObjectID = 3625643568132744439
+	MeshID = 0
+	Name = "alltexturebox"
+	MaterialID = 0
+	VertexFormat = 0
+	VertexCount = 0
+	IndexCount = 0
+	MeshObject
+	{
+		ObjectID = 2668634650095809173
+		MeshID = -7074666263635223465
+		Name = "Box001"
+		MaterialID = 6617205421847886818
+		VertexFormat = 13
+		VertexCount = 31
+		-5.6076	-9.4437	0
+		0	0	-1
+		1	-0
+		-5.6076	11.7649	0
+		0	0	-1
+		1	-1
+		10.3122	11.7649	0
+		0	0	-1
+		0	-0
+		10.3122	11.7649	0
+		0	0	-1
+		0	-1
+		10.3122	-9.4437	0
+		0	0	-1
+		0	-0
+		-5.6076	-9.4437	0
+		0	0	-1
+		0	-0
+		-5.6076	-9.4437	18.3485
+		0	0	1
+		0	-0
+		10.3122	-9.4437	18.3485
+		0	-0	1
+		1	-0
+		10.3122	11.7649	18.3485
+		0	0	1
+		0	-0
+		10.3122	11.7649	18.3485
+		0	0	1
+		1	-1
+		-5.6076	11.7649	18.3485
+		-0	0	1
+		0	-1
+		-5.6076	-9.4437	0
+		0	-1	0
+		0	-0
+		10.3122	-9.4437	0
+		0	-1	0
+		1	-0
+		10.3122	-9.4437	18.3485
+		0	-1	0
+		0	-0
+		10.3122	-9.4437	18.3485
+		0	-1	0
+		1	-1
+		-5.6076	-9.4437	18.3485
+		0	-1	0
+		0	-1
+		10.3122	-9.4437	0
+		1	0	0
+		0	-0
+		10.3122	11.7649	0
+		1	0	-0
+		1	-0
+		10.3122	11.7649	18.3485
+		1	0	0
+		0	-0
+		10.3122	11.7649	18.3485
+		1	0	0
+		1	-1
+		10.3122	-9.4437	18.3485
+		1	-0	0
+		0	-1
+		10.3122	11.7649	0
+		0	1	0
+		0	-0
+		-5.6076	11.7649	0
+		0	1	0
+		1	-0
+		-5.6076	11.7649	18.3485
+		0	1	0
+		0	-0
+		-5.6076	11.7649	18.3485
+		0	1	0
+		1	-1
+		10.3122	11.7649	18.3485
+		0	1	0
+		0	-1
+		-5.6076	11.7649	0
+		-1	0	0
+		0	-0
+		-5.6076	-9.4437	0
+		-1	0	0
+		1	-0
+		-5.6076	-9.4437	18.3485
+		-1	0	0
+		0	-0
+		-5.6076	-9.4437	18.3485
+		-1	0	0
+		1	-1
+		-5.6076	11.7649	18.3485
+		-1	-0	-0
+		0	-1
+		IndexCount = 12
+		0	1	2
+		3	4	5
+		6	7	8
+		9	10	6
+		11	12	13
+		14	15	11
+		16	17	18
+		19	20	16
+		21	22	23
+		24	25	21
+		26	27	28
+		29	30	26
+	}
+}

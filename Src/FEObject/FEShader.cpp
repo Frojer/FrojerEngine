@@ -1,7 +1,7 @@
 #include <IFEBuffer.h>
 #include "FEObjectHeader.h"
 
-std::unordered_map<UINT, FEShader*> FEShader::_shaderMap;
+std::unordered_map<INT64, FEShader*> FEShader::_shaderMap;
 IFEBuffer* FEShader::_pWVP_CB = nullptr;
 IFEBuffer* FEShader::_pLight_CB = nullptr;
 
@@ -120,7 +120,7 @@ void FEShader::Render() const
 }
 
 
-FEShader* FEShader::Find(UINT id)
+FEShader* FEShader::Find(INT64 id)
 {
 	if (_shaderMap.find(id) == _shaderMap.end())
 		return nullptr;

@@ -1,5 +1,5 @@
 #include "FEObjectHeader.h"
-#include <FESceneManager.h>
+#include "FESceneManager.h"
 
 FEGameObject::FEGameObject()
 	: _bDead(false), _pParent(nullptr)
@@ -59,7 +59,7 @@ void FEGameObject::Destroy(float time)
 }
 
 
-FEGameObject* FEGameObject::FindChild(unsigned int id, std::unordered_map<UINT, FEGameObject*> children)
+FEGameObject* FEGameObject::FindChild(unsigned int id, std::unordered_map<INT64, FEGameObject*> children)
 {
 	FEGameObject* pObj = nullptr;
 
@@ -148,7 +148,7 @@ FEGameObject* FEGameObject::GetParent()
 }
 
 
-std::unordered_map<UINT, FEGameObject*> FEGameObject::GetChildren()
+std::unordered_map<INT64, FEGameObject*> FEGameObject::GetChildren()
 {
 	return _children;
 }
@@ -166,7 +166,7 @@ FERenderer* FEGameObject::GetRenderer()
 }
 
 
-std::unordered_map<UINT, FEComponent*> FEGameObject::GetComponents()
+std::unordered_map<INT64, FEComponent*> FEGameObject::GetComponents()
 {
 	return _components;
 }

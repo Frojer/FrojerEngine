@@ -17,8 +17,8 @@ private:
 
 protected:
 	FEGameObject* _pParent;
-	std::unordered_map<UINT, FEGameObject*> _children;
-	std::unordered_map<UINT, FEComponent*> _components;
+	std::unordered_map<INT64, FEGameObject*> _children;
+	std::unordered_map<INT64, FEComponent*> _components;
 
 	FETransform* _pTransform;
 	FERenderer* _pRenderer;
@@ -27,7 +27,7 @@ private:
 	FEGameObject(const FEGameObject& rhs) = delete;
 	FEGameObject& operator= (const FEGameObject& rhs) = delete;
 
-	static FEGameObject* FindChild(unsigned int id, std::unordered_map<UINT, FEGameObject*> childMap);
+	static FEGameObject* FindChild(unsigned int id, std::unordered_map<INT64, FEGameObject*> childMap);
 
 protected:
 	void Initialize();
@@ -46,7 +46,7 @@ public:
 
 	void SetParent(FEGameObject* i_pParent);
 	FEGameObject* GetParent();
-	std::unordered_map<UINT, FEGameObject*> GetChildren();
+	std::unordered_map<INT64, FEGameObject*> GetChildren();
 
 	FETransform* GetTransform();
 	FERenderer* GetRenderer();
@@ -109,7 +109,7 @@ public:
 		return nullptr;
 	}
 
-	std::unordered_map<UINT, FEComponent*> GetComponents();
+	std::unordered_map<INT64, FEComponent*> GetComponents();
 
 	void SetEnable(bool enable);
 	bool GetEnable();

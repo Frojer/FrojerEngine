@@ -13,20 +13,34 @@ tstring GetFileNameExtension(const tstring& i_fileName)
 }
 tstring GetFilePath(const tstring& filePath)
 {
+	auto rpos = filePath.rfind(FE_TEXT("/"), filePath.size() - 1) + 1;
+	if (rpos == 0) rpos = filePath.rfind(FE_TEXT("\\"), filePath.size() - 1) + 1;
+
 	if (filePath.back() == FE_TEXT('"'))
-		return filePath.substr(1, filePath.rfind(FE_TEXT("/"), filePath.size() - 2) + 1);
+		return filePath.substr(1, rpos);
 	else
-		return filePath.substr(0, filePath.rfind(FE_TEXT("/"), filePath.size() - 1) + 1);
+		return filePath.substr(0, rpos);
 }
 tstring GetFileName(const tstring& filePath)
 {
 	auto lpos = filePath.rfind(FE_TEXT("/"), filePath.length() - 1) + 1;
+	if (lpos == 0) lpos = filePath.rfind(FE_TEXT("\\"), filePath.length() - 1) + 1;
 	auto rpos = filePath.rfind(FE_TEXT("."), filePath.length() - 1);
 	return filePath.substr(lpos, rpos - lpos);
 }
 tstring GetFileNameWithExtension(const tstring& filePath)
 {
-	return filePath.substr((filePath.rfind(FE_TEXT("/"), filePath.length() - 1) + 1), filePath.size());
+	auto lpos = filePath.rfind(FE_TEXT("/"), filePath.length() - 1) + 1;
+	if (lpos == 0) lpos = filePath.rfind(FE_TEXT("\\"), filePath.length() - 1) + 1;
+	auto rpos = filePath.size();
+	return filePath.substr(lpos, rpos - lpos);
+}
+tstring StripQuotes(const tstring& str)
+{
+	auto lpos = str.find(FE_TEXT('"'), 0) + 1;
+	auto rpos = str.rfind(FE_TEXT('"'), str.length() - 1);
+
+	return str.substr(lpos, rpos - lpos);
 }
 
 bool FECopyFile(tifstream& orig, tofstream& dest)

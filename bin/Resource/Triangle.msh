@@ -1,13 +1,18 @@
-ID = f2a707385a5c4659ac962952b2e3eb8
 MeshObject
 {
-	Name = Triangle
+	ObjectID = -4039479447769971314
+	MeshID = 0
+	Name = "Triangle"
+	MaterialID = 0
 	VertexFormat = 0
 	VertexCount = 0
 	IndexCount = 0
 	MeshObject
 	{
-		Name = Line001
+		ObjectID = 2881998736437413799
+		MeshID = -2614472320607408115
+		Name = "Line001"
+		MaterialID = 0
 		VertexFormat = 7
 		VertexCount = 3
 		0	0	30

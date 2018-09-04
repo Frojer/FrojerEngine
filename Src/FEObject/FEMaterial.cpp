@@ -2,7 +2,7 @@
 
 using namespace std;
 
-unordered_map<UINT, FEMaterial*> FEMaterial::_mtrlMap;
+unordered_map<INT64, FEMaterial*> FEMaterial::_mtrlMap;
 FETexture* FEMaterial::_pDefaultTex = nullptr;
 FEMaterial::WVP_Data FEMaterial::_WVPData;
 FEMaterial::Light_Data FEMaterial::_LightData[LIGHT_SIZE];
@@ -224,7 +224,7 @@ void FEMaterial::SetMatrix(UINT id, const FEMatrix& matrix)
 
 
 
-FEMaterial* FEMaterial::Find(UINT id)
+FEMaterial* FEMaterial::Find(INT64 id)
 {
 	if (_mtrlMap.find(id) == _mtrlMap.end())
 		return nullptr;

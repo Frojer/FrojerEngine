@@ -98,7 +98,7 @@ struct FE_IndexFormat
 class FEMesh : public FEObject
 {
 private:
-	static std::unordered_map<UINT, FEMesh*> _meshMap;
+	static std::unordered_map<INT64, FEMesh*> _meshMap;
 
 protected:
 	IFEBuffer* _pVB[4];
@@ -127,7 +127,7 @@ public:
 
 	bool UpdateMeshData();
 
-	static FEMesh* Find(UINT id);
+	static FEMesh* Find(INT64 id);
 	static FEMesh* Find(tstring name);
 
 	friend class FERenderer;

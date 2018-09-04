@@ -9,7 +9,7 @@
 class FEShader : public FEObject
 {
 private:
-	static std::unordered_map<UINT, FEShader*> _shaderMap;
+	static std::unordered_map<INT64, FEShader*> _shaderMap;
 
 	static IFEBuffer* _pWVP_CB;
 	static IFEBuffer* _pLight_CB;
@@ -45,10 +45,10 @@ public:
 
 	void Render() const;
 
-	static FEShader* Find(UINT id);
+	static FEShader* Find(INT64 id);
 	static FEShader* Find(LPCTSTR name);
 
-	friend void LoadShader(tstring i_path, tstring i_name);
+	friend class FELoader;
 	friend class FESystem;
 	friend class FEMaterial;
 };
