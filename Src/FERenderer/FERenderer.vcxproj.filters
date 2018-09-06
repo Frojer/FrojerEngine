@@ -41,6 +41,12 @@
     <ClInclude Include="FEDX11Buffer.h">
       <Filter>DX11\Header File</Filter>
     </ClInclude>
+    <ClInclude Include="IFETexture.h">
+      <Filter>Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="FEDX11Texture.h">
+      <Filter>DX11\Header File</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FEDX11Shader.cpp">
@@ -59,6 +65,12 @@
       <Filter>Source File</Filter>
     </ClCompile>
     <ClCompile Include="FEDX11Buffer.cpp">
+      <Filter>DX11\Source File</Filter>
+    </ClCompile>
+    <ClCompile Include="IFETexture.cpp">
+      <Filter>Source File</Filter>
+    </ClCompile>
+    <ClCompile Include="FEDX11Texture.cpp">
       <Filter>DX11\Source File</Filter>
     </ClCompile>
   </ItemGroup>

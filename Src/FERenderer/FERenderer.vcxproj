@@ -22,18 +22,22 @@
     <ClInclude Include="FEDX11Buffer.h" />
     <ClInclude Include="FEDX11Shader.h" />
     <ClInclude Include="FEDX11Renderer.h" />
+    <ClInclude Include="FEDX11Texture.h" />
     <ClInclude Include="FERendererDefine.h" />
     <ClInclude Include="IFEBuffer.h" />
     <ClInclude Include="IFERenderer.h" />
     <ClInclude Include="IFEShader.h" />
+    <ClInclude Include="IFETexture.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FEDX11Buffer.cpp" />
     <ClCompile Include="FEDX11Shader.cpp" />
     <ClCompile Include="FEDX11Renderer.cpp" />
+    <ClCompile Include="FEDX11Texture.cpp" />
     <ClCompile Include="IFEBuffer.cpp" />
     <ClCompile Include="IFERenderer.cpp" />
     <ClCompile Include="IFEShader.cpp" />
+    <ClCompile Include="IFETexture.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -94,6 +98,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <TargetName>$(ProjectName)64d</TargetName>
+    <IncludePath>..\..\SDK\DXTK\Inc\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
