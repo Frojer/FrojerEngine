@@ -13,6 +13,9 @@ private:
 	FEObject(const FEObject& rhs) = delete;
 	FEObject& operator= (const FEObject& rhs) = delete;
 
+protected:
+	FEObject(INT64 ID);
+
 public:
 	FEObject();
 	virtual ~FEObject();

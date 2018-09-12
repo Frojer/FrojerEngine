@@ -9,6 +9,9 @@
 class FELoader
 {
 public:
+	static std::unordered_map<INT64, tstring> resourceMap;
+
+public:
 	static FESystemSetting LoadSetting();
 	static void LoadShader(tstring i_shaderPath, tstring i_name);
 	static void LoadMaterial(tstring i_mtrlPath, tstring i_name);

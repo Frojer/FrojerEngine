@@ -60,6 +60,9 @@ private:
 	void UpdateConstantBuffer(FEMatrixA& mWorld);
 	void Render();
 
+protected:
+	FEMaterial(INT64 ID, FEShader* i_pShader);
+
 public:
 	FEMaterial(FEShader* i_pShader);
 	virtual ~FEMaterial();
@@ -77,6 +80,7 @@ public:
 	static FEMaterial* Find(INT64 id);
 	static FEMaterial* Find(LPCTSTR name);
 
+	friend class FELoader;
 	friend class IFEScene;
 	friend class FEShader;
 	friend class FERenderer;

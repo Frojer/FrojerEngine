@@ -7,11 +7,18 @@ using namespace std;
 
 unordered_map<INT64, FEMesh*> FEMesh::_meshMap;
 
+FEMesh::FEMesh(INT64 ID)
+	: FEObject(ID), _pVB(), _pIB(nullptr), m_topology(PRIMITIVE_TOPOLOGY_TRIANGLELIST)
+{
+	memset(&_pVB, 0, sizeof(_pVB));
+	_meshMap[GetID()] = this;
+}
+
 FEMesh::FEMesh()
 	: _pVB(), _pIB(nullptr), m_topology(PRIMITIVE_TOPOLOGY_TRIANGLELIST)
 {
 	memset(&_pVB, 0, sizeof(_pVB));
-	_meshMap.insert(pair<INT64, FEMesh*>(GetID(), this));
+	_meshMap[GetID()] = this;
 }
 
 

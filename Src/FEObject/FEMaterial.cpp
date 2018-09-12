@@ -7,6 +7,16 @@ FETexture* FEMaterial::_pDefaultTex = nullptr;
 FEMaterial::WVP_Data FEMaterial::_WVPData;
 FEMaterial::Light_Data FEMaterial::_LightData[LIGHT_SIZE];
 
+FEMaterial::FEMaterial(INT64 ID, FEShader* i_pShader)
+	: FEObject(ID), _pShader(i_pShader), _countTexture(0), m_diffuse(FEVector4(1.0f, 1.0f, 1.0f, 1.0f)), m_ambient(FEVector3(1.0f, 1.0f, 1.0f)), m_specular(FEVector3(1.0f, 1.0f, 1.0f))
+{
+	memset(m_pTexture, 0, sizeof(m_pTexture));
+
+	SetShader(i_pShader);
+
+	_mtrlMap[GetID()] = this;
+}
+
 FEMaterial::FEMaterial(FEShader* i_pShader)
 	: _pShader(i_pShader), _countTexture(0), m_diffuse(FEVector4(1.0f, 1.0f, 1.0f, 1.0f)), m_ambient(FEVector3(1.0f, 1.0f, 1.0f)), m_specular(FEVector3(1.0f, 1.0f, 1.0f))
 {

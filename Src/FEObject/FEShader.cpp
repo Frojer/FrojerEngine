@@ -5,6 +5,12 @@ std::unordered_map<INT64, FEShader*> FEShader::_shaderMap;
 IFEBuffer* FEShader::_pWVP_CB = nullptr;
 IFEBuffer* FEShader::_pLight_CB = nullptr;
 
+FEShader::FEShader(INT64 ID)
+	: FEObject(ID), _pConstBuffer(nullptr), _pShader(nullptr), _countTexture(0), _countMatrix(0), _countVector(0), _countScalar(0), _useLight(false)
+{
+	_shaderMap[GetID()] = this;
+}
+
 FEShader::FEShader()
 	: _pConstBuffer(nullptr), _pShader(nullptr), _countTexture(0), _countMatrix(0), _countVector(0), _countScalar(0), _useLight(false)
 {

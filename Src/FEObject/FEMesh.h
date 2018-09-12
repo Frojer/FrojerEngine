@@ -121,6 +121,9 @@ private:
 
 	static void ClearMap();
 
+protected:
+	FEMesh(INT64 ID);
+
 public:
 	FEMesh();
 	virtual ~FEMesh();
@@ -130,6 +133,7 @@ public:
 	static FEMesh* Find(INT64 id);
 	static FEMesh* Find(tstring name);
 
+	friend class FELoader;
 	friend class FERenderer;
 };
 

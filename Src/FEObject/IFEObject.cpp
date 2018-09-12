@@ -1,14 +1,20 @@
 #include "FEObjectHeader.h"
+#include <FEUtility.h>
 
 using namespace std;
 
-INT64 IFEObject::_countID = 0;
 unordered_map<INT64, IFEObject*> IFEObject::_mapObj;
+
+IFEObject::IFEObject(INT64 ID)
+{
+	_ID = ID;
+	_mapObj.insert(pair<INT64, IFEObject*>(ID, this));
+}
 
 IFEObject::IFEObject()
 {
-	_ID = _countID++;
-	_mapObj[_ID] = this;
+	_ID = CreateUUIDHashCode64();
+	while (!_mapObj.insert(pair<INT64, IFEObject*>(_ID, this)).second) _ID = CreateUUIDHashCode64();
 }
 
 

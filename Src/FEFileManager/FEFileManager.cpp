@@ -52,6 +52,21 @@ struct ASE_MESH
 	}
 };
 
+void EscapeBlock(tifstream& f)
+{
+	TCHAR buf[BUFFER_SIZE];
+
+	while (true)
+	{
+		f >> buf;
+
+		if (buf[0] == FE_TEXT('}'))
+			return;
+
+		else if (buf[0] == FE_TEXT('{'))
+			EscapeBlock(f);
+	}
+}
 void ConvertShaderFile(tstring i_filePath, tstring i_outPath, tstring i_fileName)
 {
 
@@ -175,6 +190,8 @@ void ConvertASEMapFile(tifstream& f, tofstream& o, tstring i_filePath, tstring i
 	int a, b, c, i = 0;
 	float x, y, z, w;
 
+	INT64 uuid = 0;
+
 	TCHAR mapClass[BUFFER_SIZE];
 
 	o << FE_TEXT('\t') << FE_TEXT("{") << std::endl;
@@ -223,15 +240,21 @@ void ConvertASEMapFile(tifstream& f, tofstream& o, tstring i_filePath, tstring i
 
 		if (mif.is_open())
 		{
-			tofstream mof(i_outPath + GetFileNameWithExtension(mapClass), std::ios::binary);
+			tofstream mof(i_outPath + GetFileName(mapClass), std::ios::binary);
 
 			if (mof.is_open())
 			{
 				FECopyFile(mif, mof);
+
+				mof.close();
+
+				mof.open(i_outPath + GetFileName(mapClass) + FE_TEXT(".meta"));
+				uuid = CreateUUIDHashCode64();
+				mof << FE_TEXT("ID = ") << uuid;
 			}
 		}
 
-		o << FE_TEXT('\t') << FE_TEXT('\t') << FE_TEXT("Map = ") << FE_TEXT('"') + i_outPath + GetFileNameWithExtension(mapClass) + FE_TEXT('"') << std::endl;
+		o << FE_TEXT('\t') << FE_TEXT('\t') << FE_TEXT("MapID = ") << uuid << std::endl;
 		
 		// MAP_TYPE Screen;
 		f >> buf >> buf;
@@ -265,8 +288,19 @@ void ConvertASEMapFile(tifstream& f, tofstream& o, tstring i_filePath, tstring i
 		// '}'
 		f >> buf;
 	}
-	else	while (buf[0] != FE_TEXT('}')) f >> buf;
+	else
+	{
+		while (true)
+		{
+			f >> buf;
 
+			if (buf[0] == FE_TEXT('}'))
+				break;
+
+			else if (buf[0] == FE_TEXT('{'))
+				EscapeBlock(f);
+		}
+	}
 	o << FE_TEXT('\t') << FE_TEXT("}") << std::endl;
 }
 void ConvertASEMaterialFile(tifstream& f, tofstream& o, tstring i_filePath, tstring i_outPath, TCHAR buf[], std::vector<INT64>& vMtrl)
@@ -338,6 +372,9 @@ void ConvertASEMaterialFile(tifstream& f, tofstream& o, tstring i_filePath, tstr
 			if (buf[0] == FE_TEXT('}'))
 				break;
 
+			else if (buf[0] == FE_TEXT('{'))
+				EscapeBlock(f);
+
 			else if (buf[0] != FE_TEXT('*'))
 			{
 				f.getline(buf, BUFFER_SIZE);
@@ -396,7 +433,20 @@ void ConvertASEMaterialFile(tifstream& f, tofstream& o, tstring i_filePath, tstr
 			}
 		}
 	}
-	else	while (buf[0] != FE_TEXT('}')) f >> buf;
+	else
+	{
+		while (true)
+		{
+			f >> buf;
+
+			if (buf[0] == FE_TEXT('}'))
+				break;
+
+			else if (buf[0] == FE_TEXT('{'))
+				EscapeBlock(f);
+		}
+	}
+
 	o << FE_TEXT("}") << std::endl;
 }
 bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileName)
@@ -452,14 +502,9 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 			{
 				f >> buf;
 
-				if (buf[0] == FE_TEXT('}'))
-					break;
-
-				else if (buf[0] != FE_TEXT('*'))
-				{
-					f.getline(buf, BUFFER_SIZE);
-					continue;
-				}
+				if (buf[0] == FE_TEXT('}'))			break;
+				else if (buf[0] == FE_TEXT('{'))	EscapeBlock(f);
+				else if (buf[0] != FE_TEXT('*'))	continue;
 
 				if (TCSCMP_SAME(buf + 1, FE_TEXT("SCENE_FILENAME")))
 				{
@@ -499,14 +544,9 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 			{
 				f >> buf;
 
-				if (buf[0] == FE_TEXT('}'))
-					break;
-
-				else if (buf[0] != FE_TEXT('*'))
-				{
-					f.getline(buf, BUFFER_SIZE);
-					continue;
-				}
+				if (buf[0] == FE_TEXT('}'))			break;
+				else if (buf[0] == FE_TEXT('{'))	EscapeBlock(f);
+				else if (buf[0] != FE_TEXT('*'))	continue;
 
 				if (TCSCMP_SAME(buf + 1, FE_TEXT("MATERIAL_COUNT")))
 				{
@@ -532,14 +572,9 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 			{
 				f >> buf;
 
-				if (buf[0] == FE_TEXT('}'))
-					break;
-
-				else if (buf[0] != FE_TEXT('*'))
-				{
-					f.getline(buf, BUFFER_SIZE);
-					continue;
-				}
+				if (buf[0] == FE_TEXT('}'))			break;
+				else if (buf[0] == FE_TEXT('{'))	EscapeBlock(f);
+				else if (buf[0] != FE_TEXT('*'))	continue;
 
 				if (TCSCMP_SAME(buf + 1, FE_TEXT("NODE_NAME")))
 				{
@@ -559,14 +594,9 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 					{
 						f >> buf;
 
-						if (buf[0] == FE_TEXT('}'))
-							break;
-
-						else if (buf[0] != FE_TEXT('*'))
-						{
-							f.getline(buf, BUFFER_SIZE);
-							continue;
-						}
+						if (buf[0] == FE_TEXT('}'))			break;
+						else if (buf[0] == FE_TEXT('{'))	EscapeBlock(f);
+						else if (buf[0] != FE_TEXT('*'))	continue;
 
 						/*if (TCSCMP_SAME(buf + 1, FE_TEXT("NODE_NAME")))
 						{
@@ -634,14 +664,9 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 					{
 						f >> buf;
 
-						if (buf[0] == FE_TEXT('}'))
-							break;
-
-						else if (buf[0] != FE_TEXT('*'))
-						{
-							f.getline(buf, BUFFER_SIZE);
-							continue;
-						}
+						if (buf[0] == FE_TEXT('}'))			break;
+						else if (buf[0] == FE_TEXT('{'))	EscapeBlock(f);
+						else if (buf[0] != FE_TEXT('*'))	continue;
 
 						if (TCSCMP_SAME(buf + 1, FE_TEXT("TIMEVALUE")))
 						{
@@ -665,8 +690,8 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 							{
 								f >> buf;
 
-								if (buf[0] == FE_TEXT('}'))
-									break;
+								if (buf[0] == FE_TEXT('}'))			break;
+								else if (buf[0] == FE_TEXT('{'))	EscapeBlock(f);
 
 								f >> i >> x >> y >> z;
 								vPos[i].x = x;
@@ -682,8 +707,8 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 							{
 								f >> buf;
 
-								if (buf[0] == FE_TEXT('}'))
-									break;
+								if (buf[0] == FE_TEXT('}'))			break;
+								else if (buf[0] == FE_TEXT('{'))	EscapeBlock(f);
 
 								f >> buf;
 
@@ -714,8 +739,8 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 							{
 								f >> buf;
 
-								if (buf[0] == FE_TEXT('}'))
-									break;
+								if (buf[0] == FE_TEXT('}'))			break;
+								else if (buf[0] == FE_TEXT('{'))	EscapeBlock(f);
 
 								f >> i >> x >> y >> z;
 								vTex[i].x = x;
@@ -735,8 +760,8 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 							{
 								f >> buf;
 
-								if (buf[0] == FE_TEXT('}'))
-									break;
+								if (buf[0] == FE_TEXT('}'))			break;
+								else if (buf[0] == FE_TEXT('{'))	EscapeBlock(f);
 
 								f >> i >> a >> b >> c;
 								iTex[i].a = a;
@@ -756,8 +781,8 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 							{
 								f >> buf;
 
-								if (buf[0] == FE_TEXT('}'))
-									break;
+								if (buf[0] == FE_TEXT('}'))			break;
+								else if (buf[0] == FE_TEXT('{'))	EscapeBlock(f);
 
 								f >> i >> x >> y >> z;
 								vColor[i].x = x;
@@ -778,8 +803,8 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 							{
 								f >> buf;
 
-								if (buf[0] == FE_TEXT('}'))
-									break;
+								if (buf[0] == FE_TEXT('}'))			break;
+								else if (buf[0] == FE_TEXT('{'))	EscapeBlock(f);
 
 								f >> i >> a >> b >> c;
 
@@ -801,15 +826,9 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 							{
 								f >> buf;
 
-								if (buf[0] == FE_TEXT('}'))
-									break;
-
-								else if (buf[0] != FE_TEXT('*'))
-								{
-									f.getline(buf, BUFFER_SIZE);
-									continue;
-								}
-
+								if (buf[0] == FE_TEXT('}'))			break;
+								else if (buf[0] == FE_TEXT('{'))	EscapeBlock(f);
+								else if (buf[0] != FE_TEXT('*'))	continue;
 
 								if (TCSCMP_SAME(buf + 1, FE_TEXT("MESH_FACENORMAL")))
 								{
@@ -1030,7 +1049,12 @@ void FEFileManager::ConvertAllFileInPath(tstring i_filePath)
 		if (extension.size() == 0)
 		{
 			if (!TCSCMP_SAME(fd.name, FE_TEXT(".")) && !TCSCMP_SAME(fd.name, FE_TEXT("..")))
+			{
+				if (_taccess((_outPath + i_filePath + fd.name + FE_TEXT("/")).c_str(), 0))
+					_tmkdir((_outPath + i_filePath + fd.name + FE_TEXT("/")).c_str());
+
 				FEFileManager::ConvertAllFileInPath(i_filePath + fd.name + FE_TEXT("/"));
+			}
 		}
 
 		else if (TCSCMP_SAME(extension.c_str(), FE_TEXT("fx")) || TCSCMP_SAME(extension.c_str(), FE_TEXT("vsh")))

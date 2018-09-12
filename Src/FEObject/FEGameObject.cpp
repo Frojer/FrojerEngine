@@ -1,6 +1,15 @@
 #include "FEObjectHeader.h"
 #include "FESceneManager.h"
 
+
+FEGameObject::FEGameObject(INT64 ID)
+	: FEObject(ID), _bDead(false), _pParent(nullptr)
+{
+	AddComponent<FETransform>();
+	FESceneManager::GetCurrentScene()->_mapObj[GetID()] = this;
+	FESceneManager::GetCurrentScene()->_hierarchyList.push_back(this);
+}
+
 FEGameObject::FEGameObject()
 	: _bDead(false), _pParent(nullptr)
 {

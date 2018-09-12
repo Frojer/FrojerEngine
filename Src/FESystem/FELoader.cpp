@@ -14,6 +14,8 @@
 
 #define BUFFER_SIZE 1024
 
+std::unordered_map<INT64, tstring> FELoader::resourceMap;
+
 FESystemSetting FELoader::LoadSetting()
 {
 	FESystemSetting setting;
@@ -166,11 +168,10 @@ void FELoader::LoadMaterial(tstring i_mtrlPath, tstring i_name)
 }
 void FELoader::LoadMaterialInMesh(tifstream &f)
 {
+	INT64 uuid;
 	UINT i = 0;
 	FEMaterial* pMaterial = nullptr;
 	TCHAR str[BUFFER_SIZE];
-
-	pMaterial = new FEMaterial(FEShader::Find(FE_TEXT("Standard")));
 
 	if (pMaterial == nullptr)
 	{
@@ -181,7 +182,9 @@ void FELoader::LoadMaterialInMesh(tifstream &f)
 	// '{'
 	f >> str;
 	// ID
-	f >> str >> str >> pMaterial->_ID;
+	f >> str >> str >> uuid;
+	pMaterial = new FEMaterial(uuid, FEShader::Find(FE_TEXT("Standard")));
+
 	// Name
 	f >> str >> str;
 	f.getline(str, BUFFER_SIZE);
@@ -205,11 +208,9 @@ void FELoader::LoadMaterialInMesh(tifstream &f)
 			f >> i >> str;
 			// Amount
 			f >> str >> str >> i;
-			// Map Path
-			f >> str >> str;
-			f.getline(str, BUFFER_SIZE);
-			// Texture Load ÇÊ¿ä
-			StripQuotes(str);
+			// MapID
+			f >> str >> str >> uuid;
+			pMaterial->m_pTexture[i] = FETexture::Find(uuid);
 			// Offset
 			f >> str >> str >> str;
 			// Tiling
@@ -223,19 +224,21 @@ void FELoader::LoadMaterialInMesh(tifstream &f)
 }
 void FELoader::LoadMesh(tifstream &f, FEGameObject* pParent)
 {
+	INT64 uuid;
 	TCHAR str[BUFFER_SIZE];
 	INT64 mtrlID, meshID;
 	UINT vc, ic, vf;
 	FEMesh* pMesh = nullptr;
-	FEGameObject* pObj = new FEGameObject();
-	
-	pObj->SetParent(pParent);
+	FEGameObject* pObj;
 
 	// '{'
 	f >> str;
 
 	// Object ID
-	f >> str >> str >> pObj->_ID;
+	f >> str >> str >> uuid;
+	pObj = new FEGameObject(uuid);
+
+	pObj->SetParent(pParent);
 
 	// Mesh ID
 	f >> str >> str >> meshID;
@@ -252,8 +255,7 @@ void FELoader::LoadMesh(tifstream &f, FEGameObject* pParent)
 	f >> str >> str >> vf;
 	if (meshID != 0)
 	{
-		pMesh = new FEMesh;
-		pMesh->_ID = meshID;
+		pMesh = new FEMesh(meshID);
 		pMesh->m_Name = pObj->m_Name;
 
 		// Vertex Count

@@ -99,6 +99,7 @@
     <LinkIncremental>true</LinkIncremental>
     <TargetName>$(ProjectName)64d</TargetName>
     <IncludePath>..\..\SDK\DXTK\Inc\;$(IncludePath)</IncludePath>
+    <LibraryPath>..\..\SDK\DXTK\Lib\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -128,6 +129,7 @@
       <Command>copy IFERenderer.h $(FE_SDK_INC)
 copy IFEShader.h $(FE_SDK_INC)
 copy IFEBuffer.h $(FE_SDK_INC)
+copy IFETexture.h $(FE_SDK_INC)
 copy FERendererDefine.h $(FE_SDK_INC)</Command>
     </PostBuildEvent>
     <Lib>
@@ -152,6 +154,7 @@ copy FERendererDefine.h $(FE_SDK_INC)</Command>
       <Command>copy IFERenderer.h $(FE_SDK_INC)
 copy IFEShader.h $(FE_SDK_INC)
 copy IFEBuffer.h $(FE_SDK_INC)
+copy IFETexture.h $(FE_SDK_INC)
 copy FERendererDefine.h $(FE_SDK_INC)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -176,6 +179,7 @@ copy FERendererDefine.h $(FE_SDK_INC)</Command>
       <Command>copy IFERenderer.h $(FE_SDK_INC)
 copy IFEShader.h $(FE_SDK_INC)
 copy IFEBuffer.h $(FE_SDK_INC)
+copy IFETexture.h $(FE_SDK_INC)
 copy FERendererDefine.h $(FE_SDK_INC)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -200,6 +204,7 @@ copy FERendererDefine.h $(FE_SDK_INC)</Command>
       <Command>copy IFERenderer.h $(FE_SDK_INC)
 copy IFEShader.h $(FE_SDK_INC)
 copy IFEBuffer.h $(FE_SDK_INC)
+copy IFETexture.h $(FE_SDK_INC)
 copy FERendererDefine.h $(FE_SDK_INC)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>

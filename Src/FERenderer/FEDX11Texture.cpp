@@ -4,6 +4,22 @@
 #include <FEUtility.h>
 #include <WICTextureLoader.h>
 
+#pragma region FESystem.lib
+#ifdef _DEBUG
+#ifdef _WIN64
+#pragma comment(lib, "D:/Study/FrojerGit/FrojerEngine/SDK/DXTK/Lib/DirectXTK64d")
+#else
+#pragma comment(lib, "DirectXTKd")
+#endif
+#else
+#ifdef _WIN64
+#pragma comment(lib, "DirectXTK64")
+#else
+#pragma comment(lib, "DirectXTK")
+#endif
+#endif
+#pragma endregion
+
 
 FEDX11Texture::FEDX11Texture()
 	: _pTextureRV(nullptr)

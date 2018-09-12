@@ -37,6 +37,9 @@ private:
 	bool CreateConstantBuffer();
 	void UpdateConstantBuffer(const void* pCB, UINT size);
 
+protected:
+	FEShader(INT64 ID);
+
 public:
 	FEShader();
 	virtual ~FEShader();

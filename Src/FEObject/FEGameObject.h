@@ -30,6 +30,8 @@ private:
 	static FEGameObject* FindChild(unsigned int id, std::unordered_map<INT64, FEGameObject*> childMap);
 
 protected:
+	FEGameObject(INT64 ID);
+
 	void Initialize();
 
 	void Update();
@@ -118,6 +120,7 @@ public:
 	static FEGameObject* CopyObject(const FEGameObject* origin);
 	//static FEGameObject* CopyObject(const FEGameObject* origin, FEVector3 pos);
 
+	friend class FELoader;
 	friend class IFEScene;
 };
 

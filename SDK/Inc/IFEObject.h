@@ -8,7 +8,6 @@
 class IFEObject
 {
 private:
-	static INT64 _countID;
 	INT64  _ID;
 
 	static std::unordered_map<INT64, IFEObject*> _mapObj;
@@ -16,6 +15,9 @@ private:
 private:
 	IFEObject(const IFEObject& rhs) = delete;
 	IFEObject& operator= (const IFEObject& rhs) = delete;
+
+protected:
+	IFEObject(INT64 ID);
 
 public:
 	IFEObject();
