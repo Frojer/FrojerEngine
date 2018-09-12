@@ -81,6 +81,27 @@ FESystemSetting FELoader::LoadSetting()
 
 	return setting;
 }
+void FELoader::LoadTexture(tstring i_texturePath, tstring i_name)
+{
+	TCHAR str[BUFFER_SIZE];
+	FETexture* pTex;
+	INT64 uuid;
+
+	tifstream f(i_texturePath + i_name);
+
+	if (!f.is_open())
+	{
+		//FEDebug::WarningMessage(FE_TEXT("Failed to load Material."));
+		return;
+	}
+
+	// ID 얻기
+	f >> str >> str >> uuid;
+
+	pTex = new FETexture(uuid);
+
+	pTex->CreateTexture(i_texturePath + GetFileName(i_name));
+}
 void FELoader::LoadShader(tstring i_shaderPath, tstring i_name)
 {
 	bool result;
@@ -88,6 +109,7 @@ void FELoader::LoadShader(tstring i_shaderPath, tstring i_name)
 	TCHAR str[BUFFER_SIZE];
 	TCHAR vs[BUFFER_SIZE], ps[BUFFER_SIZE];
 	UINT semantics = 0;
+	INT64 uuid;
 
 	tifstream f(i_shaderPath + i_name);
 
@@ -97,12 +119,17 @@ void FELoader::LoadShader(tstring i_shaderPath, tstring i_name)
 		return;
 	}
 
+	// 셰이더 파일
 	f >> vs >> ps;
+	// 셰이더 UUID
+	f >> str >> str >> uuid;
+
+	// 셰이더 시맨틱스
 	f >> str >> str >> semantics;
 
-	i_shaderPath = FE_TEXT("../../bin/Resource/shd/");
+	i_shaderPath = START_PATH;
 
-	pShader = new FEShader;
+	pShader = new FEShader(uuid);
 	if (pShader == nullptr)
 	{
 		//FEDebug::WarningMessage(FE_TEXT("Failed to load shader."));
@@ -126,6 +153,8 @@ void FELoader::LoadMaterial(tstring i_mtrlPath, tstring i_name)
 {
 	FEMaterial* pMaterial = nullptr;
 	TCHAR str[BUFFER_SIZE];
+	UINT i = 0;
+	INT64 uuid, shaderUUID;
 
 	tifstream f(i_mtrlPath + i_name);
 
@@ -135,34 +164,54 @@ void FELoader::LoadMaterial(tstring i_mtrlPath, tstring i_name)
 		return;
 	}
 
+	// ID 얻기
+	f >> str >> str >> uuid;
 	// 셰이더 얻어오기
-	f >> str >> str >> str;
+	f >> str >> str >> shaderUUID;
 
-	pMaterial = new FEMaterial(FEShader::Find(str));
+	pMaterial = new FEMaterial(uuid, FEShader::Find(shaderUUID));
 
 	if (pMaterial == nullptr)
 	{
 		//FEDebug::WarningMessage(FE_TEXT("Failed to load shader."));
 		return;
 	}
+	// Name
+	f >> str >> str;
+	f.getline(str, BUFFER_SIZE);
+	pMaterial->m_Name = StripQuotes(str);
+	// Diffuse
+	f >> str >> pMaterial->m_diffuse.x >> pMaterial->m_diffuse.y >> pMaterial->m_diffuse.z >> pMaterial->m_diffuse.w;
+	// Ambient
+	f >> str >> pMaterial->m_ambient.x >> pMaterial->m_ambient.y >> pMaterial->m_ambient.z;
+	// Specular
+	f >> str >> pMaterial->m_specular.x >> pMaterial->m_specular.y >> pMaterial->m_specular.z;
+	// Power
+	f >> str >> str >> pMaterial->m_power;
 
-	pMaterial->m_Name = GetFileName(i_name);
-
-	while (!f.eof())
+	do
 	{
 		f >> str;
 
-		if (TCSCMP_SAME(str, FE_TEXT("Name")))
+		if (TCSCMP_SAME(str, FE_TEXT("Map")))
 		{
-			if (pMaterial == nullptr)
-			{
-				//FEDebug::WarningMessage(FE_TEXT("Failed to load shader."));
-				return;
-			}
-
-			//f >> str >> pMaterial->m_Name;
+			// MapIndex >> '{'
+			f >> i >> str;
+			// Amount
+			f >> str >> str >> i;
+			// MapID
+			f >> str >> str >> uuid;
+			pMaterial->SetTexture(i, FETexture::Find(uuid));
+			// Offset
+			f >> str >> str >> str;
+			// Tiling
+			f >> str >> str >> str;
+			// Angle
+			f >> str >> str;
+			// '}'
+			f >> str;
 		}
-	}
+	} while (f.eof());
 
 	f.close();
 }
@@ -173,17 +222,17 @@ void FELoader::LoadMaterialInMesh(tifstream &f)
 	FEMaterial* pMaterial = nullptr;
 	TCHAR str[BUFFER_SIZE];
 
-	if (pMaterial == nullptr)
-	{
-		//FEDebug::WarningMessage(FE_TEXT("Failed to load shader."));
-		return;
-	}
-
 	// '{'
 	f >> str;
 	// ID
 	f >> str >> str >> uuid;
 	pMaterial = new FEMaterial(uuid, FEShader::Find(FE_TEXT("Standard")));
+
+	if (pMaterial == nullptr)
+	{
+		//FEDebug::WarningMessage(FE_TEXT("Failed to load shader."));
+		return;
+	}
 
 	// Name
 	f >> str >> str;
@@ -210,7 +259,7 @@ void FELoader::LoadMaterialInMesh(tifstream &f)
 			f >> str >> str >> i;
 			// MapID
 			f >> str >> str >> uuid;
-			pMaterial->m_pTexture[i] = FETexture::Find(uuid);
+			pMaterial->SetTexture(i, FETexture::Find(uuid));
 			// Offset
 			f >> str >> str >> str;
 			// Tiling
@@ -334,6 +383,44 @@ void FELoader::LoadMesh(tstring i_meshPath, tstring i_name)
 	}
 
 	f.close();
+}
+void FELoader::FindTextureFile(tstring i_filePath)
+{
+	tstring extension;
+
+#ifdef _WIN32
+	_tfinddata_t fd;
+	intptr_t handle;
+	int result = 1;
+
+	// 현재 폴더 내 모든 파일을 찾는다.
+	handle = _tfindfirst((i_filePath + FE_TEXT("*")).c_str(), &fd);
+
+	// 파일이 하나도 없다면
+	if (handle == -1)
+		return;
+
+	do
+	{
+		extension = GetFileNameExtension(fd.name);
+
+		if (extension.size() == 0)
+		{
+			if (!TCSCMP_SAME(fd.name, FE_TEXT(".")) && !TCSCMP_SAME(fd.name, FE_TEXT("..")))
+				FindTextureFile(i_filePath + fd.name + FE_TEXT("/"));
+		}
+
+		else if (TCSCMP_SAME(extension.c_str(), FE_TEXT("fet")))
+		{
+			LoadTexture(i_filePath, fd.name);
+		}
+
+		result = _tfindnext(handle, &fd);
+	} while (result != -1);
+
+	_findclose(handle);
+#else
+#endif
 }
 void FELoader::FindShaderFile(tstring i_filePath)
 {

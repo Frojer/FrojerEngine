@@ -7,7 +7,7 @@
 #pragma region FESystem.lib
 #ifdef _DEBUG
 #ifdef _WIN64
-#pragma comment(lib, "D:/Study/FrojerGit/FrojerEngine/SDK/DXTK/Lib/DirectXTK64d")
+#pragma comment(lib, "../../SDK/DXTK/Lib/DirectXTK64d")
 #else
 #pragma comment(lib, "DirectXTKd")
 #endif

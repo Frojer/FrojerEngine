@@ -5,13 +5,11 @@ using namespace std;
 unordered_map<INT64, FEMaterial*> FEMaterial::_mtrlMap;
 FETexture* FEMaterial::_pDefaultTex = nullptr;
 FEMaterial::WVP_Data FEMaterial::_WVPData;
-FEMaterial::Light_Data FEMaterial::_LightData[LIGHT_SIZE];
+FEMaterial::Light_Data FEMaterial::_LightData[FE_LIGHT_SIZE];
 
 FEMaterial::FEMaterial(INT64 ID, FEShader* i_pShader)
 	: FEObject(ID), _pShader(i_pShader), _countTexture(0), m_diffuse(FEVector4(1.0f, 1.0f, 1.0f, 1.0f)), m_ambient(FEVector3(1.0f, 1.0f, 1.0f)), m_specular(FEVector3(1.0f, 1.0f, 1.0f))
 {
-	memset(m_pTexture, 0, sizeof(m_pTexture));
-
 	SetShader(i_pShader);
 
 	_mtrlMap[GetID()] = this;
@@ -20,8 +18,6 @@ FEMaterial::FEMaterial(INT64 ID, FEShader* i_pShader)
 FEMaterial::FEMaterial(FEShader* i_pShader)
 	: _pShader(i_pShader), _countTexture(0), m_diffuse(FEVector4(1.0f, 1.0f, 1.0f, 1.0f)), m_ambient(FEVector3(1.0f, 1.0f, 1.0f)), m_specular(FEVector3(1.0f, 1.0f, 1.0f))
 {
-	memset(m_pTexture, 0, sizeof(m_pTexture));
-
 	SetShader(i_pShader);
 
 	_mtrlMap[GetID()] = this;
@@ -184,54 +180,124 @@ FEShader* FEMaterial::GetShader() const
 
 
 
-void FEMaterial::SetScalar(UINT id, const float scalar)
+void FEMaterial::SetScalar(const UINT index, const float scalar)
 {
-	*((float*)&_vecScalar[id / 4] + (id % 4)) = scalar;
+	*((float*)&_vecScalar[index / 4] + (index % 4)) = scalar;
 
-	_vecScalarA[id / 4] = FEMath::FEConvertToAlignData(_vecScalar[id / 4]);
+	_vecScalarA[index / 4] = FEMath::FEConvertToAlignData(_vecScalar[index / 4]);
+}
+void FEMaterial::SetScalar(const UINT index, const int scalar)
+{
+	*((int*)&_vecScalar[index / 4] + (index % 4)) = scalar;
+
+	_vecScalarA[index / 4] = FEMath::FEConvertToAlignData(_vecScalar[index / 4]);
+}
+void FEMaterial::SetScalar(const UINT index, const UINT scalar)
+{
+	*((UINT*)&_vecScalar[index / 4] + (index % 4)) = scalar;
+
+	_vecScalarA[index / 4] = FEMath::FEConvertToAlignData(_vecScalar[index / 4]);
+}
+void FEMaterial::SetScalar(const UINT index, const bool scalar)
+{
+	*((bool*)&_vecScalar[index / 4] + (index % 4)) = scalar;
+
+	_vecScalarA[index / 4] = FEMath::FEConvertToAlignData(_vecScalar[index / 4]);
+}
+void FEMaterial::SetVector(const UINT index, const FEVector4& vector)
+{
+	_vecVector[index] = FEMath::FEConvertToAlignData(vector);
+}
+void FEMaterial::SetMatrix(const UINT index, const FEMatrix& matrix)
+{
+	_vecMatrix[index] = FEMath::FEConvertToAlignData(matrix);
 }
 
 
-
-void FEMaterial::SetScalar(UINT id, const int scalar)
+bool FEMaterial::GetTexture(const UINT index, FETexture*& o_texture) const
 {
-	*((int*)&_vecScalar[id / 4] + (id % 4)) = scalar;
+	if (index >= FE_TEXTURE_SIZE)	return false;
 
-	_vecScalarA[id / 4] = FEMath::FEConvertToAlignData(_vecScalar[id / 4]);
+	o_texture = _texInfo[index].pTexture;
+
+	return true;
 }
-
-
-
-void FEMaterial::SetScalar(UINT id, const UINT scalar)
+bool FEMaterial::SetTexture(const UINT index, FETexture* i_texture)
 {
-	*((UINT*)&_vecScalar[id / 4] + (id % 4)) = scalar;
+	if (index >= FE_TEXTURE_SIZE)	return false;
 
-	_vecScalarA[id / 4] = FEMath::FEConvertToAlignData(_vecScalar[id / 4]);
+	_texInfo[index].pTexture = i_texture;
+
+	return true;
 }
-
-
-
-void FEMaterial::SetScalar(UINT id, const bool scalar)
+bool FEMaterial::GetTextureOffset(const UINT index, FEVector2& o_offset) const
 {
-	*((bool*)&_vecScalar[id / 4] + (id % 4)) = scalar;
+	if (index >= FE_TEXTURE_SIZE)	return false;
 
-	_vecScalarA[id / 4] = FEMath::FEConvertToAlignData(_vecScalar[id / 4]);
+	o_offset = FEVector2(_texInfo[index].ot.x, _texInfo[index].ot.y);
+
+	return true;
 }
-
-
-
-void FEMaterial::SetVector(UINT id, const FEVector4& vector)
+bool FEMaterial::SetTextureOffset(const UINT index, const FEVector2 i_offset)
 {
-	_vecVector[id] = FEMath::FEConvertToAlignData(vector);
+	if (index >= FE_TEXTURE_SIZE)	return false;
+
+	_texInfo[index].ot.x = i_offset.x;
+	_texInfo[index].ot.y = i_offset.y;
+
+	return true;
 }
-
-
-
-void FEMaterial::SetMatrix(UINT id, const FEMatrix& matrix)
+bool FEMaterial::GetTextureTiling(const UINT index, FEVector2& o_tiling) const
 {
-	_vecMatrix[id] = FEMath::FEConvertToAlignData(matrix);
-}
+	if (index >= FE_TEXTURE_SIZE)	return false;
 
+	o_tiling = FEVector2(_texInfo[index].ot.z, _texInfo[index].ot.w);
+
+	return true;
+}
+bool FEMaterial::SetTextureTiling(const UINT index, const FEVector2 i_tiling)
+{
+	if (index >= FE_TEXTURE_SIZE)	return false;
+
+	_texInfo[index].ot.z = i_tiling.x;
+	_texInfo[index].ot.w = i_tiling.y;
+
+	return true;
+}
+bool FEMaterial::GetTextureAngle(const UINT index, FEVector3& o_angle) const
+{
+	if (index >= FE_TEXTURE_SIZE)	return false;
+
+	o_angle = FEVector3(_texInfo[index].angle_Amount.x, _texInfo[index].angle_Amount.y, _texInfo[index].angle_Amount.z);
+
+	return true;
+}
+bool FEMaterial::SetTextureAngle(const UINT index, FEVector3 i_angle)
+{
+	if (index >= FE_TEXTURE_SIZE)	return false;
+
+	_texInfo[index].angle_Amount.x = i_angle.x;
+	_texInfo[index].angle_Amount.y = i_angle.y;
+	_texInfo[index].angle_Amount.z = i_angle.z;
+
+	return true;
+}
+bool FEMaterial::GetTextureAmount(const UINT index, float& o_amount) const
+{
+	if (index >= FE_TEXTURE_SIZE)	return false;
+
+	o_amount = _texInfo[index].angle_Amount.w;
+
+	return true;
+}
+bool FEMaterial::SetTextureAmount(const UINT index, float i_amount)
+{
+	if (index >= FE_TEXTURE_SIZE)	return false;
+
+	_texInfo[index].angle_Amount.w = i_amount;
+
+	return true;
+}
 
 
 FEMaterial* FEMaterial::Find(INT64 id)

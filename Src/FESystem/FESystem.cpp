@@ -59,9 +59,16 @@ bool FESystem::LoadData()
 	FESceneManager* pSM = FESceneManager::GetInstance();
 
 	FEShader::CreateDefaultConstantBuffer();
-	FELoader::FindShaderFile(FE_TEXT("../../bin/Resource/"));
-	FELoader::FindMaterialFile(FE_TEXT("../../bin/Resource/"));
-	FELoader::FindMeshFile(FE_TEXT("../../bin/Resource/"));
+
+	// 기본 셰이더 생성
+
+	// 기본 텍스쳐 생성
+	
+	// 모든 파일 로드
+	FELoader::FindTextureFile(START_PATH);
+	FELoader::FindShaderFile(START_PATH);
+	FELoader::FindMaterialFile(START_PATH);
+	FELoader::FindMeshFile(START_PATH);
 	
 	// ImportScene 함수를 통해 파일 형태로 저장해 놓은 씬들을 읽어 씬들을 구성하도록 만들자
 	// 효과 : FEScene 클래스 하나로 모든 씬들을 만들 수 있다. 어차피 씬들의 다른 점은 오브젝트들의 배치 및 설정이다. 이 다른점들을 파일을 읽어 씬에 적용할 수 있도록 만들자.

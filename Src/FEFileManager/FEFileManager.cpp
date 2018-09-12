@@ -67,6 +67,25 @@ void EscapeBlock(tifstream& f)
 			EscapeBlock(f);
 	}
 }
+INT64 ConvertTextureFile(tstring i_filePath, tstring i_outPath, tstring i_fileName)
+{
+	INT64 uuid = 0;
+	tifstream mif(i_filePath + i_fileName, std::ios::binary);
+	tofstream mof(i_outPath + i_fileName, std::ios::binary);
+
+	if (mif.is_open() && mof.is_open())
+	{
+		FECopyFile(mif, mof);
+
+		mof.close();
+
+		mof.open(i_outPath + i_fileName + FE_TEXT(".fet"));
+		uuid = CreateUUIDHashCode64();
+		mof << FE_TEXT("ID = ") << uuid;
+	}
+
+	return uuid;
+}
 void ConvertShaderFile(tstring i_filePath, tstring i_outPath, tstring i_fileName)
 {
 
@@ -236,21 +255,17 @@ void ConvertASEMapFile(tifstream& f, tofstream& o, tstring i_filePath, tstring i
 
 		_tcsncpy_s(mapClass, buf + s, e - s);
 
-		tifstream mif(i_filePath + GetFileNameWithExtension(mapClass), std::ios::binary);
-
-		if (mif.is_open())
+		if (_taccess((i_outPath + GetFileNameWithExtension(mapClass)).c_str(), 0) == -1)
 		{
-			tofstream mof(i_outPath + GetFileName(mapClass), std::ios::binary);
+			uuid = ConvertTextureFile(i_filePath, i_outPath, GetFileNameWithExtension(mapClass));
+		}
+		else
+		{
+			tifstream tf(i_filePath + GetFileNameWithExtension(mapClass) + FE_TEXT(".fet"));
 
-			if (mof.is_open())
+			if (tf.is_open())
 			{
-				FECopyFile(mif, mof);
-
-				mof.close();
-
-				mof.open(i_outPath + GetFileName(mapClass) + FE_TEXT(".meta"));
-				uuid = CreateUUIDHashCode64();
-				mof << FE_TEXT("ID = ") << uuid;
+				tf >> buf >> buf >> uuid;
 			}
 		}
 
@@ -1057,6 +1072,24 @@ void FEFileManager::ConvertAllFileInPath(tstring i_filePath)
 			}
 		}
 
+		else if (TCSCMP_SAME(extension.c_str(), FE_TEXT("png"))
+			|| TCSCMP_SAME(extension.c_str(), FE_TEXT("jpg")))
+		{
+			if (_taccess((_outPath + i_filePath + fd.name + FE_TEXT(".fet")).c_str(), 0) == -1)
+				break;
+
+			ConvertTextureFile(_dataPath + i_filePath, _outPath + i_filePath, fd.name);
+		}
+		else if (TCSCMP_SAME(extension.c_str(), FE_TEXT("fem")))
+		{
+			if (_taccess((_outPath + i_filePath + fd.name).c_str(), 0) == -1)
+				break;
+
+			tifstream f(_dataPath + i_filePath + fd.name);
+			tofstream o(_outPath + i_filePath + fd.name);
+
+			FECopyFile(f, o);
+		}
 		else if (TCSCMP_SAME(extension.c_str(), FE_TEXT("fx")) || TCSCMP_SAME(extension.c_str(), FE_TEXT("vsh")))
 		{
 			if (_taccess((_outPath + i_filePath + fd.name + FE_TEXT(".fes")).c_str(), 0) == -1)
@@ -1065,7 +1098,6 @@ void FEFileManager::ConvertAllFileInPath(tstring i_filePath)
 			ConvertShaderFile(_dataPath + i_filePath, _outPath + i_filePath, fd.name);
 			CompileVertexShader(_dataPath + i_filePath, _outPath + i_filePath, fd.name);
 		}
-
 		else if (TCSCMP_SAME(extension.c_str(), FE_TEXT("psh")))
 		{
 			if (_taccess((_outPath + i_filePath + fd.name + FE_TEXT(".fes")).c_str(), 0) == -1)
@@ -1073,7 +1105,6 @@ void FEFileManager::ConvertAllFileInPath(tstring i_filePath)
 
 			CompilePixelShader(_dataPath + i_filePath, _outPath + i_filePath, fd.name);
 		}
-
 		else if (TCSCMP_SAME(extension.c_str(), FE_TEXT("ase")))
 		{
 			if (_taccess((_outPath + i_filePath + GetFileName(fd.name) + FE_TEXT(".msh")).c_str(), 0) == -1)
