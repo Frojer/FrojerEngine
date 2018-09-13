@@ -65,7 +65,7 @@ bool FESystem::LoadData()
 	// 기본 텍스쳐 생성
 	
 	// 모든 파일 로드
-	FELoader::FindTextureFile(START_PATH);
+	//FELoader::FindTextureFile(START_PATH);
 	FELoader::FindShaderFile(START_PATH);
 	FELoader::FindMaterialFile(START_PATH);
 	FELoader::FindMeshFile(START_PATH);

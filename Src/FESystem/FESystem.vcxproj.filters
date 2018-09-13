@@ -13,42 +13,162 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="System">
+      <UniqueIdentifier>{523737be-bad4-4bda-8da2-761faa8db3e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System\Source File">
+      <UniqueIdentifier>{40d83a4a-6c7d-4dfb-b300-f0b2d2dcfa7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System\Header File">
+      <UniqueIdentifier>{9db38b11-fa53-45d9-bf4e-577d86d19dad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{618689bc-b585-4b59-8fb4-8fd67d040d01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{3177a956-2fc8-48c4-829e-0a7bc5c34889}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Source File">
+      <UniqueIdentifier>{aa0654d5-3533-4222-8843-f473eb9f513c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Header File">
+      <UniqueIdentifier>{bb9e0542-7d17-4252-96e9-42a3490403f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Source File">
+      <UniqueIdentifier>{753aa1ed-5414-49fe-9594-8c6cb440983c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Header File">
+      <UniqueIdentifier>{8965f07c-0c0f-4971-b12d-f4b982ace495}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component">
+      <UniqueIdentifier>{7abaa50d-443e-494f-aa2d-05ca51bfaf7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Source File">
+      <UniqueIdentifier>{c0e9d65f-4c8b-4295-a52b-ad3b184c1c4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Header File">
+      <UniqueIdentifier>{6b9ba842-fadb-4d3c-83f5-b2a478588d79}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FEWindow.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="FELoader.cpp">
+      <Filter>System\Source File</Filter>
     </ClCompile>
     <ClCompile Include="FESystem.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="FEWin32Window.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>System\Source File</Filter>
     </ClCompile>
     <ClCompile Include="FETime.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>System\Source File</Filter>
     </ClCompile>
-    <ClCompile Include="FELoader.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="FEWin32Window.cpp">
+      <Filter>System\Source File</Filter>
+    </ClCompile>
+    <ClCompile Include="FEWindow.cpp">
+      <Filter>System\Source File</Filter>
+    </ClCompile>
+    <ClCompile Include="FEGameObject.cpp">
+      <Filter>Object\Source File</Filter>
+    </ClCompile>
+    <ClCompile Include="FEMaterial.cpp">
+      <Filter>Object\Source File</Filter>
+    </ClCompile>
+    <ClCompile Include="FEMesh.cpp">
+      <Filter>Object\Source File</Filter>
+    </ClCompile>
+    <ClCompile Include="FEObject.cpp">
+      <Filter>Object\Source File</Filter>
+    </ClCompile>
+    <ClCompile Include="FEShader.cpp">
+      <Filter>Object\Source File</Filter>
+    </ClCompile>
+    <ClCompile Include="IFEObject.cpp">
+      <Filter>Object\Source File</Filter>
+    </ClCompile>
+    <ClCompile Include="FETexture.cpp">
+      <Filter>Object\Source File</Filter>
+    </ClCompile>
+    <ClCompile Include="FESceneManager.cpp">
+      <Filter>Scene\Source File</Filter>
+    </ClCompile>
+    <ClCompile Include="IFEScene.cpp">
+      <Filter>Scene\Source File</Filter>
+    </ClCompile>
+    <ClCompile Include="FETransform.cpp">
+      <Filter>Component\Source File</Filter>
+    </ClCompile>
+    <ClCompile Include="FERenderer.cpp">
+      <Filter>Component\Source File</Filter>
+    </ClCompile>
+    <ClCompile Include="FECamera.cpp">
+      <Filter>Component\Source File</Filter>
+    </ClCompile>
+    <ClCompile Include="FEBehaviour.cpp">
+      <Filter>Component\Source File</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FEWindow.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="FESystemDefine.h">
-      <Filter>헤더 파일</Filter>
+    <ClInclude Include="FELoader.h">
+      <Filter>System\Header File</Filter>
     </ClInclude>
     <ClInclude Include="FESystem.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>System\Header File</Filter>
     </ClInclude>
-    <ClInclude Include="FEWin32Window.h">
-      <Filter>헤더 파일</Filter>
+    <ClInclude Include="FESystemDefine.h">
+      <Filter>System\Header File</Filter>
     </ClInclude>
     <ClInclude Include="FETime.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>System\Header File</Filter>
     </ClInclude>
-    <ClInclude Include="FELoader.h">
-      <Filter>헤더 파일</Filter>
+    <ClInclude Include="FEWin32Window.h">
+      <Filter>System\Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="FEWindow.h">
+      <Filter>System\Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="FEObjectHeader.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="FEGameObject.h">
+      <Filter>Object\Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="FEMaterial.h">
+      <Filter>Object\Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="FEMesh.h">
+      <Filter>Object\Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="FEObject.h">
+      <Filter>Object\Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="FEShader.h">
+      <Filter>Object\Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="FETexture.h">
+      <Filter>Object\Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="IFEObject.h">
+      <Filter>Object\Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="IFEScene.h">
+      <Filter>Scene\Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="FESceneManager.h">
+      <Filter>Scene\Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="FEBehaviour.h">
+      <Filter>Component\Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="FECamera.h">
+      <Filter>Component\Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="FEComponent.h">
+      <Filter>Component\Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="FERenderer.h">
+      <Filter>Component\Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="FETransform.h">
+      <Filter>Component\Header File</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

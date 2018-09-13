@@ -1073,22 +1073,16 @@ void FEFileManager::ConvertAllFileInPath(tstring i_filePath)
 		}
 
 		else if (TCSCMP_SAME(extension.c_str(), FE_TEXT("png"))
-			|| TCSCMP_SAME(extension.c_str(), FE_TEXT("jpg")))
+			|| TCSCMP_SAME(extension.c_str(), FE_TEXT("jpg"))
+			|| TCSCMP_SAME(extension.c_str(), FE_TEXT("bmp")))
 		{
 			if (_taccess((_outPath + i_filePath + fd.name + FE_TEXT(".fet")).c_str(), 0) == -1)
-				break;
-
-			ConvertTextureFile(_dataPath + i_filePath, _outPath + i_filePath, fd.name);
+				ConvertTextureFile(_dataPath + i_filePath, _outPath + i_filePath, fd.name);
 		}
 		else if (TCSCMP_SAME(extension.c_str(), FE_TEXT("fem")))
 		{
 			if (_taccess((_outPath + i_filePath + fd.name).c_str(), 0) == -1)
 				break;
-
-			tifstream f(_dataPath + i_filePath + fd.name);
-			tofstream o(_outPath + i_filePath + fd.name);
-
-			FECopyFile(f, o);
 		}
 		else if (TCSCMP_SAME(extension.c_str(), FE_TEXT("fx")) || TCSCMP_SAME(extension.c_str(), FE_TEXT("vsh")))
 		{
