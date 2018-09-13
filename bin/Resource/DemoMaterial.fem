@@ -1,1 +1,8 @@
-Shader = ModelSpace
+ID = 2
+ShaderID = 1
+
+Name = "DemoMaterial"
+Diffuse	0.5882	0.5882	0.5882	1
+Ambient	0.5882	0.5882	0.5882	
+Specular	0.9	0.9	0.9	
+Power = 10

@@ -1,6 +1,10 @@
 ModelSpace.vso
 ModelSpace.pso
 
+ID = 1
+
+Name = "ModelSpace"
+
 Semantics = 3
 CountTexture = 0
 CountMatrix = 0

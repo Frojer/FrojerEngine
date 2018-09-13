@@ -1,15 +1,15 @@
 Material
 {
-	ID = -6285312824830798193
+	ID = -8696557537487149850
 	Name = "01 - Default"
 	Diffuse	1	0.4471	0	1
-	Ambient	1	0.4471	0	
-	Specular	0.9	0.9	0.9	
+	Ambient	1	0.4471	0
+	Specular	0.9	0.9	0.9
 	Power = 30
 }
 MeshObject
 {
-	ObjectID = 6090175056720210369
+	ObjectID = 1851026274694263337
 	MeshID = 0
 	Name = "sphere102"
 	MaterialID = 0
@@ -18,10 +18,10 @@ MeshObject
 	IndexCount = 0
 	MeshObject
 	{
-		ObjectID = 3309838005163109048
-		MeshID = 2111604445015454858
+		ObjectID = -9107138046337526581
+		MeshID = -4662453794293811077
 		Name = "Sphere001"
-		MaterialID = -6285312824830798193
+		MaterialID = -8696557537487149850
 		VertexFormat = 5
 		VertexCount = 5102
 		0	0.1506	5.9536

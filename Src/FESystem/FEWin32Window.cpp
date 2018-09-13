@@ -34,7 +34,7 @@ bool FEWin32Window::InitWindow()
 		m_bBorderless ? WS_POPUP : WS_SYSMENU | WS_MINIMIZEBOX,
 		//WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
 		//WS_OVERLAPPEDWINDOW, 
-		posX, posY,
+		10, 10,
 		m_uiWidth, m_uiHeight,
 		GetDesktopWindow(), NULL,
 		wc.hInstance, NULL

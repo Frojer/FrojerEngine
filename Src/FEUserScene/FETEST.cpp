@@ -1,6 +1,8 @@
 #include "FETEST.h"
 #include <FETime.h>
+#include <FEMath.h>
 #include <windows.h>
+#include <IFEScene.h>
 
 
 FETEST::FETEST()
@@ -35,5 +37,10 @@ void FETEST::Update()
 	if (IsKeyDown('U'))		GetMyObject()->GetTransform()->Rotate(FEVector3(0.0f, 0.0f, 0.1f) * FETime::GetDeltaTime());
 	if (IsKeyDown('O'))		GetMyObject()->GetTransform()->Rotate(FEVector3(0.0f, 0.0f, -0.1f) * FETime::GetDeltaTime());
 
-	if (IsKeyDown(VK_SPACE))	GetMyObject()->GetRenderer()->SetWireFrame(GetMyObject()->GetRenderer()->GetSolidFrame());
+	if (IsKeyDown(VK_SPACE))
+	{
+		//IFEScene::s_BGColor = FEVector4(1.0f, 1.0f, 1.0f, 1.0f);
+		
+		GetMyObject()->GetRenderer()->SetWireFrame(GetMyObject()->GetRenderer()->GetSolidFrame());
+	}
 }

@@ -7,9 +7,9 @@
 #include <FEObjectHeader.h>
 
 #ifdef _DEBUG
-#define START_PATH FE_TEXT("../../bin/Resource/shd/")
+#define START_PATH FE_TEXT("../../bin/Resource/")
 #elif
-#define START_PATH FE_TEXT("Resource/shd/")
+#define START_PATH FE_TEXT("Resource/")
 #endif
 
 class FELoader

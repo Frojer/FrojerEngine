@@ -1,15 +1,15 @@
 Material
 {
-	ID = 6452544886347753591
+	ID = -4066313233034992403
 	Name = "01 - Default"
 	Diffuse	1	0	0	1
-	Ambient	1	0	0	
-	Specular	0.9	0.9	0.9	
+	Ambient	1	0	0
+	Specular	0.9	0.9	0.9
 	Power = 30
 }
 MeshObject
 {
-	ObjectID = -4126448706359862498
+	ObjectID = 8114416996148317082
 	MeshID = 0
 	Name = "teapot_RED"
 	MaterialID = 0
@@ -18,10 +18,10 @@ MeshObject
 	IndexCount = 0
 	MeshObject
 	{
-		ObjectID = 600825596360444654
-		MeshID = -1464262516528712364
+		ObjectID = -1697664436120627389
+		MeshID = -9005848523810905832
 		Name = "Teapot001"
-		MaterialID = 6452544886347753591
+		MaterialID = -4066313233034992403
 		VertexFormat = 13
 		VertexCount = 326
 		0.35	0	0.6

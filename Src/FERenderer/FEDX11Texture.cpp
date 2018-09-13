@@ -40,13 +40,13 @@ bool FEDX11Texture::Create(LPCTSTR filename)
 	tstring extension;
 	extension = GetFileNameExtension(filename);
 
-	if (extension == FE_TEXT("jpg") || extension == FE_TEXT("png"))
+	//if (extension == FE_TEXT("jpg") || extension == FE_TEXT("png"))
 		hr = DirectX::CreateWICTextureFromFile(pRenderer->GetDevice(), filename, nullptr, &_pTextureRV);
 
-	else if (extension == FE_TEXT("dds"))
-		hr = DirectX::CreateWICTextureFromFile(pRenderer->GetDevice(), filename, nullptr, &_pTextureRV);
+	//else if (extension == FE_TEXT("dds"))
+	//	hr = DirectX::CreateDDSTextureFromFile(pRenderer->GetDevice(), filename, nullptr, &_pTextureRV);
 
-	else return false;
+	//else return false;
 
 	if (FAILED(hr))
 	{

@@ -1,6 +1,6 @@
 Material
 {
-	ID = 7910180150258365524
+	ID = -6037448372112760134
 	Name = "01 - Default"
 	Diffuse	1	1	1	1
 	Ambient	1	1	1
@@ -9,7 +9,7 @@ Material
 	Map 0
 	{
 		Amount = 1
-		Map = "../../bin/Resource/Teapot/stones.bmp"
+		MapID = 0
 		Offset	0	0
 		Tiling	1	0
 		Angle	0
@@ -17,7 +17,7 @@ Material
 }
 MeshObject
 {
-	ObjectID = -1390642874102191277
+	ObjectID = 3825695782641573654
 	MeshID = 0
 	Name = "Teapot"
 	MaterialID = 0
@@ -26,10 +26,10 @@ MeshObject
 	IndexCount = 0
 	MeshObject
 	{
-		ObjectID = 3463485518293583487
-		MeshID = 5498535288804456438
+		ObjectID = -3912679336342227250
+		MeshID = -2887906240680521342
 		Name = "Teapot01"
-		MaterialID = 7910180150258365524
+		MaterialID = -6037448372112760134
 		VertexFormat = 13
 		VertexCount = 1158
 		3.7956	0	6.5067

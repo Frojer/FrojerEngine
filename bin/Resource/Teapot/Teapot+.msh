@@ -1,6 +1,6 @@
 Material
 {
-	ID = 5224001293117360924
+	ID = -6077563677926221019
 	Name = "03 - Default"
 	Diffuse	1	1	1	1
 	Ambient	1	1	1
@@ -9,7 +9,7 @@ Material
 	Map 0
 	{
 		Amount = 1
-		Map = "../../bin/Resource/Teapot/Teapot01CompleteMap.tga"
+		MapID = -3860960495147838869
 		Offset	0	0
 		Tiling	1	0
 		Angle	0
@@ -17,7 +17,7 @@ Material
 }
 MeshObject
 {
-	ObjectID = 3182902727658524766
+	ObjectID = 6248829171041100148
 	MeshID = 0
 	Name = "Teapot+"
 	MaterialID = 0
@@ -26,10 +26,10 @@ MeshObject
 	IndexCount = 0
 	MeshObject
 	{
-		ObjectID = -8566526918130286540
-		MeshID = 693926934420839709
+		ObjectID = -6189006509601307026
+		MeshID = 1018319923761249565
 		Name = "Teapot01"
-		MaterialID = 5224001293117360924
+		MaterialID = -6077563677926221019
 		VertexFormat = 13
 		VertexCount = 326
 		10.9292	0.8547	16.538

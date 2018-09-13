@@ -124,17 +124,23 @@ void FELoader::LoadShader(tstring i_shaderPath, tstring i_name)
 	// ¼ÎÀÌ´õ UUID
 	f >> str >> str >> uuid;
 
-	// ¼ÎÀÌ´õ ½Ã¸ÇÆ½½º
-	f >> str >> str >> semantics;
-
-	i_shaderPath = START_PATH;
-
 	pShader = new FEShader(uuid);
 	if (pShader == nullptr)
 	{
 		//FEDebug::WarningMessage(FE_TEXT("Failed to load shader."));
 		return;
 	}
+
+	// ¼ÎÀÌ´õ Name
+	f >> str >> str;
+	f.getline(str, BUFFER_SIZE);
+	pShader->m_Name = StripQuotes(str);
+
+	// ¼ÎÀÌ´õ ½Ã¸ÇÆ½½º
+	f >> str >> str >> semantics;
+
+	i_shaderPath = START_PATH;
+	i_shaderPath.append(FE_TEXT("shd/"));
 
 	result = pShader->CreateShader((i_shaderPath + vs).c_str(), (i_shaderPath + ps).c_str(), static_cast<FE_SHADER_SEMANTICS>(semantics));
 
@@ -211,7 +217,7 @@ void FELoader::LoadMaterial(tstring i_mtrlPath, tstring i_name)
 			// '}'
 			f >> str;
 		}
-	} while (f.eof());
+	} while (!f.eof());
 
 	f.close();
 }
@@ -287,7 +293,7 @@ void FELoader::LoadMesh(tifstream &f, FEGameObject* pParent)
 	f >> str >> str >> uuid;
 	pObj = new FEGameObject(uuid);
 
-	pObj->SetParent(pParent);
+	pObj->_pParent = pParent;
 
 	// Mesh ID
 	f >> str >> str >> meshID;

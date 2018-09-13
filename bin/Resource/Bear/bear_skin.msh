@@ -1,6 +1,6 @@
 Material
 {
-	ID = 5459281282733808679
+	ID = -8793378422954754650
 	Name = "01 - Default"
 	Diffuse	1	1	1	1
 	Ambient	1	1	1
@@ -9,7 +9,7 @@ Material
 	Map 0
 	{
 		Amount = 1
-		Map = "../../bin/Resource/Bear/warbear.jpg"
+		MapID = 858433579940463160
 		Offset	0	0
 		Tiling	1	0
 		Angle	0
@@ -17,7 +17,7 @@ Material
 }
 MeshObject
 {
-	ObjectID = 4512022296344217451
+	ObjectID = -8869833991938313007
 	MeshID = 0
 	Name = "bear_skin"
 	MaterialID = 0
@@ -26,10 +26,10 @@ MeshObject
 	IndexCount = 0
 	MeshObject
 	{
-		ObjectID = -5442834314629056689
-		MeshID = 2899714312251087173
+		ObjectID = 5743668916419533444
+		MeshID = 8602885096141268247
 		Name = "Warbear"
-		MaterialID = 5459281282733808679
+		MaterialID = -8793378422954754650
 		VertexFormat = 5
 		VertexCount = 733
 		8.5651	-39.9625	39.3031

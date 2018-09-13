@@ -1,95 +1,95 @@
 Material
 {
-	ID = 6617205421847886818
+	ID = 3427637086850463461
 	Name = "01 - Default"
 	Diffuse	0.5882	0.5882	0.5882	1
-	Ambient	0.5882	0.5882	0.5882	
-	Specular	0.9	0.9	0.9	
+	Ambient	0.5882	0.5882	0.5882
+	Specular	0.9	0.9	0.9
 	Power = 10
-	DiffuseMap
+	Map 0
 	{
 		Amount = 1
-		Map = "../../bin/Resource/woodbox.jpg"
+		MapID = 8373917464536658229
 		Offset	0	0
 		Tiling	2	0
 		Angle	0
 	}
-	SpecularMap
+	Map 1
 	{
 		Amount = 1
-		Map = "../../bin/Resource/brickwork-texture.jpg"
+		MapID = -212989748313627652
 		Offset	0	0
 		Tiling	1.5	0
 		Angle	0
 	}
-	ShineMap
+	Map 2
 	{
 		Amount = 1
-		Map = "../../bin/Resource/earth.bmp"
+		MapID = -7757454233349756761
 		Offset	0	0
 		Tiling	1	0
 		Angle	0
 	}
-	ShineStrengthMap
+	Map 3
 	{
 		Amount = 1
-		Map = "../../bin/Resource/sonim.jpg"
+		MapID = 3675045897911257082
 		Offset	0	0
 		Tiling	1	0
 		Angle	0
 	}
-	SelfIllumMap
+	Map 4
 	{
 		Amount = 1
-		Map = "../../bin/Resource/boxbox.png"
+		MapID = -4623607716025712098
 		Offset	0	0
 		Tiling	1	0
 		Angle	0
 	}
-	OpacityMap
+	Map 5
 	{
 		Amount = 1
-		Map = "../../bin/Resource/sonimBox.png"
+		MapID = 5255305486178851027
 		Offset	0	0
 		Tiling	1	0
 		Angle	0
 	}
-	FilterColorMap
+	Map 6
 	{
 		Amount = 1
-		Map = "../../bin/Resource/sonim.jpg"
+		MapID = 0
 		Offset	0	0
 		Tiling	1	0
 		Angle	0
 	}
-	BumpMap
+	Map 7
 	{
 		Amount = 0.3
-		Map = "../../bin/Resource/woodBox.png"
+		MapID = 0
 		Offset	0	0
 		Tiling	1	0
 		Angle	0
 	}
-	ReflectMap
+	Map 8
 	{
 		Amount = 1
-		Map = "../../bin/Resource/earth.bmp"
+		MapID = 0
 		Offset	0	0
 		Tiling	1	0
 		Angle	0
 	}
-	RefractMap
+	Map 9
 	{
 		Amount = 1
-		Map = "../../bin/Resource/sonim.jpg"
+		MapID = 0
 		Offset	0	0
 		Tiling	1	0
 		Angle	0
 	}
-	RefractMap
+	Map 9
 	{
 		Amount = 1
-		Map = "../../bin/Resource/woodBox.png"
+		MapID = 0
 		Offset	0	0
 		Tiling	1	0
 		Angle	0
@@ -97,7 +97,7 @@ Material
 }
 MeshObject
 {
-	ObjectID = 3625643568132744439
+	ObjectID = -4639972681039029659
 	MeshID = 0
 	Name = "alltexturebox"
 	MaterialID = 0
@@ -106,10 +106,10 @@ MeshObject
 	IndexCount = 0
 	MeshObject
 	{
-		ObjectID = 2668634650095809173
-		MeshID = -7074666263635223465
+		ObjectID = 5532022183376773095
+		MeshID = -539581940930248429
 		Name = "Box001"
-		MaterialID = 6617205421847886818
+		MaterialID = 3427637086850463461
 		VertexFormat = 13
 		VertexCount = 31
 		-5.6076	-9.4437	0
