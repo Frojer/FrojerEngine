@@ -1,12 +1,14 @@
-#include "FEObjectHeader.h"
+#include "FEMaterial.h"
 
 using namespace std;
 
 unordered_map<INT64, FEMaterial*> FEMaterial::_mtrlMap;
 FETexture* FEMaterial::_pDefaultTex = nullptr;
-FEMaterial::WVP_Data FEMaterial::_WVPData;
-FEMaterial::Texture_Data FEMaterial::_TexturetData[FE_TEXTURE_SIZE];
-FEMaterial::Light_Data FEMaterial::_LightData[FE_LIGHT_SIZE];
+FEMaterial::LightCB FEMaterial::_lightCB[FE_LIGHT_SIZE];
+FEMaterial::PerCameraCB FEMaterial::_perCamCB;
+FEMaterial::PerMaterialCB FEMaterial::_perMtrlCB;
+FEMaterial::PerObjectCB FEMaterial::_perObjCB;
+INT64 FEMaterial::_oldDrawID = 0;
 
 FEMaterial::FEMaterial(INT64 ID, FEShader* i_pShader)
 	: FEObject(ID), _pShader(i_pShader), m_diffuse(FEVector4(1.0f, 1.0f, 1.0f, 1.0f)), m_ambient(FEVector3(1.0f, 1.0f, 1.0f)), m_specular(FEVector3(1.0f, 1.0f, 1.0f))
@@ -39,53 +41,118 @@ void FEMaterial::ClearMap()
 		delete (i++)->second;
 }
 
-
-void FEMaterial::UpdateLightData()
+void FEMaterial::UpdateConstantBufferLight()
 {
+	// 라이트 데이터 업데이트
 	auto iter = FELight::_lightList.begin();
 	FEVector3 vec;
 
 	for (UINT i = 0; iter != FELight::_lightList.end() && i < FE_LIGHT_SIZE; iter++)
 	{
-		_LightData[i].useLight = (*iter)->GetEnable();
+		FEMaterial::_lightCB[i].useLight = (*iter)->GetEnable();
 
-		if (!_LightData[i].useLight)
+		if (!FEMaterial::_lightCB[i].useLight)
 			continue;
 
-		_LightData[i].diffuse = FEMath::FEConvertToAlignData((*iter)->m_diffuse);
-		_LightData[i].ambient = FEMath::FEConvertToAlignData((*iter)->m_ambient);
-		_LightData[i].specular = FEMath::FEConvertToAlignData((*iter)->m_specular);
-		_LightData[i].position = FEMath::FEConvertToAlignData((*iter)->GetMyObject()->GetTransform()->GetPositionWorld());
+		FEMaterial::_lightCB[i].diffuse = FEMath::FEConvertToAlignData((*iter)->m_diffuse);
+		FEMaterial::_lightCB[i].ambient = FEMath::FEConvertToAlignData((*iter)->m_ambient);
+		FEMaterial::_lightCB[i].specular = FEMath::FEConvertToAlignData((*iter)->m_specular);
+		FEMaterial::_lightCB[i].position = FEMath::FEConvertToAlignData(FEVector4((*iter)->GetMyObject()->GetTransform()->GetPositionWorld(), 1));
 		vec = (*iter)->GetMyObject()->GetTransform()->GetRotationRadian();
-		_LightData[i].direction = FEMath::FEConvertToAlignData(-(FEVector3::Forward * FEMath::FEMatrixRotationRollPitchYaw(vec)));
-		_LightData[i].range = (*iter)->m_range;
-		_LightData[i].lightType = (*iter)->m_lightType;
+		FEMaterial::_lightCB[i].direction = FEMath::FEConvertToAlignData(FEVector4(-(FEVector3::Forward * FEMath::FEMatrixRotationRollPitchYaw(vec)), 0));
+		FEMaterial::_lightCB[i].range = (*iter)->m_range;
+		FEMaterial::_lightCB[i].lightType = (*iter)->m_lightType;
 
 		++i;
 	}
+
+	// 셰이더 상수버퍼 업데이트
+	FEShader::UpdateConstantBufferLight();
 }
-
-
-void FEMaterial::UpdateTextureData()
+void FEMaterial::UpdateConstantBufferPerCamera(const FEMatrixA& mView, const FEMatrixA& mProj)
 {
-	for (UINT i = 0; i < FE_TEXTURE_SIZE; i++)
+	// 뷰 행렬 업데이트
+	FEMaterial::_perCamCB.mView = mView;
+	// 프로젝션 행렬 업데이트
+	FEMaterial::_perCamCB.mProj = mProj;
+	// 셰이더 상수버퍼 업데이트
+	FEShader::UpdateConstantBufferPerCamera();
+}
+void FEMaterial::UpdateConstantBufferPerMaterial()
+{
+	// 이미 이전에 사용한 머테리얼이라면 이미 같은 상수버퍼이므로 업데이트를 하지 않는다
+	if (GetID() != _oldDrawID)
 	{
-		// texture가 존재하지 않는다면 continue
-		if (_texInfo[i].pTexture == nullptr)
-			continue;
+		// 텍스쳐 데이터 채우고
+		for (UINT i = 0; i < FE_TEXTURE_SIZE; i++)
+		{
+			// texture가 존재하지 않는다면 continue
+			if (_texInfo[i].pTexture == nullptr)
+				continue;
 
-		// offset, tiling 상수버퍼에 쓰기
-		_TexturetData[i].ot = FEMath::FEConvertToAlignData(_texInfo[i].ot);
-		// angle, amount 상수버퍼에 쓰기
-		_TexturetData[i].angle_Amount = FEMath::FEConvertToAlignData(_texInfo[i].angle_Amount);
+			// offset, tiling 상수버퍼에 쓰기
+			FEMaterial::_perMtrlCB.texInfo[i].ot = FEMath::FEConvertToAlignData(_texInfo[i].ot);
+			// angle, amount 상수버퍼에 쓰기
+			FEMaterial::_perMtrlCB.texInfo[i].angle_Amount = FEMath::FEConvertToAlignData(_texInfo[i].angle_Amount);
+		}
+
+		// 머테리얼 색상 채우고
+		FEMaterial::_perMtrlCB.diffuse = FEMath::FEConvertToAlignData(m_diffuse);
+		FEMaterial::_perMtrlCB.ambient = FEMath::FEConvertToAlignData(m_ambient);
+		FEMaterial::_perMtrlCB.specular = FEMath::FEConvertToAlignData(m_specular);
+		FEMaterial::_perMtrlCB.power = m_power;
+
+		// 셰이더 상수버퍼 업데이트
+		_pShader->UpdateConstantBufferPerMaterial();
+
+		// 이전ID 갱신
+		_oldDrawID = GetID();
 	}
 }
-
-
-void FEMaterial::UpdateConstantBuffer(FEMatrixA& mWorld)
+void FEMaterial::UpdateConstantBufferPerObject(FETransform* tr)
 {
-	FEMaterial::_WVPData.mWorld = mWorld;
-	FEMaterial::_WVPData.mWV = mWorld * FEMaterial::_WVPData.mView;
+	FEMaterial::_perObjCB.mPos = FEMath::FEConvertToAlignData(tr->GetPositionMatrix());
+	FEMaterial::_perObjCB.mRot = FEMath::FEConvertToAlignData(tr->GetRotationMatrix());
+	FEMaterial::_perObjCB.mScale = FEMath::FEConvertToAlignData(tr->GetScaleMatrix());
+	FEMaterial::_perObjCB.mRP = FEMath::FEConvertToAlignData(tr->GetRotPosMatrix());
+	// 월드 행렬 업데이트
+	FEMaterial::_perObjCB.mWorld = FEMath::FEConvertToAlignData(tr->GetWorldMatrix());
+	tr->GetMyObject();
+	// 월드 * 뷰 행렬 업데이트
+	FEMaterial::_perObjCB.mWV = FEMaterial::_perObjCB.mWorld * FEMaterial::_perCamCB.mView;
+	// 월드 * 뷰 * 프로젝션 행렬 업데이트
+	FEMaterial::_perObjCB.mWVP = FEMaterial::_perObjCB.mWorld * FEMaterial::_perCamCB.mView * FEMaterial::_perCamCB.mProj;
+	
+	// 라이트 데이터 업데이트
+	auto iter = FELight::_lightList.begin();
+	FEVector3 vec;
+
+	for (UINT i = 0; iter != FELight::_lightList.end() && i < FE_LIGHT_SIZE; iter++)
+	{
+		if (!FEMaterial::_lightCB[i].useLight)
+			continue;
+
+		switch (FEMaterial::_lightCB[i].lightType)
+		{
+		case FE_LIGHT_TYPE_DIRECTION:
+			//FEMaterial::_lightCB[i].direction * tr->GetRotationMatrix().Inverse();
+			FEMaterial::_perObjCB.vLightLocalDir[i] = DirectX::XMVector3TransformNormal(FEMaterial::_lightCB[i].direction, DirectX::XMMatrixInverse(nullptr, FEMath::FEConvertToAlignData(tr->GetRotationMatrix())));
+			break;
+		case FE_LIGHT_TYPE_POINT:
+			FEMaterial::_perObjCB.vLightLocalPos[i] = DirectX::XMVector3TransformCoord(FEMaterial::_lightCB[i].position, DirectX::XMMatrixInverse(nullptr, FEMath::FEConvertToAlignData(tr->GetPositionMatrix())));
+			break;
+		}
+
+		++i;
+	}
+
+	// 셰이더 상수버퍼 업데이트
+	_pShader->UpdateConstantBufferPerObject();
+}
+void FEMaterial::UpdateConstantBuffer(FETransform* tr)
+{
+	UpdateConstantBufferPerMaterial();
+	UpdateConstantBufferPerObject(tr);
 
 	if (_constData.size() > 0)
 	{
@@ -96,18 +163,8 @@ void FEMaterial::UpdateConstantBuffer(FEMatrixA& mWorld)
 		if (_vecScalarA.size() > 0)
 			memcpy_s(&_constData[(_vecMatrix.size() * 4) + _vecVector.size()], sizeof(FEVectorA) * _vecScalarA.size(), &_vecScalarA[0], sizeof(FEVectorA) * _vecScalarA.size());
 
-		/*if (_vecScalarA.size() > 0)
-		memcpy_s(&_constData[0], sizeof(FEVectorA) * _vecScalarA.size(), &_vecScalarA[0], sizeof(FEVectorA) * _vecScalarA.size());
-		if (_vecVector.size() > 0)
-		memcpy_s(&_constData[_vecScalarA.size()], sizeof(FEVectorA) * _vecVector.size(), &_vecVector[0], sizeof(FEVectorA) * _vecVector.size());
-		if (_vecMatrix.size() > 0)
-		memcpy_s(&_constData[_vecScalarA.size() + _vecVector.size()], sizeof(FEMatrixA) * _vecMatrix.size(), &_vecMatrix[0], sizeof(FEMatrixA) * _vecMatrix.size());*/
-
 		_pShader->UpdateConstantBuffer(&_constData[0], _constData.size() * sizeof(FEVectorA));
 	}
-
-	else
-		_pShader->UpdateConstantBuffer(nullptr, 0);
 }
 
 

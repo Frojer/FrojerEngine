@@ -30,16 +30,18 @@ void IFEScene::Update()
 void IFEScene::Render()
 {
 	auto cams = FECamera::GetAllCameras();
-	// 라이트 상수버퍼 업데이트
-	FEMaterial::UpdateLightData();
+
+	// 라이트 상수버퍼 갱신
+	FEMaterial::UpdateConstantBufferLight();
 
 	for (UINT i = 0; i < cams.size(); i++)
 	{
 		if (cams[i]->GetEnable())
 		{
+			// 뷰포트 세팅
 			IFERenderer::GetInstance()->SetViewports(1, &cams[i]->m_viewport);
-			FEMaterial::_WVPData.mView = FEMath::FEConvertToAlignData(cams[i]->GetViewMatrixLH());
-			FEMaterial::_WVPData.mProj = FEMath::FEConvertToAlignData(cams[i]->GetPerspectiveFovLH());
+			// 카메라 상수버퍼 갱신
+			FEMaterial::UpdateConstantBufferPerCamera(FEMath::FEConvertToAlignData(cams[i]->GetViewMatrixLH()), FEMath::FEConvertToAlignData(cams[i]->GetPerspectiveFovLH()));
 
 			auto iter = _hierarchyList.begin();
 

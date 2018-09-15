@@ -1079,7 +1079,7 @@ void FEFileManager::ConvertAllFileInPath(tstring i_filePath)
 		}
 		else if (TCSCMP_SAME(extension.c_str(), FE_TEXT("fx")))
 		{
-			if (_taccess((_outPath + i_filePath + fd.name + FE_TEXT(".fes")).c_str(), 0) == -1)
+			//if (_taccess((_outPath + i_filePath + GetFileName(fd.name) + FE_TEXT(".vso")).c_str(), 0) == -1)
 			{
 				ConvertShaderFile(_dataPath + i_filePath, _outPath + i_filePath, fd.name);
 				CompileVertexShader(_dataPath + i_filePath, _outPath + i_filePath, fd.name);
@@ -1088,7 +1088,7 @@ void FEFileManager::ConvertAllFileInPath(tstring i_filePath)
 		}
 		else if (TCSCMP_SAME(extension.c_str(), FE_TEXT("vsh")))
 		{
-			if (_taccess((_outPath + i_filePath + fd.name + FE_TEXT(".fes")).c_str(), 0) == -1)
+			if (_taccess((_outPath + i_filePath + GetFileName(fd.name) + FE_TEXT(".vso")).c_str(), 0) == -1)
 			{
 				ConvertShaderFile(_dataPath + i_filePath, _outPath + i_filePath, fd.name);
 				CompileVertexShader(_dataPath + i_filePath, _outPath + i_filePath, fd.name);
@@ -1096,7 +1096,7 @@ void FEFileManager::ConvertAllFileInPath(tstring i_filePath)
 		}
 		else if (TCSCMP_SAME(extension.c_str(), FE_TEXT("psh")))
 		{
-			if (_taccess((_outPath + i_filePath + fd.name + FE_TEXT(".fes")).c_str(), 0) == -1)
+			if (_taccess((_outPath + i_filePath + GetFileName(fd.name) + FE_TEXT(".pso")).c_str(), 0) == -1)
 				CompilePixelShader(_dataPath + i_filePath, _outPath + i_filePath, fd.name);
 		}
 		else if (TCSCMP_SAME(extension.c_str(), FE_TEXT("ase")))

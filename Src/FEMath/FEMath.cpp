@@ -1,5 +1,7 @@
 #include "FEMath.h"
 
+using namespace DirectX;
+
 const FEVector2 FEVector2::Zero		( 0.0f,  0.0f);
 const FEVector2 FEVector2::One		( 1.0f,  1.0f);
 const FEVector2 FEVector2::Left		( 1.0f,  0.0f);
@@ -16,10 +18,8 @@ const FEVector3 FEVector3::Forward	( 0.0f,  0.0f,  1.0f);
 const FEVector3 FEVector3::Back		( 0.0f,  0.0f, -1.0f);
 const FEVector4 FEVector4::Zero		( 0.0f,  0.0f,  0.0f, 0.0f);
 const FEVector4 FEVector4::One		( 1.0f,  1.0f,  1.0f, 1.0f);
+const FEMatrix FEMatrix::Identity	(XMMatrixIdentity());
 
-
-
-using namespace DirectX;
 
 FEMatrix FEMath::FEMatrixTranslation(const FEVector3& Offset)
 {
@@ -57,26 +57,50 @@ FEMatrixA FEMath::FEConvertToAlignData(const FEMatrix& M)
 {
 	return XMLoadFloat4x4(&M);
 }
+FEVector2 FEMath::FEConvertToVector2(const FEVectorA& V)
+{
+	FEVector2 ret;
+	XMStoreFloat2(&ret, V);
+	return ret;
+}
+FEVector3 FEMath::FEConvertToVector3(const FEVectorA& V)
+{
+	FEVector3 ret;
+	XMStoreFloat3(&ret, V);
+	return ret;
+}
+FEVector4 FEMath::FEConvertToVector4(const FEVectorA& V)
+{
+	FEVector4 ret;
+	XMStoreFloat4(&ret, V);
+	return ret;
+}
+FEMatrix FEMath::FEConvertToMatrix(const FEMatrixA& M)
+{
+	FEMatrix ret;
+	XMStoreFloat4x4(&ret, M);
+	return ret;
+}
 
 
 FEVector2::FEVector2(const FEVector3& v) : XMFLOAT2(v.x, v.y) {};
 FEVector2::FEVector2(const FEVector4& v) : XMFLOAT2(v.x, v.y) {};
 FEVector2::FEVector2(const FEVectorA& v)
 {
-	XMStoreFloat2(this, v);
+	*this = FEMath::FEConvertToVector2(v);
 }
 FEVector3::FEVector3(const FEVector4& v) : XMFLOAT3(v.x, v.y, v.z) {};
 FEVector3::FEVector3(const FEVectorA& v)
 {
-	XMStoreFloat3(this, v);
+	*this = FEMath::FEConvertToVector3(v);
 }
 FEVector4::FEVector4(const FEVectorA& v)
 {
-	XMStoreFloat4(this, v);
+	*this = FEMath::FEConvertToVector4(v);
 }
 FEMatrix::FEMatrix(const FEMatrixA& m)
 {
-	XMStoreFloat4x4(this, m);
+	*this = FEMath::FEConvertToMatrix(m);
 }
 
 bool FEVector2::operator==(const FEVector2& rhs) const
@@ -89,7 +113,7 @@ bool FEVector2::operator!=(const FEVector2& rhs) const
 }
 FEVector2& FEVector2::operator= (const FEVectorA& rhs)
 {
-	XMStoreFloat2(this, rhs);
+	*this = FEMath::FEConvertToVector2(rhs);
 
 	return *this;
 }
@@ -207,7 +231,7 @@ bool FEVector3::operator!=(const FEVector3& rhs) const
 }
 FEVector3& FEVector3::operator= (const FEVectorA& rhs)
 {
-	XMStoreFloat3(this, rhs);
+	*this = FEMath::FEConvertToVector3(rhs);
 
 	return *this;
 }
@@ -339,7 +363,7 @@ bool FEVector4::operator!=(const FEVector4& rhs) const
 }
 FEVector4& FEVector4::operator= (const FEVectorA& rhs)
 {
-	XMStoreFloat4(this, rhs);
+	*this = FEMath::FEConvertToVector4(rhs);
 
 	return *this;
 }
@@ -385,10 +409,10 @@ FEVector4& FEVector4::operator/=(float rhs)
 }
 FEVector4& FEVector4::operator*= (const FEMatrix& rhs)
 {
-	XMVECTOR v = XMLoadFloat4(this);
-	XMMATRIX m = XMLoadFloat4x4(&rhs);
+	FEVectorA v = FEMath::FEConvertToAlignData(*this);
+	FEMatrixA m = FEMath::FEConvertToAlignData(rhs);
 
-	XMStoreFloat4(this, XMVector4Transform(v, m));
+	*this = FEMath::FEConvertToVector4(XMVector4Transform(v, m));
 
 	return *this;
 }
@@ -454,6 +478,17 @@ FEVector4 FEVector4::operator/(const float& rhs) const
 	v.w = w / rhs;
 	return v;
 }
+FEVector4 FEVector4::operator*(const FEMatrix& rhs) const
+{
+	FEVector4 ret;
+
+	FEVectorA v = FEMath::FEConvertToAlignData(*this);
+	FEMatrixA m = FEMath::FEConvertToAlignData(rhs);
+
+	ret = FEMath::FEConvertToVector4(XMVector4Transform(v, m));
+
+	return ret;
+}
 FEVector4 operator+(const float lhs, const FEVector4& rhs)
 {
 	FEVector4 v;
@@ -485,63 +520,51 @@ FEVector4 operator*(const float lhs, const FEVector4& rhs)
 
 void FEMatrix::SetIdentity()
 {
-	XMStoreFloat4x4(this, XMMatrixIdentity());
+	*this = FEMatrix::Identity;
 }
 FEMatrix& FEMatrix::Inverse(FEVector4* pDeterminant)
 {
-	XMStoreFloat4x4(this, XMMatrixInverse(nullptr, XMLoadFloat4x4(this)));
-
+	*this = FEMath::FEConvertToMatrix(XMMatrixInverse(&FEMath::FEConvertToAlignData(*pDeterminant), FEMath::FEConvertToAlignData(*this)));
 	return *this;
 }
 FEMatrix& FEMatrix::operator= (const FEMatrixA& rhs)
 {
-	XMStoreFloat4x4(this, rhs);
-
+	*this = FEMath::FEConvertToMatrix(rhs);
 	return *this;
 }
 FEMatrix& FEMatrix::operator*= (const FEMatrix& rhs)
 {
-	XMMATRIX m1 = XMLoadFloat4x4(this);
-	XMMATRIX m2 = XMLoadFloat4x4(&rhs);
+	FEMatrixA m1 = FEMath::FEConvertToAlignData(*this);
+	FEMatrixA m2 = FEMath::FEConvertToAlignData(rhs);
 
-	XMStoreFloat4x4(this, XMMatrixMultiply(m1, m2));
-
+	*this = FEMath::FEConvertToMatrix(m1 * m2);
 	return *this;
 }
 FEMatrix FEMatrix::operator*(const FEMatrix& rhs) const
 {
 	FEMatrix result;
-	XMMATRIX m1 = XMLoadFloat4x4(this);
-	XMMATRIX m2 = XMLoadFloat4x4(&rhs);
+	FEMatrixA m1 = FEMath::FEConvertToAlignData(*this);
+	FEMatrixA m2 = FEMath::FEConvertToAlignData(rhs);
 
-	XMStoreFloat4x4(&result, XMMatrixMultiply(m1, m2));
-	return result;
-}
-FEVector4 FEMatrix::operator*(const FEVector4& rhs) const
-{
-	FEVector4 result;
-	XMMATRIX m = XMLoadFloat4x4(this);
-	XMVECTOR v = XMLoadFloat4(&rhs);
-
-	XMStoreFloat4(&result, XMVector4Transform(v, m));
+	result = FEMath::FEConvertToMatrix(m1 * m2);
 	return result;
 }
 FEVector3 operator*(const FEVector3& lhs, const FEMatrix& rhs)
 {
 	FEVector3 result;
-	XMVECTOR v = XMLoadFloat3(&lhs);
-	XMMATRIX m = XMLoadFloat4x4(&rhs);
+	FEVectorA v = FEMath::FEConvertToAlignData(lhs);
+	FEMatrixA m = FEMath::FEConvertToAlignData(rhs);
 
-	XMStoreFloat3(&result, XMVector3TransformCoord(v, m));
+	result = FEMath::FEConvertToVector3(XMVector3TransformCoord(v, m));
 	return result;
 }
 FEVector4 operator*(const FEVector4& lhs, const FEMatrix& rhs)
 {
 	FEVector4 result;
-	XMVECTOR v = XMLoadFloat4(&lhs);
-	XMMATRIX m = XMLoadFloat4x4(&rhs);
+	FEVectorA v = FEMath::FEConvertToAlignData(lhs);
+	FEMatrixA m = FEMath::FEConvertToAlignData(rhs);
 
-	XMStoreFloat4(&result, XMVector4Transform(v, m));
+	result = FEMath::FEConvertToVector4(XMVector4Transform(v, m));
 	return result;
 }
 

@@ -143,7 +143,6 @@ void FELoader::LoadShader(tstring i_shaderPath, tstring i_name)
 	f >> str >> str >> pShader->_countMatrix;
 	f >> str >> str >> pShader->_countVector;
 	f >> str >> str >> pShader->_countScalar;
-	f >> str >> str >> pShader->_useLight;
 
 	result = pShader->CreateShader((i_shaderPath + vs).c_str(), (i_shaderPath + ps).c_str(), static_cast<FE_SHADER_SEMANTICS>(semantics));
 

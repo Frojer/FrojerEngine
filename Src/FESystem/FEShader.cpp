@@ -2,18 +2,19 @@
 #include "FEObjectHeader.h"
 
 std::unordered_map<INT64, FEShader*> FEShader::_shaderMap;
-IFEBuffer* FEShader::_pWVP_CB = nullptr;
-IFEBuffer* FEShader::_pTex_CB = nullptr;
-IFEBuffer* FEShader::_pLight_CB = nullptr;
+IFEBuffer* FEShader::_pLightCB = nullptr;
+IFEBuffer* FEShader::_pPerCamCB = nullptr;
+IFEBuffer* FEShader::_pPerMtrlCB = nullptr;
+IFEBuffer* FEShader::_pPerObjCB = nullptr;
 
 FEShader::FEShader(INT64 ID)
-	: FEObject(ID), _pConstBuffer(nullptr), _pShader(nullptr), _countMatrix(0), _countVector(0), _countScalar(0), _useLight(false)
+	: FEObject(ID), _pConstBuffer(nullptr), _pShader(nullptr), _countMatrix(0), _countVector(0), _countScalar(0)
 {
 	_shaderMap[GetID()] = this;
 }
 
 FEShader::FEShader()
-	: _pConstBuffer(nullptr), _pShader(nullptr), _countMatrix(0), _countVector(0), _countScalar(0), _useLight(false)
+	: _pConstBuffer(nullptr), _pShader(nullptr), _countMatrix(0), _countVector(0), _countScalar(0)
 {
 	_shaderMap[GetID()] = this;
 }
@@ -38,22 +39,31 @@ void FEShader::ClearMap()
 
 bool FEShader::CreateDefaultConstantBuffer()
 {
-	_pWVP_CB = IFEBuffer::CreateBuffer(FE_BIND_CONSTANT_BUFFER, FE_USAGE_DYNAMIC, true, sizeof(FEMaterial::_WVPData), &FEMaterial::_WVPData);
-	if (_pWVP_CB == nullptr) return false;
-	_pTex_CB = IFEBuffer::CreateBuffer(FE_BIND_CONSTANT_BUFFER, FE_USAGE_DYNAMIC, true, sizeof(FEMaterial::_TexturetData), &FEMaterial::_TexturetData);
-	if (_pTex_CB == nullptr) return false;
-	_pLight_CB = IFEBuffer::CreateBuffer(FE_BIND_CONSTANT_BUFFER, FE_USAGE_DYNAMIC, true, sizeof(FEMaterial::_LightData), &FEMaterial::_LightData);
-	if (_pLight_CB == nullptr) return false;
+	_pLightCB = IFEBuffer::CreateBuffer(FE_BIND_CONSTANT_BUFFER, FE_USAGE_DYNAMIC, true, sizeof(FEMaterial::_lightCB), FEMaterial::_lightCB);
+	if (_pLightCB == nullptr) return false;
+	_pPerCamCB = IFEBuffer::CreateBuffer(FE_BIND_CONSTANT_BUFFER, FE_USAGE_DYNAMIC, true, sizeof(FEMaterial::_perCamCB), &FEMaterial::_perCamCB);
+	if (_pPerCamCB == nullptr) return false;
+	_pPerMtrlCB = IFEBuffer::CreateBuffer(FE_BIND_CONSTANT_BUFFER, FE_USAGE_DYNAMIC, true, sizeof(FEMaterial::_perMtrlCB), &FEMaterial::_perMtrlCB);
+	if (_pPerMtrlCB == nullptr) return false;
+	_pPerObjCB = IFEBuffer::CreateBuffer(FE_BIND_CONSTANT_BUFFER, FE_USAGE_DYNAMIC, true, sizeof(FEMaterial::_perObjCB), &FEMaterial::_perObjCB);
+	if (_pPerObjCB == nullptr) return false;
 
 	return true;
 }
-
-
 void FEShader::ReleaseDefaultConstantBuffer()
 {
-	SAFE_DELETE(_pWVP_CB);
-	SAFE_DELETE(_pTex_CB);
-	SAFE_DELETE(_pLight_CB);
+	SAFE_DELETE(_pLightCB);
+	SAFE_DELETE(_pPerCamCB);
+	SAFE_DELETE(_pPerMtrlCB);
+	SAFE_DELETE(_pPerObjCB);
+}
+void FEShader::UpdateConstantBufferLight()
+{
+	FEShader::_pLightCB->UpdateBuffer(FEMaterial::_lightCB, sizeof(FEMaterial::_lightCB));
+}
+void FEShader::UpdateConstantBufferPerCamera()
+{
+	FEShader::_pPerCamCB->UpdateBuffer(&FEMaterial::_perCamCB, sizeof(FEMaterial::_perCamCB));
 }
 
 
@@ -101,14 +111,17 @@ bool FEShader::CreateConstantBuffer()
 
 	return true;
 }
-
-
+void FEShader::UpdateConstantBufferPerMaterial()
+{
+	FEShader::_pPerMtrlCB->UpdateBuffer(&FEMaterial::_perMtrlCB, sizeof(FEMaterial::_perMtrlCB));
+}
+void FEShader::UpdateConstantBufferPerObject()
+{
+	FEShader::_pPerObjCB->UpdateBuffer(&FEMaterial::_perObjCB, sizeof(FEMaterial::_perObjCB));
+}
 void FEShader::UpdateConstantBuffer(const void* pCB, UINT size)
 {
-	FEShader::_pWVP_CB->UpdateBuffer(&FEMaterial::_WVPData, sizeof(FEMaterial::_WVPData));
-	FEShader::_pTex_CB->UpdateBuffer(&FEMaterial::_TexturetData, sizeof(FEMaterial::_TexturetData));
-	if (_useLight)	FEShader::_pLight_CB->UpdateBuffer(&FEMaterial::_LightData, sizeof(FEMaterial::_LightData));
-	if (size)		_pConstBuffer->UpdateBuffer(pCB, size);
+	_pConstBuffer->UpdateBuffer(pCB, size);
 }
 
 
@@ -125,9 +138,10 @@ void FEShader::Render() const
 
 	_pShader->Render();
 
-	_pShader->SetConstantBuffer(i++, _pWVP_CB);
-	_pShader->SetConstantBuffer(i++, _pTex_CB);
-	_pShader->SetConstantBuffer(i++, _pLight_CB);
+	_pShader->SetConstantBuffer(i++, _pLightCB);
+	_pShader->SetConstantBuffer(i++, _pPerCamCB);
+	_pShader->SetConstantBuffer(i++, _pPerMtrlCB);
+	_pShader->SetConstantBuffer(i++, _pPerObjCB);
 	if (_pConstBuffer != nullptr)	_pShader->SetConstantBuffer(i++, _pConstBuffer);
 }
 

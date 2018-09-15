@@ -1,5 +1,5 @@
-shd/ModelSpace.vso
-shd/ModelSpace.pso
+fx/ModelSpace.vso
+fx/ModelSpace.pso
 
 ID = 11
 
@@ -9,4 +9,3 @@ Semantics = 3
 CountMatrix = 0
 CountVector = 0
 CountScalar = 0
-UseLight = 0

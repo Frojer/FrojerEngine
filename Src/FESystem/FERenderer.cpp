@@ -18,11 +18,9 @@ void FERenderer::Render()
 {
 	IFERenderer* pRenderer = IFERenderer::GetInstance();
 
-	FEMatrixA m = FEMath::FEConvertToAlignData(GetMyObject()->GetTransform()->GetWorldMatrix());
-
 	if (m_pMesh != nullptr && m_pMaterial != nullptr)
 	{
-		m_pMaterial->UpdateConstantBuffer(m);
+		m_pMaterial->UpdateConstantBuffer(GetMyObject()->GetTransform());
 
 		m_pMesh->Render();
 		m_pMaterial->Render();

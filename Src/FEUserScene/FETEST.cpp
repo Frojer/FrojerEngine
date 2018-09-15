@@ -30,14 +30,14 @@ void FETEST::Update()
 	if (IsKeyDown('E'))		GetMyObject()->GetTransform()->Translate(FEVector3(0.0f, -1.0f, 0.0f) * FETime::GetDeltaTime());
 
 	// È¸Àü
-	if (IsKeyDown('I'))		GetMyObject()->GetTransform()->Rotate(FEVector3(1.0f, 0.0f, 0.0f) * FETime::GetDeltaTime());
-	if (IsKeyDown('K'))		GetMyObject()->GetTransform()->Rotate(FEVector3(-1.0f, 0.0f, 0.0f) * FETime::GetDeltaTime());
-	if (IsKeyDown('J'))		GetMyObject()->GetTransform()->Rotate(FEVector3(0.0f, -1.0f, 0.0f) * FETime::GetDeltaTime());
-	if (IsKeyDown('L'))		GetMyObject()->GetTransform()->Rotate(FEVector3(0.0f, 1.0f, 0.0f) * FETime::GetDeltaTime());
-	if (IsKeyDown('U'))		GetMyObject()->GetTransform()->Rotate(FEVector3(0.0f, 0.0f, 0.1f) * FETime::GetDeltaTime());
-	if (IsKeyDown('O'))		GetMyObject()->GetTransform()->Rotate(FEVector3(0.0f, 0.0f, -0.1f) * FETime::GetDeltaTime());
+	if (IsKeyDown('I'))		GetMyObject()->GetTransform()->Rotate(FEVector3(1.0f, 0.0f, 0.0f) * FETime::GetDeltaTime()	 * 10.0f);
+	if (IsKeyDown('K'))		GetMyObject()->GetTransform()->Rotate(FEVector3(-1.0f, 0.0f, 0.0f) * FETime::GetDeltaTime()	 * 10.0f);
+	if (IsKeyDown('J'))		GetMyObject()->GetTransform()->Rotate(FEVector3(0.0f, -1.0f, 0.0f) * FETime::GetDeltaTime()	 * 10.0f);
+	if (IsKeyDown('L'))		GetMyObject()->GetTransform()->Rotate(FEVector3(0.0f, 1.0f, 0.0f) * FETime::GetDeltaTime()	 * 10.0f);
+	if (IsKeyDown('U'))		GetMyObject()->GetTransform()->Rotate(FEVector3(0.0f, 0.0f, 0.1f) * FETime::GetDeltaTime()	 * 10.0f);
+	if (IsKeyDown('O'))		GetMyObject()->GetTransform()->Rotate(FEVector3(0.0f, 0.0f, -0.1f) * FETime::GetDeltaTime()	 * 10.0f);
 
-	if (IsKeyDown(VK_SPACE))
+	if (IsKeyUp(VK_SPACE))
 	{
 		//IFEScene::s_BGColor = FEVector4(1.0f, 1.0f, 1.0f, 1.0f);
 		

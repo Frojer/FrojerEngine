@@ -7,6 +7,5 @@ Name = "sphere102"
 
 Semantics = 5
 CountMatrix = 0
-CountVector = 3
-CountScalar = 1
-UseLight = 0
+CountVector = 0
+CountScalar = 0

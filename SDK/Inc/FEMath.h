@@ -35,6 +35,11 @@ namespace FEMath
 	FEVectorA FEConvertToAlignData(const FEVector3& V);
 	FEVectorA FEConvertToAlignData(const FEVector4& V);
 	FEMatrixA FEConvertToAlignData(const FEMatrix& M);
+
+	FEVector2 FEConvertToVector2(const FEVectorA& V);
+	FEVector3 FEConvertToVector3(const FEVectorA& V);
+	FEVector4 FEConvertToVector4(const FEVectorA& V);
+	FEMatrix FEConvertToMatrix(const FEMatrixA& M);
 }
 
 class FEVector2 : public DirectX::XMFLOAT2
@@ -150,6 +155,7 @@ public:
 	FEVector4& operator*=(const FEVector4& rhs);
 	FEVector4& operator*=(float rhs);
 	FEVector4& operator/=(float rhs);
+	FEVector4& operator*= (const FEMatrix& rhs);
 	FEVector4 operator+() const;
 	FEVector4 operator-() const;
 	FEVector4 operator+(const FEVector4& rhs) const;
@@ -158,8 +164,7 @@ public:
 	FEVector4 operator-(const float& rhs) const;
 	FEVector4 operator*(const float& rhs) const;
 	FEVector4 operator/(const float& rhs) const;
-
-	FEVector4& operator*= (const FEMatrix& rhs);
+	FEVector4 operator*(const FEMatrix& rhs) const;
 };
 FEVector4 operator+(const float lhs, const FEVector4& rhs);
 FEVector4 operator-(const float lhs, const FEVector4& rhs);
@@ -168,7 +173,11 @@ FEVector4 operator*(const float lhs, const FEVector4& rhs);
 class FEMatrix : public DirectX::XMFLOAT4X4
 {
 public:
+	static const FEMatrix Identity;
+
+public:
 	FEMatrix() = default;
+	FEMatrix(const FEMatrix& m) : XMFLOAT4X4(m) {};
 	FEMatrix(const FEVector4& v1, const FEVector4& v2, const FEVector4& v3, const FEVector4& v4)
 		: XMFLOAT4X4(v1.x, v1.y, v1.z, v1.w,
 					v2.x, v2.y, v2.z, v2.w,
@@ -189,7 +198,6 @@ public:
 	FEMatrix& operator= (const FEMatrixA& rhs);
 	FEMatrix& operator*= (const FEMatrix& rhs);
 	FEMatrix operator*(const FEMatrix& rhs) const;
-	FEVector4 operator*(const FEVector4& rhs) const;
 };
 FEVector3 operator*(const FEVector3& lhs, const FEMatrix& rhs);
 FEVector4 operator*(const FEVector4& lhs, const FEMatrix& rhs);

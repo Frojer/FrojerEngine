@@ -73,7 +73,6 @@ bool FESystem::LoadData()
 	pShader->_countMatrix = 0;
 	pShader->_countVector = 0;
 	pShader->_countScalar = 0;
-	pShader->_useLight = false;
 
 	// 기본 텍스쳐 생성
 	

@@ -104,10 +104,10 @@ void FETransform::Translate(const FEVector3& translate, Space space)
 
 void FETransform::Rotate(const FEVector3& eulerAngles, Space space)
 {
-	/*if (space)
+	if (space)
 		_vRot += eulerAngles / 180.0f * FE_PI;
 	else
-		_vRot += eulerAngles / 180.0f * FE_PI;*/
+		_vRot += eulerAngles / 180.0f * FE_PI;
 }
 
 

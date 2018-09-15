@@ -50,7 +50,16 @@ void AnimScene::Load()
 	renderer->m_pMaterial = FEMaterial::Find(FE_TEXT("DemoMaterial"));
 	renderer->m_pMesh = FEMesh::Find(FE_TEXT("Sphere001"));
 	pTriangle->AddComponent<FETEST>();
-	renderer->m_pMaterial->SetVector(0, renderer->m_pMaterial->m_diffuse);
+
+	FEGameObject* pLight = new FEGameObject(FEVector3::Zero, FEVector3::Zero, FEVector3::One);
+	pLight->m_Name = FE_TEXT("Direction Light");
+	pLight->GetTransform()->SetRotationDegree(FEVector3(50.0f, -30.0f, 0.0f));
+	auto light = pLight->AddComponent<FELight>();
+	light->m_diffuse = FEVector4(1.0f, 1.0f, 1.0f, 1.0f);
+	light->m_ambient = FEVector4(0.2f, 0.2f, 0.2f, 1.0f);
+	light->m_lightType = FE_LIGHT_TYPE_DIRECTION;
+	
+
 	//renderer->m_pMesh->m_topology = PRIMITIVE_TOPOLOGY_LINELIST;
 
 	//FEShader* pShader = new FEShader;

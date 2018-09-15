@@ -11,9 +11,10 @@ class FEShader : public FEObject
 private:
 	static std::unordered_map<INT64, FEShader*> _shaderMap;
 
-	static IFEBuffer* _pWVP_CB;
-	static IFEBuffer* _pTex_CB;
-	static IFEBuffer* _pLight_CB;
+	static IFEBuffer* _pLightCB;
+	static IFEBuffer* _pPerCamCB;
+	static IFEBuffer* _pPerMtrlCB;
+	static IFEBuffer* _pPerObjCB;
 
 	IFEBuffer* _pConstBuffer;
 	IFEShader* _pShader;
@@ -24,17 +25,19 @@ private:
 	UINT _countVector;
 	UINT _countScalar;
 
-	bool _useLight;
-
 private:
 	static void ClearMap();
 
 	static bool CreateDefaultConstantBuffer();
 	static void ReleaseDefaultConstantBuffer();
+	static void UpdateConstantBufferLight();
+	static void UpdateConstantBufferPerCamera();
 
 	bool CreateShader(LPCTSTR i_vsName, LPCTSTR i_psName, FE_SHADER_SEMANTICS i_semantics);
 
 	bool CreateConstantBuffer();
+	void UpdateConstantBufferPerMaterial();
+	void UpdateConstantBufferPerObject();
 	void UpdateConstantBuffer(const void* pCB, UINT size);
 
 protected:

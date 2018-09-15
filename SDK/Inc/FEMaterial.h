@@ -9,25 +9,24 @@
 #define FE_TEXTURE_SIZE 16
 
 class FEShader;
+class FETransform;
 
 class FEMaterial : public FEObject
 {
 private:
-	struct TEX_INFO
+	struct TexInfo
 	{
 		FEVector4 ot;
 		FEVector4 angle_Amount;
 		FETexture* pTexture;
-		TEX_INFO() : ot(0.0f, 0.0f, 1.0f, 1.0f), angle_Amount(0.0f, 0.0f, 0.0f, 1.0f), pTexture(nullptr) {}
+		TexInfo() : ot(0.0f, 0.0f, 1.0f, 1.0f), angle_Amount(0.0f, 0.0f, 0.0f, 1.0f), pTexture(nullptr) {}
 	};
-	struct WVP_Data
+	struct TexInfoA
 	{
-		FEMatrixA mWorld;
-		FEMatrixA mView;
-		FEMatrixA mWV;
-		FEMatrixA mProj;
+		FEVectorA ot;
+		FEVectorA angle_Amount;
 	};
-	struct Light_Data
+	struct LightCB
 	{
 		FEVectorA diffuse;
 		FEVectorA ambient;
@@ -38,21 +37,43 @@ private:
 		UINT lightType;
 		bool useLight;
 	};
-	struct Texture_Data
+	struct PerCameraCB
 	{
-		FEVectorA ot;
-		FEVectorA angle_Amount;
+		FEMatrixA mView;
+		FEMatrixA mProj;
 	};
+	struct PerMaterialCB
+	{
+		TexInfoA texInfo[FE_TEXTURE_SIZE];
+		FEVectorA diffuse;
+		FEVectorA ambient;
+		FEVectorA specular;
+		float power;
+	};
+	struct PerObjectCB
+	{
+		FEMatrixA mPos;
+		FEMatrixA mRot;
+		FEMatrixA mScale;
+		FEMatrixA mRP;
+		FEMatrixA mWorld;
+		FEMatrixA mWV;
+		FEMatrixA mWVP;
+		FEVectorA vLightLocalPos[FE_LIGHT_SIZE];
+		FEVectorA vLightLocalDir[FE_LIGHT_SIZE];
+	};
+
+	static LightCB _lightCB[FE_LIGHT_SIZE];
+	static PerCameraCB _perCamCB;
+	static PerMaterialCB _perMtrlCB;
+	static PerObjectCB _perObjCB;
+	static INT64 _oldDrawID;
 
 	static std::unordered_map<INT64, FEMaterial*> _mtrlMap;
 	static FETexture* _pDefaultTex;
 
-	static WVP_Data _WVPData;
-	static Texture_Data _TexturetData[FE_TEXTURE_SIZE];
-	static Light_Data _LightData[FE_LIGHT_SIZE];
-
 	FEShader* _pShader;
-	TEX_INFO _texInfo[FE_TEXTURE_SIZE];
+	TexInfo _texInfo[FE_TEXTURE_SIZE];
 
 	std::vector<FEVectorA> _constData;
 
@@ -69,9 +90,11 @@ public:
 
 private:
 	static void ClearMap();
-	static void UpdateLightData();
-	void UpdateTextureData();
-	void UpdateConstantBuffer(FEMatrixA& mWorld);
+	static void UpdateConstantBufferLight();
+	static void UpdateConstantBufferPerCamera(const FEMatrixA& mView, const FEMatrixA& mProj);
+	void UpdateConstantBufferPerMaterial();
+	void UpdateConstantBufferPerObject(FETransform* tr);
+	void UpdateConstantBuffer(FETransform* tr);
 	void Render();
 
 protected:
