@@ -6,7 +6,7 @@ class FETEST : public FEBehaviour
 {
 public:
 	FETEST();
-	~FETEST();
+	virtual ~FETEST();
 
-	void Update();
+	void Update() override;
 };

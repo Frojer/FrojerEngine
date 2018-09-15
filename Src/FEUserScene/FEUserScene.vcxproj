@@ -106,7 +106,7 @@
       <Command>copy FEUserScene.h $(FE_SDK_INC)</Command>
     </PostBuildEvent>
     <Lib>
-      <AdditionalDependencies>FEMath64d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FEMath64d.lib;FEDebug64d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -172,12 +172,16 @@
     <ClInclude Include="AnimScene.h" />
     <ClInclude Include="FETEST.h" />
     <ClInclude Include="FEUserScene.h" />
+    <ClInclude Include="Grid.h" />
+    <ClInclude Include="TriWorldScene.h" />
     <ClInclude Include="UserScenes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimScene.cpp" />
     <ClCompile Include="FETEST.cpp" />
     <ClCompile Include="FEUserScene.cpp" />
+    <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="TriWorldScene.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

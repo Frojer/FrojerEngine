@@ -29,29 +29,6 @@ FESceneManager::~FESceneManager()
 
 bool FESceneManager::ImportScene()
 {
-	/*
-#ifdef _WIN32
-	_finddata_t fd;
-	intptr_t handle;
-	int result = 1;
-	handle = _findfirst("..\\..\\Data\\*", &fd);  //현재 폴더 내 모든 파일을 찾는다.
-
-	// 파일이 하나도 없다면
-	if (handle == -1)
-		return false;
-
-	while (result != -1)
-	{
-		printf("File: %s\n", fd.name);
-		result = _findnext(handle, &fd);
-	}
-
-	_findclose(handle);
-#else
-#error 윈도우가 아니라구
-#endif
-	*/
-
 	LoadUserScene();
 
 	return true;

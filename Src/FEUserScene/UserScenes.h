@@ -3,5 +3,5 @@
 #define _USER_SCENES
 
 #include "AnimScene.h"
-
+#include "TriWorldScene.h"
 #endif

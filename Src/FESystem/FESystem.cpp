@@ -110,9 +110,9 @@ void FESystem::Run()
 		FESceneManager::_pCurrentScene->Initialize();
 		FESceneManager::_pCurrentScene->Update();
 
-		pRenderer->ClearBackBuffer(FESceneManager::_pCurrentScene->s_BGColor);
 		FESceneManager::_pCurrentScene->Render();
 		pRenderer->Flip();
+		pRenderer->ClearBackBuffer(FESceneManager::_pCurrentScene->s_BGColor);
 	}
 }
 

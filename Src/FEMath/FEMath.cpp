@@ -1,5 +1,14 @@
 #include "FEMath.h"
 
+float FEConvertToDegree(float radian)
+{
+	return radian / FE_PI * 180;
+}
+float FEConvertToRadian(float degree)
+{
+	return degree / 180 * FE_PI;
+}
+
 using namespace DirectX;
 
 const FEVector2 FEVector2::Zero		( 0.0f,  0.0f);
@@ -80,6 +89,10 @@ FEMatrix FEMath::FEConvertToMatrix(const FEMatrixA& M)
 	FEMatrix ret;
 	XMStoreFloat4x4(&ret, M);
 	return ret;
+}
+FEVectorA FEMath::operator*(const FEVectorA& V, const FEMatrixA& M)
+{
+	return XMVector4Transform(V, M);
 }
 
 
@@ -517,6 +530,10 @@ FEVector4 operator*(const float lhs, const FEVector4& rhs)
 	return v;
 }
 
+FEMatrix FEMatrix::Inverse(FEMatrix m, FEVector4* pDeterminant)
+{
+	return FEMath::FEConvertToMatrix(XMMatrixInverse(pDeterminant == nullptr ? nullptr : &FEMath::FEConvertToAlignData(*pDeterminant), FEMath::FEConvertToAlignData(m)));
+}
 
 void FEMatrix::SetIdentity()
 {
@@ -524,7 +541,7 @@ void FEMatrix::SetIdentity()
 }
 FEMatrix& FEMatrix::Inverse(FEVector4* pDeterminant)
 {
-	*this = FEMath::FEConvertToMatrix(XMMatrixInverse(&FEMath::FEConvertToAlignData(*pDeterminant), FEMath::FEConvertToAlignData(*this)));
+	*this = FEMath::FEConvertToMatrix(XMMatrixInverse(pDeterminant == nullptr ? nullptr : &FEMath::FEConvertToAlignData(*pDeterminant), FEMath::FEConvertToAlignData(*this)));
 	return *this;
 }
 FEMatrix& FEMatrix::operator= (const FEMatrixA& rhs)

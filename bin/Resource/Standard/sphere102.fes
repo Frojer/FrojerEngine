@@ -1,0 +1,11 @@
+sphere102.vso
+sphere102.pso
+
+ID = 12
+
+Name = "sphere102"
+
+Semantics = 5
+CountMatrix = 0
+CountVector = 0
+CountScalar = 0

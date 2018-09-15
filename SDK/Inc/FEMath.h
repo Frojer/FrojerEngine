@@ -9,6 +9,9 @@
 #define FE_PIDIV2 1.570796327f
 #define FE_PIDIV4 0.785398163f
 
+float FEConvertToDegree(float radian);
+float FEConvertToRadian(float degree);
+
 #ifdef _WIN32
 #include <DirectXMath.h>
 
@@ -40,6 +43,8 @@ namespace FEMath
 	FEVector3 FEConvertToVector3(const FEVectorA& V);
 	FEVector4 FEConvertToVector4(const FEVectorA& V);
 	FEMatrix FEConvertToMatrix(const FEMatrixA& M);
+
+	FEVectorA operator*(const FEVectorA& V, const FEMatrixA& M);
 }
 
 class FEVector2 : public DirectX::XMFLOAT2
@@ -185,6 +190,12 @@ public:
 					v4.x, v4.y, v4.z, v4.w) {};
 	FEMatrix(const FEMatrixA& m);
 	~FEMatrix() = default;
+
+	//----------
+	// 전역 함수
+	//----------
+	static FEMatrix Inverse(FEMatrix m, FEVector4* pDeterminant = nullptr);
+
 
 	//----------
 	// 맴버 함수

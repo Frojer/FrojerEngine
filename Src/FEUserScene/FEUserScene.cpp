@@ -7,4 +7,5 @@ void LoadUserScene()
 	FESceneManager* pSM = FESceneManager::GetInstance();
 
 	pSM->AddScene(new AnimScene);
+	pSM->AddScene(new TriWorldScene);
 }

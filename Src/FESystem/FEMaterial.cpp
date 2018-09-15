@@ -1,6 +1,7 @@
 #include "FEMaterial.h"
 
 using namespace std;
+using namespace FEMath;
 
 unordered_map<INT64, FEMaterial*> FEMaterial::_mtrlMap;
 FETexture* FEMaterial::_pDefaultTex = nullptr;
@@ -135,11 +136,10 @@ void FEMaterial::UpdateConstantBufferPerObject(FETransform* tr)
 		switch (FEMaterial::_lightCB[i].lightType)
 		{
 		case FE_LIGHT_TYPE_DIRECTION:
-			//FEMaterial::_lightCB[i].direction * tr->GetRotationMatrix().Inverse();
-			FEMaterial::_perObjCB.vLightLocalDir[i] = DirectX::XMVector3TransformNormal(FEMaterial::_lightCB[i].direction, DirectX::XMMatrixInverse(nullptr, FEMath::FEConvertToAlignData(tr->GetRotationMatrix())));
+			FEMaterial::_perObjCB.vLightLocalDir[i] = FEMaterial::_lightCB[i].direction * FEConvertToAlignData(tr->GetRotationMatrix().Inverse());
 			break;
 		case FE_LIGHT_TYPE_POINT:
-			FEMaterial::_perObjCB.vLightLocalPos[i] = DirectX::XMVector3TransformCoord(FEMaterial::_lightCB[i].position, DirectX::XMMatrixInverse(nullptr, FEMath::FEConvertToAlignData(tr->GetPositionMatrix())));
+			FEMaterial::_perObjCB.vLightLocalDir[i] = FEMaterial::_lightCB[i].direction * FEConvertToAlignData(tr->GetPositionMatrix().Inverse());
 			break;
 		}
 
