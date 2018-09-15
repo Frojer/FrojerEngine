@@ -42,18 +42,16 @@ private:
 	{
 		FEVectorA ot;
 		FEVectorA angle_Amount;
-		FETexture* pTexture;
 	};
 
 	static std::unordered_map<INT64, FEMaterial*> _mtrlMap;
 	static FETexture* _pDefaultTex;
 
 	static WVP_Data _WVPData;
-	static Light_Data _LightData[FE_LIGHT_SIZE];
 	static Texture_Data _TexturetData[FE_TEXTURE_SIZE];
+	static Light_Data _LightData[FE_LIGHT_SIZE];
 
 	FEShader* _pShader;
-	UINT _countTexture;
 	TEX_INFO _texInfo[FE_TEXTURE_SIZE];
 
 	std::vector<FEVectorA> _constData;
@@ -72,6 +70,7 @@ public:
 private:
 	static void ClearMap();
 	static void UpdateLightData();
+	void UpdateTextureData();
 	void UpdateConstantBuffer(FEMatrixA& mWorld);
 	void Render();
 

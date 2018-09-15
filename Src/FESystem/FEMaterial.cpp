@@ -5,10 +5,11 @@ using namespace std;
 unordered_map<INT64, FEMaterial*> FEMaterial::_mtrlMap;
 FETexture* FEMaterial::_pDefaultTex = nullptr;
 FEMaterial::WVP_Data FEMaterial::_WVPData;
+FEMaterial::Texture_Data FEMaterial::_TexturetData[FE_TEXTURE_SIZE];
 FEMaterial::Light_Data FEMaterial::_LightData[FE_LIGHT_SIZE];
 
 FEMaterial::FEMaterial(INT64 ID, FEShader* i_pShader)
-	: FEObject(ID), _pShader(i_pShader), _countTexture(0), m_diffuse(FEVector4(1.0f, 1.0f, 1.0f, 1.0f)), m_ambient(FEVector3(1.0f, 1.0f, 1.0f)), m_specular(FEVector3(1.0f, 1.0f, 1.0f))
+	: FEObject(ID), _pShader(i_pShader), m_diffuse(FEVector4(1.0f, 1.0f, 1.0f, 1.0f)), m_ambient(FEVector3(1.0f, 1.0f, 1.0f)), m_specular(FEVector3(1.0f, 1.0f, 1.0f))
 {
 	SetShader(i_pShader);
 
@@ -16,7 +17,7 @@ FEMaterial::FEMaterial(INT64 ID, FEShader* i_pShader)
 }
 
 FEMaterial::FEMaterial(FEShader* i_pShader)
-	: _pShader(i_pShader), _countTexture(0), m_diffuse(FEVector4(1.0f, 1.0f, 1.0f, 1.0f)), m_ambient(FEVector3(1.0f, 1.0f, 1.0f)), m_specular(FEVector3(1.0f, 1.0f, 1.0f))
+	: _pShader(i_pShader), m_diffuse(FEVector4(1.0f, 1.0f, 1.0f, 1.0f)), m_ambient(FEVector3(1.0f, 1.0f, 1.0f)), m_specular(FEVector3(1.0f, 1.0f, 1.0f))
 {
 	SetShader(i_pShader);
 
@@ -41,32 +42,43 @@ void FEMaterial::ClearMap()
 
 void FEMaterial::UpdateLightData()
 {
-//	auto iter = Light::_lightList.begin();
-//	FEVector3 vec;
-//
-//	//memset(_LightData, 0, sizeof(_LightData));
-//
-//	for (UINT i = 0; iter != Light::_lightList.end() && i < LIGHT_SIZE; iter++)
-//	{
-//		if (!(*iter)->GetEnable())
-//			continue;
-//#ifdef _WIN32
-//		using namespace DirectX;
-//
-//		_LightData[i].diffuse = DirectX::XMLoadFloat4(&(*iter)->m_diffuse);
-//		_LightData[i].ambient = XMLoadFloat4(&(*iter)->m_ambient);
-//		_LightData[i].specular = XMLoadFloat4(&(*iter)->m_specular);
-//		_LightData[i].position = XMLoadFloat3(&(*iter)->GetMyObject()->m_pTransform->GetPositionWorld());
-//		vec = (*iter)->GetMyObject()->m_pTransform->GetRotationRadian();
-//		_LightData[i].direction = -XMVector3Transform(XMLoadFloat3(&FEVector3(0.0f, 0.0f, 1.0f)), XMMatrixRotationRollPitchYaw(vec.x, vec.y, vec.z));
-//		_LightData[i].range = (*iter)->m_range;
-//		_LightData[i].lightType = (*iter)->m_lightType;
-//		_LightData[i].useLight = true;
-//#elif
-//
-//#endif
-//		++i;
-//	}
+	auto iter = FELight::_lightList.begin();
+	FEVector3 vec;
+
+	for (UINT i = 0; iter != FELight::_lightList.end() && i < FE_LIGHT_SIZE; iter++)
+	{
+		_LightData[i].useLight = (*iter)->GetEnable();
+
+		if (!_LightData[i].useLight)
+			continue;
+
+		_LightData[i].diffuse = FEMath::FEConvertToAlignData((*iter)->m_diffuse);
+		_LightData[i].ambient = FEMath::FEConvertToAlignData((*iter)->m_ambient);
+		_LightData[i].specular = FEMath::FEConvertToAlignData((*iter)->m_specular);
+		_LightData[i].position = FEMath::FEConvertToAlignData((*iter)->GetMyObject()->GetTransform()->GetPositionWorld());
+		vec = (*iter)->GetMyObject()->GetTransform()->GetRotationRadian();
+		_LightData[i].direction = FEMath::FEConvertToAlignData(-(FEVector3::Forward * FEMath::FEMatrixRotationRollPitchYaw(vec)));
+		_LightData[i].range = (*iter)->m_range;
+		_LightData[i].lightType = (*iter)->m_lightType;
+
+		++i;
+	}
+}
+
+
+void FEMaterial::UpdateTextureData()
+{
+	for (UINT i = 0; i < FE_TEXTURE_SIZE; i++)
+	{
+		// texture가 존재하지 않는다면 continue
+		if (_texInfo[i].pTexture == nullptr)
+			continue;
+
+		// offset, tiling 상수버퍼에 쓰기
+		_TexturetData[i].ot = FEMath::FEConvertToAlignData(_texInfo[i].ot);
+		// angle, amount 상수버퍼에 쓰기
+		_TexturetData[i].angle_Amount = FEMath::FEConvertToAlignData(_texInfo[i].angle_Amount);
+	}
 }
 
 
@@ -137,7 +149,6 @@ void FEMaterial::SetShader(FEShader* i_pShader)
 
 	scalarSize = (_pShader->_countScalar / 4) + (_pShader->_countScalar % 4 == 0 ? 0 : 1);
 
-	_countTexture = _pShader->_countTexture;
 	totalSize += _pShader->_countMatrix * 4;
 	totalSize += _pShader->_countVector;
 	totalSize += scalarSize;

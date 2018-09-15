@@ -21,7 +21,7 @@ FESystemSetting FELoader::LoadSetting()
 	FESystemSetting setting;
 
 	TCHAR str[256];
-	tifstream f(FE_TEXT("../../bin/SystemSetting.ini"));
+	tifstream f(FE_TEXT("SystemSetting.ini"));
 
 	if (!f.is_open())
 	{
@@ -139,19 +139,15 @@ void FELoader::LoadShader(tstring i_shaderPath, tstring i_name)
 	// ¼ÎÀÌ´õ ½Ã¸ÇÆ½½º
 	f >> str >> str >> semantics;
 
-	i_shaderPath = START_PATH;
-	i_shaderPath.append(FE_TEXT("shd/"));
-
-	result = pShader->CreateShader((i_shaderPath + vs).c_str(), (i_shaderPath + ps).c_str(), static_cast<FE_SHADER_SEMANTICS>(semantics));
-
-	if (!result) return;
-
 	pShader->m_Name = GetFileName(i_shaderPath + i_name);
-	f >> str >> str >> pShader->_countTexture;
 	f >> str >> str >> pShader->_countMatrix;
 	f >> str >> str >> pShader->_countVector;
 	f >> str >> str >> pShader->_countScalar;
 	f >> str >> str >> pShader->_useLight;
+
+	result = pShader->CreateShader((i_shaderPath + vs).c_str(), (i_shaderPath + ps).c_str(), static_cast<FE_SHADER_SEMANTICS>(semantics));
+
+	if (!result) return;
 
 	f.close();
 }

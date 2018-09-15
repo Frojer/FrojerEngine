@@ -1,6 +1,9 @@
 #include <FEDefine.h>
 #include <FEFileManager.h>
 
+// chdir() 사용을 위한 헤더
+#include <direct.h>
+
 #pragma region FEFileManager.lib
 #ifdef _DEBUG
 #ifdef _WIN64
@@ -23,6 +26,10 @@ int wmain(int argc, wchar_t* argv[])
 void main(int argc, char* argv[])
 #endif
 {
+#ifdef _DEBUG
+	_tchdir(FE_TEXT("../../SDK/FileConverter/"));
+#endif
+
 	if (argc != 3)
 		return -1;
 

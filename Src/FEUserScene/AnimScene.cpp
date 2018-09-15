@@ -50,6 +50,7 @@ void AnimScene::Load()
 	renderer->m_pMaterial = FEMaterial::Find(FE_TEXT("DemoMaterial"));
 	renderer->m_pMesh = FEMesh::Find(FE_TEXT("Sphere001"));
 	pTriangle->AddComponent<FETEST>();
+	renderer->m_pMaterial->SetVector(0, renderer->m_pMaterial->m_diffuse);
 	//renderer->m_pMesh->m_topology = PRIMITIVE_TOPOLOGY_LINELIST;
 
 	//FEShader* pShader = new FEShader;

@@ -4,15 +4,11 @@
 
 #include <FEUtility.h>
 
-#ifdef _WIN32
 //-------------------------------
-// 윈도우 폴더 내 파일 찾기
+// 폴더 내 파일 찾기
 //-------------------------------
 #include <io.h>
 #include <conio.h>
-//-------------------------------
-#else
-#endif
 
 #define BUFFER_SIZE 1024
 
@@ -92,12 +88,11 @@ void ConvertShaderFile(tstring i_filePath, tstring i_outPath, tstring i_fileName
 }
 void CompileVertexShader(tstring i_filePath, tstring i_outPath, tstring i_fileName)
 {
-	tstring command = FE_TEXT("../../SDK/FileConverter/fxc.exe");
-
+	tstring command = FE_TEXT("fxc.exe");
 	command.append(FE_TEXT(" /E VS_Main"));
 	command.append(FE_TEXT(" /T vs_5_0"));
 	command.append(FE_TEXT(" /Fo ") + i_outPath + GetFileName(i_fileName) + FE_TEXT(".vso"));
-	command.append(i_outPath + i_fileName);
+	command.append(FE_TEXT(" ") + i_filePath + i_fileName);
 	// 열기준 연산 행기준은 /Zpc
 	command.append(FE_TEXT(" /Zpr"));
 
@@ -105,12 +100,11 @@ void CompileVertexShader(tstring i_filePath, tstring i_outPath, tstring i_fileNa
 }
 void CompilePixelShader(tstring i_filePath, tstring i_outPath, tstring i_fileName)
 {
-	tstring command = FE_TEXT("../../SDK/FileConverter/fxc.exe");
-
+	tstring command = FE_TEXT("fxc.exe");
 	command.append(FE_TEXT(" /E PS_Main"));
 	command.append(FE_TEXT(" /T ps_5_0"));
 	command.append(FE_TEXT(" /Fo ") + i_outPath + GetFileName(i_fileName) + FE_TEXT(".pso"));
-	command.append(i_outPath + i_fileName);
+	command.append(FE_TEXT(" ") + i_filePath + i_fileName);
 	// 열기준 연산 행기준은 /Zpc
 	command.append(FE_TEXT(" /Zpr"));
 
@@ -1045,7 +1039,6 @@ void FEFileManager::ConvertAllFileInPath(tstring i_filePath)
 {
 	tstring extension;
 
-#ifdef _WIN32
 	_tfinddata_t fd;
 	intptr_t handle;
 	int result = 1;
@@ -1084,20 +1077,27 @@ void FEFileManager::ConvertAllFileInPath(tstring i_filePath)
 			if (_taccess((_outPath + i_filePath + fd.name).c_str(), 0) == -1)
 				break;
 		}
-		else if (TCSCMP_SAME(extension.c_str(), FE_TEXT("fx")) || TCSCMP_SAME(extension.c_str(), FE_TEXT("vsh")))
+		else if (TCSCMP_SAME(extension.c_str(), FE_TEXT("fx")))
 		{
 			if (_taccess((_outPath + i_filePath + fd.name + FE_TEXT(".fes")).c_str(), 0) == -1)
-				break;
-
-			ConvertShaderFile(_dataPath + i_filePath, _outPath + i_filePath, fd.name);
-			CompileVertexShader(_dataPath + i_filePath, _outPath + i_filePath, fd.name);
+			{
+				ConvertShaderFile(_dataPath + i_filePath, _outPath + i_filePath, fd.name);
+				CompileVertexShader(_dataPath + i_filePath, _outPath + i_filePath, fd.name);
+				CompilePixelShader(_dataPath + i_filePath, _outPath + i_filePath, fd.name);
+			}
+		}
+		else if (TCSCMP_SAME(extension.c_str(), FE_TEXT("vsh")))
+		{
+			if (_taccess((_outPath + i_filePath + fd.name + FE_TEXT(".fes")).c_str(), 0) == -1)
+			{
+				ConvertShaderFile(_dataPath + i_filePath, _outPath + i_filePath, fd.name);
+				CompileVertexShader(_dataPath + i_filePath, _outPath + i_filePath, fd.name);
+			}
 		}
 		else if (TCSCMP_SAME(extension.c_str(), FE_TEXT("psh")))
 		{
 			if (_taccess((_outPath + i_filePath + fd.name + FE_TEXT(".fes")).c_str(), 0) == -1)
-				break;
-
-			CompilePixelShader(_dataPath + i_filePath, _outPath + i_filePath, fd.name);
+				CompilePixelShader(_dataPath + i_filePath, _outPath + i_filePath, fd.name);
 		}
 		else if (TCSCMP_SAME(extension.c_str(), FE_TEXT("ase")))
 		{
@@ -1109,8 +1109,6 @@ void FEFileManager::ConvertAllFileInPath(tstring i_filePath)
 	} while (result != -1);
 
 	_findclose(handle);
-#else
-#endif
 }
 void FEFileManager::ExportFile(tstring i_filePath, tstring i_outPath, const FEMesh* i_pMtrl)
 {

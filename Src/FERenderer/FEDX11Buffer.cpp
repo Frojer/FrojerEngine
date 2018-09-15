@@ -30,7 +30,7 @@ bool FEDX11Buffer::Create(FE_BIND_FLAG bindFlag, FE_USAGE usage, bool cpuAccess,
 	rd.pSysMem = bufferData;			// 버퍼에 들어갈 데이터 설정 : "정점들"..
 
 	// 정점 버퍼 생성.
-	hr = ((FEDX11Renderer*)IFERenderer::GetInstance())->GetDevice()->CreateBuffer(&bd, &rd, &_pBuffer);
+	hr = ((FEDX11Renderer*)IFERenderer::GetInstance())->GetDevice()->CreateBuffer(&bd, bufferData == nullptr ? nullptr : &rd, &_pBuffer);
 
 	if (FAILED(hr))
 		return false;

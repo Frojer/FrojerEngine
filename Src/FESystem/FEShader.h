@@ -12,6 +12,7 @@ private:
 	static std::unordered_map<INT64, FEShader*> _shaderMap;
 
 	static IFEBuffer* _pWVP_CB;
+	static IFEBuffer* _pTex_CB;
 	static IFEBuffer* _pLight_CB;
 
 	IFEBuffer* _pConstBuffer;
@@ -19,7 +20,6 @@ private:
 
 	FE_SHADER_SEMANTICS _semantics;
 
-	UINT _countTexture;
 	UINT _countMatrix;
 	UINT _countVector;
 	UINT _countScalar;

@@ -3,16 +3,17 @@
 
 std::unordered_map<INT64, FEShader*> FEShader::_shaderMap;
 IFEBuffer* FEShader::_pWVP_CB = nullptr;
+IFEBuffer* FEShader::_pTex_CB = nullptr;
 IFEBuffer* FEShader::_pLight_CB = nullptr;
 
 FEShader::FEShader(INT64 ID)
-	: FEObject(ID), _pConstBuffer(nullptr), _pShader(nullptr), _countTexture(0), _countMatrix(0), _countVector(0), _countScalar(0), _useLight(false)
+	: FEObject(ID), _pConstBuffer(nullptr), _pShader(nullptr), _countMatrix(0), _countVector(0), _countScalar(0), _useLight(false)
 {
 	_shaderMap[GetID()] = this;
 }
 
 FEShader::FEShader()
-	: _pConstBuffer(nullptr), _pShader(nullptr), _countTexture(0), _countMatrix(0), _countVector(0), _countScalar(0), _useLight(false)
+	: _pConstBuffer(nullptr), _pShader(nullptr), _countMatrix(0), _countVector(0), _countScalar(0), _useLight(false)
 {
 	_shaderMap[GetID()] = this;
 }
@@ -37,9 +38,11 @@ void FEShader::ClearMap()
 
 bool FEShader::CreateDefaultConstantBuffer()
 {
-	_pWVP_CB = IFEBuffer::CreateBuffer(FE_BIND_CONSTANT_BUFFER, FE_USAGE_DEFAULT, false, sizeof(FEMaterial::_WVPData), &FEMaterial::_WVPData);
+	_pWVP_CB = IFEBuffer::CreateBuffer(FE_BIND_CONSTANT_BUFFER, FE_USAGE_DYNAMIC, true, sizeof(FEMaterial::_WVPData), &FEMaterial::_WVPData);
 	if (_pWVP_CB == nullptr) return false;
-	_pLight_CB = IFEBuffer::CreateBuffer(FE_BIND_CONSTANT_BUFFER, FE_USAGE_DEFAULT, false, sizeof(FEMaterial::_LightData), &FEMaterial::_LightData);
+	_pTex_CB = IFEBuffer::CreateBuffer(FE_BIND_CONSTANT_BUFFER, FE_USAGE_DYNAMIC, true, sizeof(FEMaterial::_TexturetData), &FEMaterial::_TexturetData);
+	if (_pTex_CB == nullptr) return false;
+	_pLight_CB = IFEBuffer::CreateBuffer(FE_BIND_CONSTANT_BUFFER, FE_USAGE_DYNAMIC, true, sizeof(FEMaterial::_LightData), &FEMaterial::_LightData);
 	if (_pLight_CB == nullptr) return false;
 
 	return true;
@@ -49,6 +52,7 @@ bool FEShader::CreateDefaultConstantBuffer()
 void FEShader::ReleaseDefaultConstantBuffer()
 {
 	SAFE_DELETE(_pWVP_CB);
+	SAFE_DELETE(_pTex_CB);
 	SAFE_DELETE(_pLight_CB);
 }
 
@@ -102,6 +106,7 @@ bool FEShader::CreateConstantBuffer()
 void FEShader::UpdateConstantBuffer(const void* pCB, UINT size)
 {
 	FEShader::_pWVP_CB->UpdateBuffer(&FEMaterial::_WVPData, sizeof(FEMaterial::_WVPData));
+	FEShader::_pTex_CB->UpdateBuffer(&FEMaterial::_TexturetData, sizeof(FEMaterial::_TexturetData));
 	if (_useLight)	FEShader::_pLight_CB->UpdateBuffer(&FEMaterial::_LightData, sizeof(FEMaterial::_LightData));
 	if (size)		_pConstBuffer->UpdateBuffer(pCB, size);
 }
@@ -121,7 +126,8 @@ void FEShader::Render() const
 	_pShader->Render();
 
 	_pShader->SetConstantBuffer(i++, _pWVP_CB);
-	if (_useLight)					_pShader->SetConstantBuffer(i++, _pLight_CB);
+	_pShader->SetConstantBuffer(i++, _pTex_CB);
+	_pShader->SetConstantBuffer(i++, _pLight_CB);
 	if (_pConstBuffer != nullptr)	_pShader->SetConstantBuffer(i++, _pConstBuffer);
 }
 

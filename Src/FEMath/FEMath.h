@@ -126,6 +126,7 @@ FEVector3 operator*(const float lhs, const FEVector3& rhs);
 
 class FEVector4 : public DirectX::XMFLOAT4
 {
+public:
 	static const FEVector4 Zero;
 	static const FEVector4 One;
 

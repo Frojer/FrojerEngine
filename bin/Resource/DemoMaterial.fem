@@ -1,5 +1,5 @@
-ID = 2
-ShaderID = 1
+ID = 1
+ShaderID = 12
 
 Name = "DemoMaterial"
 Diffuse	0.5882	0.5882	0.5882	1

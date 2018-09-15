@@ -2,6 +2,9 @@
 #include <FEDefine.h>
 #include <FESystem.h>
 
+// chdir() 사용을 위한 헤더
+#include <direct.h>
+
 #pragma region FESystem.lib
 #ifdef _DEBUG
 	#ifdef _WIN64
@@ -27,6 +30,10 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	LPSTR     lpCmdLine,
 	int       nCmdShow)
 {
+#ifdef _DEBUG
+	_tchdir(FE_TEXT("../../bin/"));
+#endif
+
 	bool result = true;
 
 	FESystem* pSystem = FESystem::GetInstance();

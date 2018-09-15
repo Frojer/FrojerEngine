@@ -30,6 +30,9 @@ void IFEScene::Update()
 void IFEScene::Render()
 {
 	auto cams = FECamera::GetAllCameras();
+	// 라이트 상수버퍼 업데이트
+	FEMaterial::UpdateLightData();
+
 	for (UINT i = 0; i < cams.size(); i++)
 	{
 		if (cams[i]->GetEnable())

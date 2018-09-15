@@ -70,7 +70,6 @@ bool FESystem::LoadData()
 	//str.append(FE_TEXT("shd/"));
 	//pShader->CreateShader((str + FE_TEXT("Standard.vso")).c_str(), (str + FE_TEXT("Standard.pso")).c_str(), static_cast<FE_SHADER_SEMANTICS>(3));
 
-	pShader->_countTexture = 0;
 	pShader->_countMatrix = 0;
 	pShader->_countVector = 0;
 	pShader->_countScalar = 0;
