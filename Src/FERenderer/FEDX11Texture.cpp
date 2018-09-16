@@ -1,6 +1,6 @@
 #include "FEDX11Texture.h"
+#ifdef FE_DX11
 #include "FEDX11Renderer.h"
-
 #include <FEUtility.h>
 #include <WICTextureLoader.h>
 
@@ -65,3 +65,8 @@ void FEDX11Texture::Render(UINT startSlot) const
 	pRenderer->GetDXDC()->VSSetShaderResources(startSlot, 1, &_pTextureRV);
 	pRenderer->GetDXDC()->PSSetShaderResources(startSlot, 1, &_pTextureRV);
 }
+ID3D11ShaderResourceView* FEDX11Texture::GetShaderResourceView() const
+{
+	return _pTextureRV;
+}
+#endif

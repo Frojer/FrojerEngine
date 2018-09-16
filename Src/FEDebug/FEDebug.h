@@ -24,11 +24,12 @@ private:
 	IFEShader* _pLineShader;
 
 private:
+	FEDebug();
+
 	bool Initialize();
 	void Release();
 
 public:
-	FEDebug();
 	~FEDebug();
 
 	static FEDebug* GetInstance();

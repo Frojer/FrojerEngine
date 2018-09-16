@@ -155,6 +155,7 @@ void FELoader::LoadMaterial(tstring i_mtrlPath, tstring i_name)
 	FEMaterial* pMaterial = nullptr;
 	TCHAR str[BUFFER_SIZE];
 	UINT i = 0;
+	float x, y;
 	INT64 uuid, shaderUUID;
 
 	tifstream f(i_mtrlPath + i_name);
@@ -199,16 +200,20 @@ void FELoader::LoadMaterial(tstring i_mtrlPath, tstring i_name)
 			// MapIndex >> '{'
 			f >> i >> str;
 			// Amount
-			f >> str >> str >> i;
+			f >> str >> str >> x;
+			pMaterial->SetTextureAmount(i, x);
 			// MapID
 			f >> str >> str >> uuid;
 			pMaterial->SetTexture(i, FETexture::Find(uuid));
 			// Offset
-			f >> str >> str >> str;
+			f >> str >> x >> y;
+			pMaterial->SetTextureOffset(i, FEVector2(x, y));
 			// Tiling
-			f >> str >> str >> str;
+			f >> str >> x >> y;
+			pMaterial->SetTextureTiling(i, FEVector2(x, y));
 			// Angle
-			f >> str >> str;
+			f >> str >> x;
+			pMaterial->SetTextureAngle(i, FEVector3(0.0f, 0.0f, x));
 			// '}'
 			f >> str;
 		}
@@ -220,6 +225,7 @@ void FELoader::LoadMaterialInMesh(tifstream &f)
 {
 	INT64 uuid;
 	UINT i = 0;
+	float x, y;
 	FEMaterial* pMaterial = nullptr;
 	TCHAR str[BUFFER_SIZE];
 
@@ -257,16 +263,20 @@ void FELoader::LoadMaterialInMesh(tifstream &f)
 			// MapIndex >> '{'
 			f >> i >> str;
 			// Amount
-			f >> str >> str >> i;
+			f >> str >> str >> x;
+			pMaterial->SetTextureAmount(i, x);
 			// MapID
 			f >> str >> str >> uuid;
 			pMaterial->SetTexture(i, FETexture::Find(uuid));
 			// Offset
-			f >> str >> str >> str;
+			f >> str >> x >> y;
+			pMaterial->SetTextureOffset(i, FEVector2(x, y));
 			// Tiling
-			f >> str >> str >> str;
+			f >> str >> x >> y;
+			pMaterial->SetTextureTiling(i, FEVector2(x, y));
 			// Angle
-			f >> str >> str;
+			f >> str >> x;
+			pMaterial->SetTextureAngle(i, FEVector3(0.0f, 0.0f, x));
 			// '}'
 			f >> str;
 		}
@@ -289,6 +299,7 @@ void FELoader::LoadMesh(tifstream &f, FEGameObject* pParent)
 	pObj = new FEGameObject(uuid);
 
 	pObj->_pParent = pParent;
+	if (pParent != nullptr)		pParent->_children[uuid] = pObj;
 
 	// Mesh ID
 	f >> str >> str >> meshID;

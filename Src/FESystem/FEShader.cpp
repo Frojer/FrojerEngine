@@ -123,6 +123,10 @@ void FEShader::UpdateConstantBuffer(const void* pCB, UINT size)
 {
 	_pConstBuffer->UpdateBuffer(pCB, size);
 }
+void FEShader::SetShaderResources(UINT StartSlot, FETexture* pTexture)
+{
+	_pShader->SetShaderResource(StartSlot, pTexture->_pTex);
+}
 
 
 void FEShader::Release()

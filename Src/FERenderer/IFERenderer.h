@@ -2,16 +2,11 @@
 #ifndef _FE_IRENDERER
 #define _FE_IRENDERER
 
+#include <FEBuildSetting.h>
 #include <FEDefine.h>
 #include <FEMath.h>
 #include "FERendererDefine.h"
 #include "IFEBuffer.h"
-
-enum FE_Platform
-{
-	FE_DX11,
-	//FE_GL,
-};
 
 struct FESystemSetting
 {
@@ -42,9 +37,6 @@ struct FEViewport
 
 class IFERenderer
 {
-private:
-	FE_Platform _platform;
-
 public:
 	FESystemSetting m_setting;
 
@@ -73,9 +65,7 @@ public:
 	virtual void DrawIndexed(UINT IndexCount, UINT StartIndexLocation, UINT BaseVertexLocation) const = 0;
 	virtual void Flip() const = 0;
 
-	FE_Platform GetPlatform() const;
-
-	static IFERenderer* CreateRenderer(void* i_phWnd, const FESystemSetting& i_setting, const FE_Platform i_platform);
+	static IFERenderer* CreateRenderer(void* i_phWnd, const FESystemSetting& i_setting);
 	static IFERenderer* GetInstance();
 };
 

@@ -2,8 +2,9 @@
 #ifndef _FE_DX11_BUFFER
 #define _FE_DX11_BUFFER
 
-#include <d3d11.h>
 #include "IFEBuffer.h"
+#ifdef FE_DX11
+#include <d3d11.h>
 
 class FEDX11Buffer : public IFEBuffer
 {
@@ -24,5 +25,5 @@ public:
 
 	ID3D11Buffer* GetBuffer() const;
 };
-
+#endif
 #endif

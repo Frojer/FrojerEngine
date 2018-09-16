@@ -1,28 +1,23 @@
 #include "IFERenderer.h"
+
+#ifdef FE_DX11
 #include "FEDX11Renderer.h"
-//#include "FEGLRenderer.h"
+#elif FE_GL
+#include "FEGLRenderer.h"
+#endif
 
 IFERenderer* IFERenderer::_pInstance = nullptr;
 
-FE_Platform IFERenderer::GetPlatform() const
-{
-	return _platform;
-}
-
-IFERenderer* IFERenderer::CreateRenderer(void* i_phWnd, const FESystemSetting& i_setting, const FE_Platform i_platform)
+IFERenderer* IFERenderer::CreateRenderer(void* i_phWnd, const FESystemSetting& i_setting)
 {
 	if (_pInstance != nullptr)
 		return nullptr;
 
-	switch (i_platform)
-	{
-	case FE_DX11:
-		_pInstance = new FEDX11Renderer;
-		break;
-	//case FE_GL:
-	//	pRenderer = new FEGLRenderer;
-	//	break;
-	}
+#ifdef FE_DX11
+	_pInstance = new FEDX11Renderer;
+#elif FE_GL
+	_pInstance = new FEGLRenderer;
+#endif
 
 	if (_pInstance == nullptr) return nullptr;
 

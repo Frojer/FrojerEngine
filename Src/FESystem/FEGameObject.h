@@ -13,10 +13,13 @@ class FERenderer;
 class FEGameObject : public FEObject
 {
 private:
+	static std::unordered_map<INT64, FEGameObject*> _prefabMap;
+	
 	bool _bDead;
 
 protected:
 	FEGameObject* _pParent;
+
 	std::unordered_map<INT64, FEGameObject*> _children;
 	std::unordered_map<INT64, FEComponent*> _components;
 
@@ -116,7 +119,8 @@ public:
 	void SetEnable(bool enable);
 	bool GetEnable();
 
-	static FEGameObject* Find(unsigned int id);
+	static FEGameObject* Find(INT64 id);
+	static FEGameObject* FindPrefab(INT64 id);
 	static FEGameObject* CopyObject(const FEGameObject* origin);
 	//static FEGameObject* CopyObject(const FEGameObject* origin, FEVector3 pos);
 

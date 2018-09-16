@@ -13,14 +13,14 @@ using namespace DirectX;
 
 const FEVector2 FEVector2::Zero		( 0.0f,  0.0f);
 const FEVector2 FEVector2::One		( 1.0f,  1.0f);
-const FEVector2 FEVector2::Left		( 1.0f,  0.0f);
-const FEVector2 FEVector2::Right	(-1.0f,  0.0f);
+const FEVector2 FEVector2::Left		(-1.0f,  0.0f);
+const FEVector2 FEVector2::Right	( 1.0f,  0.0f);
 const FEVector2 FEVector2::Up		( 0.0f,  1.0f);
 const FEVector2 FEVector2::Down		( 0.0f, -1.0f);
 const FEVector3 FEVector3::Zero		( 0.0f,  0.0f,  0.0f);
 const FEVector3 FEVector3::One		( 1.0f,  1.0f,  1.0f);
-const FEVector3 FEVector3::Left		( 1.0f,  0.0f,  0.0f);
-const FEVector3 FEVector3::Right	(-1.0f,  0.0f,  0.0f);
+const FEVector3 FEVector3::Left		(-1.0f,  0.0f,  0.0f);
+const FEVector3 FEVector3::Right	( 1.0f,  0.0f,  0.0f);
 const FEVector3 FEVector3::Up		( 0.0f,  1.0f,  0.0f);
 const FEVector3 FEVector3::Down		( 0.0f,  -1.0f, 0.0f);
 const FEVector3 FEVector3::Forward	( 0.0f,  0.0f,  1.0f);

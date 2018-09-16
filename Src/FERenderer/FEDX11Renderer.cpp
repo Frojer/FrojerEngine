@@ -1,6 +1,7 @@
 #include "FEDX11Renderer.h"
-#include "FEDX11Buffer.h"
+#ifdef FE_DX11
 #include <FEDefine.h>
+#include "FEDX11Buffer.h"
 
 FEDX11Renderer::FEDX11Renderer()
 	: _pDevice(nullptr), _pDXDC(nullptr), _pSwapChain(nullptr), _pRTView(nullptr), _featureLevels(D3D_FEATURE_LEVEL_11_0), _pDS(nullptr), _pDSView(nullptr)
@@ -679,3 +680,4 @@ ID3D11DeviceContext* FEDX11Renderer::GetDXDC() const
 {
 	return _pDXDC;
 }
+#endif

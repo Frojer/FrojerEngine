@@ -11,6 +11,7 @@
 class FELoader
 {
 public:
+	// UUID에 해당하는 파일의 경로를 저장
 	static std::unordered_map<INT64, tstring> resourceMap;
 
 public:

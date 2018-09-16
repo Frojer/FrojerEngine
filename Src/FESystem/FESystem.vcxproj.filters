@@ -41,6 +41,15 @@
     <Filter Include="Component\Header File">
       <UniqueIdentifier>{6b9ba842-fadb-4d3c-83f5-b2a478588d79}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{ed38bfd8-0eec-43f3-99b5-5a3b1257541d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input\Source File">
+      <UniqueIdentifier>{f950eaf3-5229-4c8a-8e34-690c2527954e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input\Header File">
+      <UniqueIdentifier>{13dd6c8c-3e68-4dd2-938a-e9cb448b5a56}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FELoader.cpp">
@@ -99,6 +108,12 @@
     </ClCompile>
     <ClCompile Include="FELight.cpp">
       <Filter>Component\Source File</Filter>
+    </ClCompile>
+    <ClCompile Include="FEInput.cpp">
+      <Filter>Input\Source File</Filter>
+    </ClCompile>
+    <ClCompile Include="FEDirectInput.cpp">
+      <Filter>Input\Source File</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -167,6 +182,12 @@
     </ClInclude>
     <ClInclude Include="FELight.h">
       <Filter>Component\Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="FEInput.h">
+      <Filter>Input\Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="FEDirectInput.h">
+      <Filter>Input\Header File</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

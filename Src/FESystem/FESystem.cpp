@@ -19,8 +19,10 @@ FESystem::~FESystem()
 	Release();
 }
 
-bool FESystem::Create(LPCTSTR i_sWindowName)
+bool FESystem::Create(LPCTSTR i_sWindowName, void* i_pInstanceHandle)
 {
+	_pInstanceHandle = i_pInstanceHandle;
+
 	//--------------
 	// 설정 읽어오기
 	//--------------
@@ -39,7 +41,7 @@ bool FESystem::Create(LPCTSTR i_sWindowName)
 	//------------
 	// 렌더러 생성
 	//------------
-	IFERenderer::CreateRenderer(_pWindow->GetWindowHandle(), setting, FE_DX11);
+	IFERenderer::CreateRenderer(_pWindow->GetWindowHandle(), setting);
 
 	return true;
 }
@@ -62,17 +64,17 @@ bool FESystem::LoadData()
 
 	FEShader::CreateDefaultConstantBuffer();
 
-	// 기본 셰이더 생성
-	FEShader* pShader = new FEShader(CreateUUIDHashCode64());
-	pShader->m_Name = FE_TEXT("Standard");
+	//// 기본 셰이더 생성
+	//FEShader* pShader = new FEShader(CreateUUIDHashCode64());
+	//pShader->m_Name = FE_TEXT("Standard");
 
-	//str = START_PATH;
-	//str.append(FE_TEXT("shd/"));
-	//pShader->CreateShader((str + FE_TEXT("Standard.vso")).c_str(), (str + FE_TEXT("Standard.pso")).c_str(), static_cast<FE_SHADER_SEMANTICS>(3));
+	////str = START_PATH;
+	////str.append(FE_TEXT("shd/"));
+	////pShader->CreateShader((str + FE_TEXT("Standard.vso")).c_str(), (str + FE_TEXT("Standard.pso")).c_str(), static_cast<FE_SHADER_SEMANTICS>(3));
 
-	pShader->_countMatrix = 0;
-	pShader->_countVector = 0;
-	pShader->_countScalar = 0;
+	//pShader->_countMatrix = 0;
+	//pShader->_countVector = 0;
+	//pShader->_countScalar = 0;
 
 	// 기본 텍스쳐 생성
 	

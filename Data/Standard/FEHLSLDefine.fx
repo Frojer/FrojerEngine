@@ -48,6 +48,8 @@ cbuffer ObjectCB : register(b3)
     float4 vLightLocalDir[FE_LIGHT_SIZE];
 };
 
+Texture2D texture[FE_TEXTURE_SIZE];
+
 float4 FELighting(float4 pos, float4 nor)
 {
     float alpha = diffuse.a;

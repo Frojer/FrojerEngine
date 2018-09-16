@@ -2,6 +2,7 @@
 #ifndef _FE_ITEXTURE
 #define _FE_ITEXTURE
 
+#include <FEBuildSetting.h>
 #include <FEDefine.h>
 
 class IFETexture

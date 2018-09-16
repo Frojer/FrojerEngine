@@ -170,18 +170,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AnimScene.h" />
+    <ClInclude Include="CameraController.h" />
     <ClInclude Include="FETEST.h" />
     <ClInclude Include="FEUserScene.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="TriWorldScene.h" />
+    <ClInclude Include="TriWorldSystem.h" />
     <ClInclude Include="UserScenes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimScene.cpp" />
+    <ClCompile Include="CameraController.cpp" />
     <ClCompile Include="FETEST.cpp" />
     <ClCompile Include="FEUserScene.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="TriWorldScene.cpp" />
+    <ClCompile Include="TriWorldSystem.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

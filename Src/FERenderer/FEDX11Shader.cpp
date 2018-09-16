@@ -1,8 +1,9 @@
+#include "FEDX11Shader.h"
+#ifdef FE_DX11
 #include <stdio.h>
 #include <vector>
-
-#include "FEDX11Shader.h"
 #include "FEDX11Renderer.h"
+#include "FEDX11Texture.h"
 
 
 ////////////////////////////////////////////////////////////////////////////// 
@@ -233,3 +234,13 @@ void FEDX11Shader::SetConstantBuffer(UINT StartSlot, IFEBuffer* pConstantBuffers
 	pRenderer->GetDXDC()->VSSetConstantBuffers(StartSlot, 1, &pBuf);
 	pRenderer->GetDXDC()->PSSetConstantBuffers(StartSlot, 1, &pBuf);
 }
+void FEDX11Shader::SetShaderResource(UINT StartSlot, IFETexture* pTexture)
+{
+	FEDX11Renderer* pRenderer = (FEDX11Renderer*)IFERenderer::GetInstance();
+
+	auto pShaderResource = static_cast<FEDX11Texture*>(pTexture)->GetShaderResourceView();
+
+	pRenderer->GetDXDC()->VSSetShaderResources(StartSlot, 1, &pShaderResource);
+	pRenderer->GetDXDC()->PSSetShaderResources(StartSlot, 1, &pShaderResource);
+}
+#endif

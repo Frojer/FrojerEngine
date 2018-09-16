@@ -16,13 +16,14 @@ public:
 	bool m_bWindowMode;
 	bool m_bBorderless;
 
+private:
+	static FEWindow* CreateFEWindow(LPCTSTR i_sWindowName, const UINT i_width, const UINT i_height, const bool i_bWindowMode, const bool i_bBorderless);
+
 protected:
 	FEWindow();
 
 	virtual bool InitWindow() = 0;
 	virtual bool MessagePump() = 0;
-
-	static FEWindow* CreateFEWindow(LPCTSTR i_sWindowName, const UINT i_width, const UINT i_height, const bool i_bWindowMode, const bool i_bBorderless);
 
 public:
 	virtual ~FEWindow();

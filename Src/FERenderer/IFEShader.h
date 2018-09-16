@@ -2,8 +2,10 @@
 #ifndef _FE_ISHADER
 #define _FE_ISHADER
 
+#include <FEBuildSetting.h>
 #include <FEDefine.h>
 #include "IFEBuffer.h"
+#include "IFETexture.h"
 
 enum FE_SHADER_SEMANTICS : UINT
 {
@@ -28,7 +30,8 @@ public:
 
 	virtual void Render() const = 0;
 
-	virtual void SetConstantBuffer(UINT StartSlot, IFEBuffer* pConstantBuffers) = 0;
+	virtual void SetConstantBuffer(UINT StartSlot, IFEBuffer* pConstantBuffer) = 0;
+	virtual void SetShaderResource(UINT StartSlot, IFETexture* pTexture) = 0;
 };
 
 #endif

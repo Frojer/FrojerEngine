@@ -3,6 +3,7 @@
 #define _FE_DX11_RENDERER
 
 #include "IFERenderer.h"
+#ifdef FE_DX11
 #include <unordered_map>
 
 // DX 표준 헤더 
@@ -82,5 +83,5 @@ public:
 	ID3D11Device* GetDevice() const;
 	ID3D11DeviceContext* GetDXDC() const;
 };
-
+#endif
 #endif

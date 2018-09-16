@@ -1,4 +1,5 @@
 #include "FEDX11Buffer.h"
+#ifdef FE_DX11
 #include "FEDX11Renderer.h"
 
 FEDX11Buffer::FEDX11Buffer()
@@ -81,3 +82,4 @@ ID3D11Buffer* FEDX11Buffer::GetBuffer() const
 {
 	return _pBuffer;
 }
+#endif

@@ -3,6 +3,7 @@
 #define _FE_DX11_SHADER
 
 #include "IFEShader.h"
+#ifdef FE_DX11
 #include "FEDX11Buffer.h"
 #include <d3d11.h>
 
@@ -30,6 +31,7 @@ public:
 
 	virtual void Render() const override;
 	virtual void SetConstantBuffer(UINT StartSlot, IFEBuffer* pConstantBuffer) override;
+	virtual void SetShaderResource(UINT StartSlot, IFETexture* pTexture) override;
 };
-
+#endif
 #endif

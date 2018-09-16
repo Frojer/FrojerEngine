@@ -1,16 +1,15 @@
-#include "IFERenderer.h"
 #include "IFEShader.h"
+#ifdef FE_DX11
 #include "FEDX11Shader.h"
+#endif
 
 IFEShader* IFEShader::CreateShader(LPCTSTR i_vsName, LPCTSTR i_psName, FE_SHADER_SEMANTICS i_semanticsFlag)
 {
 	IFEShader* pShader = nullptr;
 
-	switch (IFERenderer::GetInstance()->GetPlatform())
-	{
-	case FE_DX11:
-		pShader = new FEDX11Shader;
-	}
+#ifdef FE_DX11
+	pShader = new FEDX11Shader;
+#endif
 
 	if (pShader == nullptr) return nullptr;
 

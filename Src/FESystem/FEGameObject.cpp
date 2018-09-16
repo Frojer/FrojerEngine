@@ -1,11 +1,13 @@
 #include "FEObjectHeader.h"
 #include "FESceneManager.h"
 
+std::unordered_map<INT64, FEGameObject*> FEGameObject::_prefabMap;
 
 FEGameObject::FEGameObject(INT64 ID)
 	: FEObject(ID), _bDead(false), _pParent(nullptr)
 {
 	AddComponent<FETransform>();
+	_prefabMap[GetID()] = this;
 }
 
 FEGameObject::FEGameObject()
@@ -193,10 +195,17 @@ bool FEGameObject::GetEnable()
 }
 
 
-FEGameObject* FEGameObject::Find(unsigned int id)
+FEGameObject* FEGameObject::Find(INT64 id)
 {
 	if (FESceneManager::GetCurrentScene()->_mapObj.find(id) == FESceneManager::GetCurrentScene()->_mapObj.end()) return nullptr;
 	return FESceneManager::GetCurrentScene()->_mapObj[id];
+}
+
+
+FEGameObject* FEGameObject::FindPrefab(INT64 id)
+{
+	if (_prefabMap.find(id) == _prefabMap.end()) return nullptr;
+	return _prefabMap[id];
 }
 
 
@@ -227,6 +236,11 @@ FEGameObject* FEGameObject::CopyObject(const FEGameObject* origin)
 
 			pCom->_pObj = pObj;
 			pObj->_components[pCom->GetID()] = pCom;
+
+			if (iter->second->_typeID == typeid(FERenderer).hash_code())
+			{
+				pObj->_pRenderer = static_cast<FERenderer*>(pCom);
+			}
 		}
 	}
 

@@ -40,6 +40,8 @@ private:
 	void UpdateConstantBufferPerObject();
 	void UpdateConstantBuffer(const void* pCB, UINT size);
 
+	void SetShaderResources(UINT StartSlot, FETexture* pTexture);
+
 protected:
 	FEShader(INT64 ID);
 

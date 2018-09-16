@@ -5,8 +5,10 @@
 class Grid : public FEBehaviour
 {
 public:
-	Grid();
-	virtual ~Grid();
+	bool x, y, z;
+public:
+	Grid() = default;
+	virtual ~Grid() = default;
 
 	void Update() override;
 };

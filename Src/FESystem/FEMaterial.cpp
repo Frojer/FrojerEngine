@@ -95,6 +95,8 @@ void FEMaterial::UpdateConstantBufferPerMaterial()
 			FEMaterial::_perMtrlCB.texInfo[i].ot = FEMath::FEConvertToAlignData(_texInfo[i].ot);
 			// angle, amount 상수버퍼에 쓰기
 			FEMaterial::_perMtrlCB.texInfo[i].angle_Amount = FEMath::FEConvertToAlignData(_texInfo[i].angle_Amount);
+			// samplerIndex 상수버퍼에 쓰기
+			FEMaterial::_perMtrlCB.texInfo[i].samplerIndex = _texInfo[i].samplerIndex;
 		}
 
 		// 머테리얼 색상 채우고
@@ -177,15 +179,16 @@ void FEMaterial::Render()
 	//
 	//// 셈플러 설정
 	//_pShader->_pDXDC->PSSetSamplers(0, 1, &sampler);
-	//
-	//for (UINT i = 0; i < _countTexture; i++)
-	//{
-	//	// 셰이더 리소스 설정.
-	//	if (m_pTexture[i] == nullptr)
-	//		_pShader->_pDXDC->PSSetShaderResources(i, 1, _pDefaultTex->GetResourceView());
-	//	else
-	//		_pShader->_pDXDC->PSSetShaderResources(i, 1, m_pTexture[i]->GetResourceView());
-	//}
+	
+	for (UINT i = 0; i < FE_TEXTURE_SIZE; i++)
+	{
+		// 셰이더 리소스 설정.
+		if (_texInfo[i].pTexture == nullptr)
+			//_pShader->SetShaderResources(i, _pDefaultTex);
+			continue;
+		else
+			_pShader->SetShaderResources(i, _texInfo[i].pTexture);
+	}
 
 	_pShader->Render();
 }
@@ -363,6 +366,22 @@ bool FEMaterial::SetTextureAmount(const UINT index, float i_amount)
 	if (index >= FE_TEXTURE_SIZE)	return false;
 
 	_texInfo[index].angle_Amount.w = i_amount;
+
+	return true;
+}
+bool FEMaterial::GetTextureSamplerIndex(const UINT index, UINT& o_samplerIndex) const
+{
+	if (index >= FE_TEXTURE_SIZE)	return false;
+
+	o_samplerIndex = _texInfo[index].samplerIndex;
+
+	return true;
+}
+bool FEMaterial::SetTextureSamplerIndex(const UINT index, const UINT i_samplerIndex)
+{
+	if (index >= FE_TEXTURE_SIZE)	return false;
+
+	_texInfo[index].samplerIndex = i_samplerIndex;
 
 	return true;
 }

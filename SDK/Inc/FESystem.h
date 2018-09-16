@@ -9,6 +9,7 @@ class FESystem
 private:
 	static FESystem* _pInstance;
 
+	void* _pInstanceHandle;
 	FEWindow* _pWindow;
 
 public:
@@ -20,7 +21,7 @@ private:
 public:
 	~FESystem();
 
-	bool Create(LPCTSTR i_sWindowName);
+	bool Create(LPCTSTR i_sWindowName, void* i_pInstanceHandle);
 
 	void Run();
 
@@ -29,6 +30,8 @@ public:
 	void Release();
 
 	static FESystem* GetInstance();
+
+	friend class FEDirectInput;
 };
 
 #endif

@@ -21,7 +21,9 @@
   <ItemGroup>
     <ClCompile Include="FEBehaviour.cpp" />
     <ClCompile Include="FECamera.cpp" />
+    <ClCompile Include="FEDirectInput.cpp" />
     <ClCompile Include="FEGameObject.cpp" />
+    <ClCompile Include="FEInput.cpp" />
     <ClCompile Include="FELight.cpp" />
     <ClCompile Include="FELoader.cpp" />
     <ClCompile Include="FEMaterial.cpp" />
@@ -43,7 +45,9 @@
     <ClInclude Include="FEBehaviour.h" />
     <ClInclude Include="FECamera.h" />
     <ClInclude Include="FEComponent.h" />
+    <ClInclude Include="FEDirectInput.h" />
     <ClInclude Include="FEGameObject.h" />
+    <ClInclude Include="FEInput.h" />
     <ClInclude Include="FELight.h" />
     <ClInclude Include="FELoader.h" />
     <ClInclude Include="FEMaterial.h" />

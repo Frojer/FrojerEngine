@@ -24,6 +24,7 @@ public:
 	static FETexture* Find(LPCTSTR name);
 
 	friend class FELoader;
+	friend class FEShader;
 };
 
 #endif

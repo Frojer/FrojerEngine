@@ -275,7 +275,7 @@ void ConvertASEMapFile(tifstream& f, tofstream& o, tstring i_filePath, tstring i
 		// UVW_U_TILING 1.0000;
 		f >> buf >> x;
 		// UVW_V_TILING 1.0000;
-		f >> buf >> x;
+		f >> buf >> y;
 		o << FE_TEXT('\t') << FE_TEXT('\t') << FE_TEXT("Tiling") << FE_TEXT('\t') << x << FE_TEXT('\t') << y << std::endl;
 		// UVW_ANGLE 0.0000;
 		f >> buf >> x;

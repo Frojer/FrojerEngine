@@ -2,6 +2,7 @@
 #ifndef _FE_IBUFFER
 #define _FE_IBUFFER
 
+#include <FEBuildSetting.h>
 #include <FEDefine.h>
 #include "FERendererDefine.h"
 
