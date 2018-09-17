@@ -4,19 +4,19 @@
   <PropertyGroup Label="UserMacros">
     <FE_SDK>..\..\SDK\</FE_SDK>
     <FE_SDK_INC>..\..\SDK\Inc\</FE_SDK_INC>
-    <FE_SDK_LIB>..\..\SDK\Lib\</FE_SDK_LIB>
+    <FE_SDK_LIB>..\..\SDK\Lib\$(Platform)\$(Configuration)\</FE_SDK_LIB>
     <FE_DXTK_INC>..\..\SDK\DXTK\Inc\</FE_DXTK_INC>
-    <FE_DXTK_LIB>..\..\SDK\DXTK\Lib\</FE_DXTK_LIB>
+    <FE_DXTK_LIB>..\..\SDK\DXTK\Lib\$(Platform)\$(Configuration)\</FE_DXTK_LIB>
     <FE_DXTEX_INC>..\..\SDK\DXTex\Inc\</FE_DXTEX_INC>
-    <FE_DXTEX_LIB>..\..\SDK\DXTex\Lib\</FE_DXTEX_LIB>
+    <FE_DXTEX_LIB>..\..\SDK\DXTex\Lib\$(Platform)\$(Configuration)\</FE_DXTEX_LIB>
     <FE_INC>$(FE_SDK_INC); $(FE_DXTK_INC); $(FE_DXTEX_INC);</FE_INC>
     <FE_LIB>$(FE_SDK_LIB); $(FE_DXTK_LIB); $(FE_DXTEX_LIB);</FE_LIB>
     <FE_TEMP>..\..\Temp\</FE_TEMP>
     <FE_BIN>..\..\bin\</FE_BIN>
   </PropertyGroup>
   <PropertyGroup>
-    <IncludePath>$(FE_INC);$(IncludePath)</IncludePath>
-    <LibraryPath>$(FE_LIB);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(FE_SDK_INC);$(FE_DXTK_INC);$(FE_DXTEX_INC);$(IncludePath)</IncludePath>
+    <LibraryPath>$(FE_SDK_LIB);$(FE_DXTK_LIB);$(FE_DXTEX_LIB);$(LibraryPath)</LibraryPath>
     <IntDir>$(FE_TEMP)$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
     <OutDir>$(FE_SDK_LIB)</OutDir>
   </PropertyGroup>

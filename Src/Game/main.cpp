@@ -5,21 +5,7 @@
 // chdir() 사용을 위한 헤더
 #include <direct.h>
 
-#pragma region FESystem.lib
-#ifdef _DEBUG
-	#ifdef _WIN64
-		#pragma comment(lib, "FESystem64d")
-	#else
-		#pragma comment(lib, "FESystemd")
-	#endif
-#else
-	#ifdef _WIN64
-		#pragma comment(lib, "FESystem64")
-	#else
-		#pragma comment(lib, "FESystem")
-	#endif
-#endif
-#pragma endregion
+#pragma comment(lib, "FESystem")
 
 /////////////////////////////////////////////////////////////////////////////
 //

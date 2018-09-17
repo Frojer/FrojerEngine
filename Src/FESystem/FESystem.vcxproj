@@ -125,18 +125,15 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <TargetName>$(ProjectName)64d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <TargetName>$(ProjectName)d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>$(ProjectName)64</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -156,7 +153,7 @@
       <Command>copy *.h $(FE_SDK_INC)</Command>
     </PostBuildEvent>
     <Lib>
-      <AdditionalDependencies>FERenderer64d.lib;FEMath64d.lib;FEUserScene64d.lib;FEUtility64d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FERenderer.lib;FEMath.lib;FEUserScene.lib;FEUtility.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -177,7 +174,7 @@
       <Command>copy *.h $(FE_SDK_INC)</Command>
     </PostBuildEvent>
     <Lib>
-      <AdditionalDependencies>FERendererd.lib;FEObjectd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FERenderer.lib;FEMath.lib;FEUserScene.lib;FEUtility.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -202,7 +199,7 @@
       <Command>copy *.h $(FE_SDK_INC)</Command>
     </PostBuildEvent>
     <Lib>
-      <AdditionalDependencies>FERenderer.lib;FEObject.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FERenderer.lib;FEMath.lib;FEUserScene.lib;FEUtility.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -227,7 +224,7 @@
       <Command>copy *.h $(FE_SDK_INC)</Command>
     </PostBuildEvent>
     <Lib>
-      <AdditionalDependencies>FERenderer64.lib;FEObject64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FERenderer.lib;FEMath.lib;FEUserScene.lib;FEUtility.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

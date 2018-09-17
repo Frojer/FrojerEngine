@@ -4,21 +4,7 @@
 // chdir() 사용을 위한 헤더
 #include <direct.h>
 
-#pragma region FEFileManager.lib
-#ifdef _DEBUG
-#ifdef _WIN64
-#pragma comment(lib, "FEFileManager64d")
-#else
-#pragma comment(lib, "FEFileManagerd")
-#endif
-#else
-#ifdef _WIN64
-#pragma comment(lib, "FEFileManager64")
-#else
 #pragma comment(lib, "FEFileManager")
-#endif
-#endif
-#pragma endregion
 
 #ifdef _UNICODE
 int wmain(int argc, wchar_t* argv[])

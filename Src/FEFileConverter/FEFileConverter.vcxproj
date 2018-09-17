@@ -76,22 +76,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(FE_SDK)FileConverter\</OutDir>
-    <TargetName>$(ProjectName)64d</TargetName>
+    <OutDir>$(FE_SDK)$(ProjectName)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(FE_SDK)FileConverter\</OutDir>
-    <TargetName>$(ProjectName)d</TargetName>
+    <OutDir>$(FE_SDK)$(ProjectName)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(FE_BIN)</OutDir>
+    <OutDir>$(FE_SDK)$(ProjectName)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(FE_BIN)</OutDir>
-    <TargetName>$(ProjectName)64</TargetName>
+    <OutDir>$(FE_SDK)$(ProjectName)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
