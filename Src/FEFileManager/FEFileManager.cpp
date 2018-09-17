@@ -775,6 +775,7 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 								f >> i >> a >> b >> c;
 								iTex[i].a = a;
 								iTex[i].b = b;
+								iTex[i].c = c;
 							}
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("MESH_NUMCVERTEX")))
@@ -916,7 +917,7 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 				if ((mesh->vf & FE_VF_TEXTURE) == FE_VF_TEXTURE)
 				{
 					verts[vNum].textureCoordinate.x = vTex[iTex[i].a].x;
-					verts[vNum].textureCoordinate.y = -vTex[iTex[i].a].y;
+					verts[vNum].textureCoordinate.y = vTex[iTex[i].a].y;
 				}
 
 				indics[i].a = vNum++;
@@ -945,7 +946,7 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 				if ((mesh->vf & FE_VF_TEXTURE) == FE_VF_TEXTURE)
 				{
 					verts[vNum].textureCoordinate.x = vTex[iTex[i].b].x;
-					verts[vNum].textureCoordinate.y = -vTex[iTex[i].b].y;
+					verts[vNum].textureCoordinate.y = vTex[iTex[i].b].y;
 				}
 
 				indics[i].b = vNum++;
@@ -974,7 +975,7 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 				if ((mesh->vf & FE_VF_TEXTURE) == FE_VF_TEXTURE)
 				{
 					verts[vNum].textureCoordinate.x = vTex[iTex[i].c].x;
-					verts[vNum].textureCoordinate.y = -vTex[iTex[i].c].y;
+					verts[vNum].textureCoordinate.y = vTex[iTex[i].c].y;
 				}
 
 				indics[i].c = vNum++;

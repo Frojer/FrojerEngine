@@ -18,15 +18,8 @@ private:
 	{
 		FEVector4 ot;
 		FEVector4 angle_Amount;
-		UINT samplerIndex;
 		FETexture* pTexture;
-		TexInfo() : ot(0.0f, 0.0f, 1.0f, 1.0f), angle_Amount(0.0f, 0.0f, 0.0f, 1.0f), pTexture(nullptr), samplerIndex(0) {}
-	};
-	struct TexInfoA
-	{
-		FEVectorA ot;
-		FEVectorA angle_Amount;
-		UINT samplerIndex;
+		TexInfo() : ot(0.0f, 0.0f, 1.0f, 1.0f), angle_Amount(0.0f, 0.0f, 0.0f, 1.0f), pTexture(nullptr) {}
 	};
 	struct LightCB
 	{
@@ -46,7 +39,6 @@ private:
 	};
 	struct PerMaterialCB
 	{
-		TexInfoA texInfo[FE_TEXTURE_SIZE];
 		FEVectorA diffuse;
 		FEVectorA ambient;
 		FEVectorA specular;
@@ -75,6 +67,8 @@ private:
 	static FETexture* _pDefaultTex;
 
 	FEShader* _pShader;
+
+	UINT _countTexture;
 	TexInfo _texInfo[FE_TEXTURE_SIZE];
 
 	std::vector<FEVectorA> _constData;
@@ -126,8 +120,6 @@ public:
 	bool SetTextureAngle(const UINT index, const FEVector3 i_angle);
 	bool GetTextureAmount(const UINT index, float& o_amount) const;
 	bool SetTextureAmount(const UINT index, const float i_amount);
-	bool GetTextureSamplerIndex(const UINT index, UINT& o_samplerIndex) const;
-	bool SetTextureSamplerIndex(const UINT index, const UINT i_samplerIndex);
 
 	static FEMaterial* Find(INT64 id);
 	static FEMaterial* Find(LPCTSTR name);

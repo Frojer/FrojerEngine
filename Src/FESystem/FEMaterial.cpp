@@ -84,20 +84,18 @@ void FEMaterial::UpdateConstantBufferPerMaterial()
 	// 이미 이전에 사용한 머테리얼이라면 이미 같은 상수버퍼이므로 업데이트를 하지 않는다
 	if (GetID() != _oldDrawID)
 	{
-		// 텍스쳐 데이터 채우고
-		for (UINT i = 0; i < FE_TEXTURE_SIZE; i++)
-		{
-			// texture가 존재하지 않는다면 continue
-			if (_texInfo[i].pTexture == nullptr)
-				continue;
+		//// 텍스쳐 데이터 채우고
+		//for (UINT i = 0; i < FE_TEXTURE_SIZE; i++)
+		//{
+		//	// texture가 존재하지 않는다면 continue
+		//	if (_pTexture[i] == nullptr)
+		//		continue;
 
-			// offset, tiling 상수버퍼에 쓰기
-			FEMaterial::_perMtrlCB.texInfo[i].ot = FEMath::FEConvertToAlignData(_texInfo[i].ot);
-			// angle, amount 상수버퍼에 쓰기
-			FEMaterial::_perMtrlCB.texInfo[i].angle_Amount = FEMath::FEConvertToAlignData(_texInfo[i].angle_Amount);
-			// samplerIndex 상수버퍼에 쓰기
-			FEMaterial::_perMtrlCB.texInfo[i].samplerIndex = _texInfo[i].samplerIndex;
-		}
+		//	//// offset, tiling 상수버퍼에 쓰기
+		//	//FEMaterial::_perMtrlCB.texInfo[i].ot = FEMath::FEConvertToAlignData(_texInfo[i].ot);
+		//	//// angle, amount 상수버퍼에 쓰기
+		//	//FEMaterial::_perMtrlCB.texInfo[i].angle_Amount = FEMath::FEConvertToAlignData(_texInfo[i].angle_Amount);
+		//}
 
 		// 머테리얼 색상 채우고
 		FEMaterial::_perMtrlCB.diffuse = FEMath::FEConvertToAlignData(m_diffuse);
@@ -180,7 +178,7 @@ void FEMaterial::Render()
 	//// 셈플러 설정
 	//_pShader->_pDXDC->PSSetSamplers(0, 1, &sampler);
 	
-	for (UINT i = 0; i < FE_TEXTURE_SIZE; i++)
+	for (UINT i = 0; i < _countTexture; i++)
 	{
 		// 셰이더 리소스 설정.
 		if (_texInfo[i].pTexture == nullptr)
@@ -219,28 +217,7 @@ void FEMaterial::SetShader(FEShader* i_pShader)
 	_vecVector.resize(_pShader->_countVector);
 	_vecMatrix.resize(_pShader->_countMatrix);
 
-	/*if (totalSize != 0)
-	{
-	_constData.resize(totalSize);
-
-	if (_pShader->_countScalar != 0)
-	{
-	_vecScala.resize(_pShader->_countScalar);
-	ZeroMemory(&_vecScala[0], _vecScala.size() * sizeof(VECTOR));
-	}
-
-	if (_pShader->_countVector != 0)
-	{
-	_vecVector.resize(_pShader->_countVector);
-	ZeroMemory(&_vecVector[0], _vecVector.size() * sizeof(VECTOR));
-	}
-
-	if (_pShader->_countMatrix != 0)
-	{
-	_vecMatrix.resize(_pShader->_countMatrix);
-	ZeroMemory(&_vecMatrix[0], _vecMatrix.size() * sizeof(MATRIXA));
-	}
-	}*/
+	_countTexture = _pShader->_countTexture;
 }
 
 
@@ -287,7 +264,7 @@ void FEMaterial::SetMatrix(const UINT index, const FEMatrix& matrix)
 
 bool FEMaterial::GetTexture(const UINT index, FETexture*& o_texture) const
 {
-	if (index >= FE_TEXTURE_SIZE)	return false;
+	if (index >= _countTexture)	return false;
 
 	o_texture = _texInfo[index].pTexture;
 
@@ -295,7 +272,7 @@ bool FEMaterial::GetTexture(const UINT index, FETexture*& o_texture) const
 }
 bool FEMaterial::SetTexture(const UINT index, FETexture* i_texture)
 {
-	if (index >= FE_TEXTURE_SIZE)	return false;
+	if (index >= _countTexture)	return false;
 
 	_texInfo[index].pTexture = i_texture;
 
@@ -366,22 +343,6 @@ bool FEMaterial::SetTextureAmount(const UINT index, float i_amount)
 	if (index >= FE_TEXTURE_SIZE)	return false;
 
 	_texInfo[index].angle_Amount.w = i_amount;
-
-	return true;
-}
-bool FEMaterial::GetTextureSamplerIndex(const UINT index, UINT& o_samplerIndex) const
-{
-	if (index >= FE_TEXTURE_SIZE)	return false;
-
-	o_samplerIndex = _texInfo[index].samplerIndex;
-
-	return true;
-}
-bool FEMaterial::SetTextureSamplerIndex(const UINT index, const UINT i_samplerIndex)
-{
-	if (index >= FE_TEXTURE_SIZE)	return false;
-
-	_texInfo[index].samplerIndex = i_samplerIndex;
 
 	return true;
 }

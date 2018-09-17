@@ -21,6 +21,7 @@ private:
 
 	FE_SHADER_SEMANTICS _semantics;
 
+	UINT _countTexture;
 	UINT _countMatrix;
 	UINT _countVector;
 	UINT _countScalar;

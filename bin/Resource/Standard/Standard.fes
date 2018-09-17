@@ -5,7 +5,8 @@ ID = 12
 
 Name = "Standard"
 
-Semantics = 5
+Semantics = 13
+CountTexture = 1
 CountMatrix = 0
 CountVector = 0
 CountScalar = 0

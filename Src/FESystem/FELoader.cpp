@@ -138,8 +138,7 @@ void FELoader::LoadShader(tstring i_shaderPath, tstring i_name)
 
 	// ¼ÎÀÌ´õ ½Ã¸ÇÆ½½º
 	f >> str >> str >> semantics;
-
-	pShader->m_Name = GetFileName(i_shaderPath + i_name);
+	f >> str >> str >> pShader->_countTexture;
 	f >> str >> str >> pShader->_countMatrix;
 	f >> str >> str >> pShader->_countVector;
 	f >> str >> str >> pShader->_countScalar;

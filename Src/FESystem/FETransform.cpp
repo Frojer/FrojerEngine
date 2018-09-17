@@ -114,7 +114,10 @@ void FETransform::Rotate(const FEVector3& eulerAngles, Space space)
 
 void FETransform::SetPositionWorld(const FEVector3& pos)
 {
-	FEVector3 v = pos - GetMyObject()->GetParent()->GetTransform()->GetPositionWorld();
+	FEVector3 v = pos;
+
+	if (GetMyObject()->GetParent() != nullptr)
+	v = pos - GetMyObject()->GetParent()->GetTransform()->GetPositionWorld();
 
 	_vPos = FEVector3(v * GetRotationMatrix().Inverse());
 }

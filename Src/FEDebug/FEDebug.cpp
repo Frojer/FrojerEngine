@@ -32,6 +32,7 @@ void FEDebug::Release()
 
 void FEDebug::DrawLine(FEVector3 start, FEVector3 end, FEVector4 color)
 {
+#ifdef _DEBUG
 	FEVector3 point[2];
 
 	if (_pLineVB == nullptr)
@@ -72,8 +73,38 @@ void FEDebug::DrawLine(FEVector3 start, FEVector3 end, FEVector4 color)
 
 		IFERenderer::GetInstance()->Draw(2, 0);
 	}
+#endif
 }
 
+void FEDebug::DrawNormal(FEGameObject* pObj, FEVector4 col)
+{
+#ifdef _DEBUG
+	if (pObj->GetRenderer() != nullptr)
+	{
+		std::vector<FEVector3> pos = pObj->GetRenderer()->m_pMesh->m_pos;
+		std::vector<FEVector3> nor = pObj->GetRenderer()->m_pMesh->m_normal;
+
+		FEMatrix mWorld = pObj->GetTransform()->GetWorldMatrix();
+		FEVector3 start, end;
+
+		for (UINT i = 0; i < pos.size(); i++)
+		{
+			start = pos[i] * mWorld;
+			//end = (pos[i] + nor[i]) * mWorld;
+			end = (pos[i] * mWorld) + (nor[i] * pObj->GetTransform()->GetRotationMatrix());
+
+			DrawLine(start, end, col);
+		}
+	}
+
+	auto children = pObj->GetChildren();
+
+	for(auto iter = children.begin(); iter != children.end(); iter++)
+	{
+		DrawNormal(iter->second, col);
+	}
+#endif
+}
 
 
 void FEDebug::ErrorMessage(tstring text)

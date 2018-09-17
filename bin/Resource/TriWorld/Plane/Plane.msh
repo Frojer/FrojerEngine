@@ -1,0 +1,51 @@
+Material
+{
+	ID = -390626792282228107
+	Name = "01 - Default"
+	Diffuse	1	1	1	1
+	Ambient	1	1	1
+	Specular	0.9	0.9	0.9
+	Power = 10
+	Map 0
+	{
+		Amount = 1
+		MapID = -4914934083653477903
+		Offset	0	0
+		Tiling	1	1
+		Angle	0
+	}
+}
+MeshObject
+{
+	ObjectID = -4389384593967614889
+	MeshID = 0
+	Name = "Plane"
+	MaterialID = 0
+	VertexFormat = 0
+	VertexCount = 0
+	IndexCount = 0
+	MeshObject
+	{
+		ObjectID = -5526684169042829689
+		MeshID = 4626769788832346684
+		Name = "Plane001"
+		MaterialID = -390626792282228107
+		VertexFormat = 13
+		VertexCount = 4
+		-4.5694	0.903	5
+		0	0	1
+		0	1
+		-4.5694	0.903	-5
+		0	0	1
+		0	0
+		5.4306	0.903	5
+		0	0	1
+		1	1
+		5.4306	0.903	-5
+		0	0	1
+		1	0
+		IndexCount = 2
+		0	1	2
+		3	2	1
+	}
+}

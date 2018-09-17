@@ -6,6 +6,7 @@
 #include <FEDefine.h>
 #include <IFEBuffer.h>
 #include <IFEShader.h>
+#include <FEObjectHeader.h>
 
 struct PointCB
 {
@@ -35,6 +36,7 @@ public:
 	static FEDebug* GetInstance();
 
 	void DrawLine(FEVector3 start, FEVector3 end, FEVector4 color);
+	void DrawNormal(FEGameObject* pObj, FEVector4 col);
 
 	void ErrorMessage(tstring text);
 	void WarningMessage(tstring text);

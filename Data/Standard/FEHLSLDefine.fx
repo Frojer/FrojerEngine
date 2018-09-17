@@ -1,4 +1,3 @@
-#define FE_TEXTURE_SIZE 16
 #define FE_LIGHT_SIZE 5
 
 struct TextureInfo
@@ -29,7 +28,6 @@ cbuffer CameraCB : register(b1)
 };
 cbuffer MaterialCB : register(b2)
 {
-    TextureInfo texInfo[FE_TEXTURE_SIZE];
     float4 diffuse;
     float4 ambient;
     float4 specular;
@@ -47,8 +45,6 @@ cbuffer ObjectCB : register(b3)
     float4 vLightLocalPos[FE_LIGHT_SIZE];
     float4 vLightLocalDir[FE_LIGHT_SIZE];
 };
-
-Texture2D texture[FE_TEXTURE_SIZE];
 
 float4 FELighting(float4 pos, float4 nor)
 {

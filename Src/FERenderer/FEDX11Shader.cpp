@@ -170,7 +170,7 @@ bool FEDX11Shader::CreateInputLayout(FE_SHADER_SEMANTICS i_semanticsFlag)
 			desc.SemanticName = "TEXCOORD";
 			desc.SemanticIndex = 0;
 			desc.Format = DXGI_FORMAT_R32G32_FLOAT;
-			desc.InputSlot = ((UINT)log2((UINT)FE_SHADER_SEMANTIC_TEXCOORD));
+			desc.InputSlot = (UINT)(log2((UINT)FE_SHADER_SEMANTIC_TEXCOORD));
 			desc.AlignedByteOffset = 0;
 			desc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 			desc.InstanceDataStepRate = 0;

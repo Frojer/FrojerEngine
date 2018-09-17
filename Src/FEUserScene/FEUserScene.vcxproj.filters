@@ -42,7 +42,9 @@
     <ClInclude Include="CameraController.h">
       <Filter>Component\Header File</Filter>
     </ClInclude>
-    <ClInclude Include="TriWorldSystem.h" />
+    <ClInclude Include="TriWorldSystem.h">
+      <Filter>Component\Header File</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FEUserScene.cpp" />
@@ -61,6 +63,8 @@
     <ClCompile Include="CameraController.cpp">
       <Filter>Component\Source File</Filter>
     </ClCompile>
-    <ClCompile Include="TriWorldSystem.cpp" />
+    <ClCompile Include="TriWorldSystem.cpp">
+      <Filter>Component\Source File</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
