@@ -4,8 +4,10 @@
 class TriWorldSystem : public FEBehaviour
 {
 public:
-	FEGameObject* m_pHero;
+	FEGameObject* m_pTerrain;
+	FEGameObject* m_pTree;
 	FEGameObject* m_pBox;
+	FEGameObject* m_pHero;
 public:
 	TriWorldSystem();
 	virtual ~TriWorldSystem();

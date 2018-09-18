@@ -118,11 +118,11 @@ FEMatrix::FEMatrix(const FEMatrixA& m)
 
 bool FEVector2::operator==(const FEVector2& rhs) const
 {
-	return x == rhs.x && y == rhs.y ? true : false;
+	return fabsf(x - rhs.x) <= FE_EPSILON && fabsf(y - rhs.y) <= FE_EPSILON ? true : false;
 }
 bool FEVector2::operator!=(const FEVector2& rhs) const
 {
-	return x != rhs.x && y != rhs.y ? true : false;
+	return *this == rhs ? false : true;
 }
 FEVector2& FEVector2::operator= (const FEVectorA& rhs)
 {
@@ -236,11 +236,11 @@ FEVector2 operator*(const float lhs, const FEVector2& rhs)
 
 bool FEVector3::operator==(const FEVector3& rhs) const
 {
-	return x == rhs.x && y == rhs.y && z == rhs.z ? true : false;
+	return fabsf(x - rhs.x) <= FE_EPSILON && fabsf(y - rhs.y) <= FE_EPSILON && fabsf(z - rhs.z) <= FE_EPSILON ? true : false;
 }
 bool FEVector3::operator!=(const FEVector3& rhs) const
 {
-	return x != rhs.x && y != rhs.y && z == rhs.z ? true : false;
+	return !(*this == rhs);
 }
 FEVector3& FEVector3::operator= (const FEVectorA& rhs)
 {
@@ -368,11 +368,11 @@ FEVector3 operator*(const float lhs, const FEVector3& rhs)
 
 bool FEVector4::operator==(const FEVector4& rhs) const
 {
-	return x == rhs.x && y == rhs.y && z == rhs.z && w == rhs.w ? true : false;
+	return fabsf(x - rhs.x) <= FE_EPSILON && fabsf(y - rhs.y) <= FE_EPSILON && fabsf(z - rhs.z) <= FE_EPSILON && fabsf(w - rhs.w) <= FE_EPSILON ? true : false;
 }
 bool FEVector4::operator!=(const FEVector4& rhs) const
 {
-	return x != rhs.x && y != rhs.y && z == rhs.z && w == rhs.w ? true : false;
+	return !(*this == rhs);
 }
 FEVector4& FEVector4::operator= (const FEVectorA& rhs)
 {

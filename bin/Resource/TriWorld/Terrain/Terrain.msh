@@ -1,0 +1,51 @@
+Material
+{
+	ID = -2957897947001753769
+	Name = "01 - Default"
+	Diffuse	1	1	1	1
+	Ambient	1	1	1
+	Specular	0.9	0.9	0.9
+	Power = 10
+	Map 0
+	{
+		Amount = 1
+		MapID = 8600717691979058253
+		Offset	0	0
+		Tiling	10	10
+		Angle	0
+	}
+}
+MeshObject
+{
+	ObjectID = -8768445044629603646
+	MeshID = 0
+	Name = "Terrain"
+	MaterialID = 0
+	VertexFormat = 0
+	VertexCount = 0
+	IndexCount = 0
+	MeshObject
+	{
+		ObjectID = -9061793715314126119
+		MeshID = -5409052338949494067
+		Name = "Plane001"
+		MaterialID = -2957897947001753769
+		VertexFormat = 13
+		VertexCount = 4
+		-100	-0	100
+		0	1	0
+		0	1
+		-100	0	-100
+		0	1	0
+		0	0
+		100	-0	100
+		0	1	0
+		1	1
+		100	0	-100
+		0	1	0
+		1	0
+		IndexCount = 2
+		0	1	2
+		3	2	1
+	}
+}

@@ -39,8 +39,10 @@ private:
 
 	//상태 객체 배열 : "기능별" 그룹으로 관리합니다.
 	std::unordered_map<BYTE, ID3D11RasterizerState*> _RSStateMap;
-	// 깊이/스텐실 버퍼 상태객체.	
+	// 깊이/스텐실 버퍼 상태객체.
 	std::unordered_map<DWORD, ID3D11DepthStencilState*> _DSStateMap;
+	// SamplerState 상태객체
+	std::list<ID3D11SamplerState*> _SmpStateList;
 
 private:
 	virtual bool Create(void* i_phWnd) override;

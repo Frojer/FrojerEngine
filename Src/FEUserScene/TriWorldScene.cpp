@@ -38,6 +38,12 @@ void TriWorldScene::Load()
 	light->m_diffuse = FEVector4(1.0f, 1.0f, 1.0f, 1.0f);
 	light->m_ambient = FEVector4(0.2f, 0.2f, 0.2f, 1.0f);
 
+	// 터레인 만들기
+	FEGameObject* pTerrain = FEGameObject::CopyObject(FEGameObject::FindPrefab(-8768445044629603646));
+
+	// 나무 만들기
+	FEGameObject* pTree = FEGameObject::CopyObject(FEGameObject::FindPrefab(4711944798260144515));
+
 	FEGameObject* pHero = FEGameObject::CopyObject(FEGameObject::FindPrefab(-7789239395380756604));
 	pHero->GetTransform()->SetRotationDegree(FEVector3(-90.0f, -90.0f, 0.0f));
 	FEGameObject* pBox = FEGameObject::CopyObject(FEGameObject::FindPrefab(2448678431520525937));
@@ -46,6 +52,15 @@ void TriWorldScene::Load()
 	pBox->GetTransform()->m_vScale = FEVector3(0.1f, 0.1f, 0.1f);
 	//FEGameObject* pHero = FEGameObject::CopyObject(FEGameObject::FindPrefab(5993413170060267237));
 
+	pSysCom->m_pTree = pTree;
+	pSysCom->m_pTerrain = pTerrain;
 	pSysCom->m_pHero = pHero;
 	pSysCom->m_pBox = pBox;
+
+	FEMaterial* mtrl;
+	FEVector2 offset, tiling;
+	mtrl = pTerrain->GetChildren().begin()->second->GetRenderer()->m_pMaterial;
+	mtrl->GetTextureOffset(0, offset);
+	mtrl->GetTextureTiling(0, tiling);
+	mtrl->SetVector(0, FEVector4(offset, tiling));
 }

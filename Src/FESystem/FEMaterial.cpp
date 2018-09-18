@@ -178,14 +178,14 @@ void FEMaterial::Render()
 	//// 셈플러 설정
 	//_pShader->_pDXDC->PSSetSamplers(0, 1, &sampler);
 	
-	for (UINT i = 0; i < _countTexture; i++)
+	for (UINT i = 0; i < _vecTexInfo.size(); i++)
 	{
 		// 셰이더 리소스 설정.
-		if (_texInfo[i].pTexture == nullptr)
+		if (_vecTexInfo[i].pTexture == nullptr)
 			//_pShader->SetShaderResources(i, _pDefaultTex);
 			continue;
 		else
-			_pShader->SetShaderResources(i, _texInfo[i].pTexture);
+			_pShader->SetShaderResources(i, _vecTexInfo[i].pTexture);
 	}
 
 	_pShader->Render();
@@ -216,8 +216,7 @@ void FEMaterial::SetShader(FEShader* i_pShader)
 	_vecScalarA.resize(scalarSize);
 	_vecVector.resize(_pShader->_countVector);
 	_vecMatrix.resize(_pShader->_countMatrix);
-
-	_countTexture = _pShader->_countTexture;
+	_vecTexInfo.resize(_pShader->_countTexture);
 }
 
 
@@ -264,85 +263,85 @@ void FEMaterial::SetMatrix(const UINT index, const FEMatrix& matrix)
 
 bool FEMaterial::GetTexture(const UINT index, FETexture*& o_texture) const
 {
-	if (index >= _countTexture)	return false;
+	if (index >= _vecTexInfo.size())	return false;
 
-	o_texture = _texInfo[index].pTexture;
+	o_texture = _vecTexInfo[index].pTexture;
 
 	return true;
 }
 bool FEMaterial::SetTexture(const UINT index, FETexture* i_texture)
 {
-	if (index >= _countTexture)	return false;
+	if (index >= _vecTexInfo.size())	return false;
 
-	_texInfo[index].pTexture = i_texture;
+	_vecTexInfo[index].pTexture = i_texture;
 
 	return true;
 }
 bool FEMaterial::GetTextureOffset(const UINT index, FEVector2& o_offset) const
 {
-	if (index >= FE_TEXTURE_SIZE)	return false;
+	if (index >= _vecTexInfo.size())	return false;
 
-	o_offset = FEVector2(_texInfo[index].ot.x, _texInfo[index].ot.y);
+	o_offset = FEVector2(_vecTexInfo[index].ot.x, _vecTexInfo[index].ot.y);
 
 	return true;
 }
 bool FEMaterial::SetTextureOffset(const UINT index, const FEVector2 i_offset)
 {
-	if (index >= FE_TEXTURE_SIZE)	return false;
+	if (index >= _vecTexInfo.size())	return false;
 
-	_texInfo[index].ot.x = i_offset.x;
-	_texInfo[index].ot.y = i_offset.y;
+	_vecTexInfo[index].ot.x = i_offset.x;
+	_vecTexInfo[index].ot.y = i_offset.y;
 
 	return true;
 }
 bool FEMaterial::GetTextureTiling(const UINT index, FEVector2& o_tiling) const
 {
-	if (index >= FE_TEXTURE_SIZE)	return false;
+	if (index >= _vecTexInfo.size())	return false;
 
-	o_tiling = FEVector2(_texInfo[index].ot.z, _texInfo[index].ot.w);
+	o_tiling = FEVector2(_vecTexInfo[index].ot.z, _vecTexInfo[index].ot.w);
 
 	return true;
 }
 bool FEMaterial::SetTextureTiling(const UINT index, const FEVector2 i_tiling)
 {
-	if (index >= FE_TEXTURE_SIZE)	return false;
+	if (index >= _vecTexInfo.size())	return false;
 
-	_texInfo[index].ot.z = i_tiling.x;
-	_texInfo[index].ot.w = i_tiling.y;
+	_vecTexInfo[index].ot.z = i_tiling.x;
+	_vecTexInfo[index].ot.w = i_tiling.y;
 
 	return true;
 }
 bool FEMaterial::GetTextureAngle(const UINT index, FEVector3& o_angle) const
 {
-	if (index >= FE_TEXTURE_SIZE)	return false;
+	if (index >= _vecTexInfo.size())	return false;
 
-	o_angle = FEVector3(_texInfo[index].angle_Amount.x, _texInfo[index].angle_Amount.y, _texInfo[index].angle_Amount.z);
+	o_angle = FEVector3(_vecTexInfo[index].angle_Amount.x, _vecTexInfo[index].angle_Amount.y, _vecTexInfo[index].angle_Amount.z);
 
 	return true;
 }
 bool FEMaterial::SetTextureAngle(const UINT index, FEVector3 i_angle)
 {
-	if (index >= FE_TEXTURE_SIZE)	return false;
+	if (index >= _vecTexInfo.size())	return false;
 
-	_texInfo[index].angle_Amount.x = i_angle.x;
-	_texInfo[index].angle_Amount.y = i_angle.y;
-	_texInfo[index].angle_Amount.z = i_angle.z;
+	_vecTexInfo[index].angle_Amount.x = i_angle.x;
+	_vecTexInfo[index].angle_Amount.y = i_angle.y;
+	_vecTexInfo[index].angle_Amount.z = i_angle.z;
 
 	return true;
 }
 bool FEMaterial::GetTextureAmount(const UINT index, float& o_amount) const
 {
-	if (index >= FE_TEXTURE_SIZE)	return false;
+	if (index >= _vecTexInfo.size())	return false;
 
-	o_amount = _texInfo[index].angle_Amount.w;
+	o_amount = _vecTexInfo[index].angle_Amount.w;
 
 	return true;
 }
 bool FEMaterial::SetTextureAmount(const UINT index, float i_amount)
 {
-	if (index >= FE_TEXTURE_SIZE)	return false;
+	if (index >= _vecTexInfo.size())	return false;
 
-	_texInfo[index].angle_Amount.w = i_amount;
+	_vecTexInfo[index].angle_Amount.w = i_amount;
 
 	return true;
 }

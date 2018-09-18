@@ -1,5 +1,10 @@
 #include "FEHLSLDefine.fx"
 
+cbuffer ConstantBuffer
+{
+	float4 ot;
+};
+
 //VS 출력 구조체.
 struct v2p
 {
@@ -12,12 +17,6 @@ struct v2p
 
 
 Texture2D tex : register(t0);
-SamplerState smp
-{
-    Filter = MIN_MAG_MIP_LINEAR;
-    AddressU = Wrap;
-    AddressV = Wrap;
-};
 
 
 ////////////////////////////////////////////////////////////////////////////// 
@@ -63,6 +62,12 @@ v2p VS_Main(float4 pos : POSITION,
 
     return o;
 }
+SamplerState smp
+{
+    Filter = MIN_MAG_MIP_LINEAR;
+    AddressU = MIRROR;
+    AddressV = MIRROR;
+};
 
 ////////////////////////////////////////////////////////////////////////////// 
 //
@@ -70,7 +75,7 @@ v2p VS_Main(float4 pos : POSITION,
 //
 float4 PS_Main(v2p i) : SV_TARGET
 {
-    float4 texDiff = tex.Sample(smp, i.uv);
+    float4 texDiff = tex.Sample(smp, i.uv * ot.zw);
 	//float4 col2 = {1, 0, 1, 1};
 	
     //return 1;

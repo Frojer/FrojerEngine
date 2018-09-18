@@ -8,6 +8,7 @@
 #define FE_1DIV2PI 0.159154943f
 #define FE_PIDIV2 1.570796327f
 #define FE_PIDIV4 0.785398163f
+#define FE_EPSILON 0.0001f
 
 float FEConvertToDegree(float radian);
 float FEConvertToRadian(float degree);

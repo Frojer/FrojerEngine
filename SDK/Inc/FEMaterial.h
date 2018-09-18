@@ -6,10 +6,67 @@
 #include "FEObjectHeader.h"
 
 #define FE_LIGHT_SIZE 5
-#define FE_TEXTURE_SIZE 16
 
 class FEShader;
 class FETransform;
+enum COMPARISON_FUNC;
+
+enum ADDRESS_MODE
+{
+	ADDRESS_MODE_WRAP,
+	ADDRESS_MODE_MIRROR,
+	ADDRESS_MODE_CLAMP,
+	ADDRESS_MODE_BORDER,
+	ADDRESS_MODE_MIRROR_ONCE
+};
+//
+//// SamplerState
+//// 
+//struct FE_SAMPLER_STATE_FLAG
+//{
+//	FE_FILTER filter;
+//	ADDRESS_MODE addressU;
+//	ADDRESS_MODE addressV;
+//	ADDRESS_MODE addressW;
+//	float mipLODBias;
+//	UINT maxAnisotropy;
+//	COMPARISON_FUNC comparisonFunc;
+//	FEVector4 borderColor;
+//	float minLOD;
+//	float maxLOD;
+//
+//	FE_SAMPLER_STATE_FLAG()
+//		: filter(),
+//		addressU(ADDRESS_MODE_WRAP),
+//		addressV(ADDRESS_MODE_WRAP),
+//		addressW(ADDRESS_MODE_WRAP),
+//		mipLODBias(0.0f),
+//		maxAnisotropy(0),
+//		comparisonFunc(COMPARISON_LESS),
+//		borderColor(FEVector4::One),
+//		minLOD(0.0f),
+//		maxLOD(0.0f)
+//	{
+//
+//	}
+//
+//	bool operator==(const FE_SAMPLER_STATE_FLAG& rhs) const
+//	{
+//		if (filter == rhs.filter &&
+//			addressU == rhs.addressU &&
+//			addressV == rhs.addressV &&
+//			addressW == rhs.addressW &&
+//			abs(mipLODBias - rhs.mipLODBias) <= FE_EPSILON &&
+//			maxAnisotropy == rhs.maxAnisotropy &&
+//			comparisonFunc == rhs.comparisonFunc &&
+//			borderColor == rhs.borderColor &&
+//			minLOD == rhs.minLOD &&
+//			maxLOD == rhs.maxLOD)
+//			return true;
+//
+//		return false;
+//	}
+//};
 
 class FEMaterial : public FEObject
 {
@@ -18,6 +75,7 @@ private:
 	{
 		FEVector4 ot;
 		FEVector4 angle_Amount;
+		
 		FETexture* pTexture;
 		TexInfo() : ot(0.0f, 0.0f, 1.0f, 1.0f), angle_Amount(0.0f, 0.0f, 0.0f, 1.0f), pTexture(nullptr) {}
 	};
@@ -68,11 +126,9 @@ private:
 
 	FEShader* _pShader;
 
-	UINT _countTexture;
-	TexInfo _texInfo[FE_TEXTURE_SIZE];
-
 	std::vector<FEVectorA> _constData;
 
+	std::vector<TexInfo> _vecTexInfo;
 	std::vector<FEVector4>	_vecScalar;
 	std::vector<FEVectorA>	_vecScalarA;
 	std::vector<FEVectorA>	_vecVector;
