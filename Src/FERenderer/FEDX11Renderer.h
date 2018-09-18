@@ -4,6 +4,7 @@
 
 #include "IFERenderer.h"
 #ifdef FE_DX11
+#include "FEDX11Shader.h"
 #include <unordered_map>
 
 // DX 표준 헤더 
@@ -42,7 +43,7 @@ private:
 	// 깊이/스텐실 버퍼 상태객체.
 	std::unordered_map<DWORD, ID3D11DepthStencilState*> _DSStateMap;
 	// SamplerState 상태객체
-	std::list<ID3D11SamplerState*> _SmpStateList;
+	std::vector<std::pair<FE_SAMPLER_STATE_FLAG, ID3D11SamplerState*> > _smpStateArr;
 
 private:
 	virtual bool Create(void* i_phWnd) override;
@@ -84,6 +85,8 @@ public:
 
 	ID3D11Device* GetDevice() const;
 	ID3D11DeviceContext* GetDXDC() const;
+
+	friend class FEDX11Shader;
 };
 #endif
 #endif

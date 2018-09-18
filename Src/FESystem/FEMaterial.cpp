@@ -347,6 +347,12 @@ bool FEMaterial::SetTextureAmount(const UINT index, float i_amount)
 }
 
 
+void FEMaterial::SetSamplerState(const UINT StartSlot, FE_SAMPLER_STATE_FLAG& sampler)
+{
+	_pShader->SetSamplerState(StartSlot, sampler);
+}
+
+
 FEMaterial* FEMaterial::Find(INT64 id)
 {
 	if (_mtrlMap.find(id) == _mtrlMap.end())

@@ -19,54 +19,6 @@ enum ADDRESS_MODE
 	ADDRESS_MODE_BORDER,
 	ADDRESS_MODE_MIRROR_ONCE
 };
-//
-//// SamplerState
-//// 
-//struct FE_SAMPLER_STATE_FLAG
-//{
-//	FE_FILTER filter;
-//	ADDRESS_MODE addressU;
-//	ADDRESS_MODE addressV;
-//	ADDRESS_MODE addressW;
-//	float mipLODBias;
-//	UINT maxAnisotropy;
-//	COMPARISON_FUNC comparisonFunc;
-//	FEVector4 borderColor;
-//	float minLOD;
-//	float maxLOD;
-//
-//	FE_SAMPLER_STATE_FLAG()
-//		: filter(),
-//		addressU(ADDRESS_MODE_WRAP),
-//		addressV(ADDRESS_MODE_WRAP),
-//		addressW(ADDRESS_MODE_WRAP),
-//		mipLODBias(0.0f),
-//		maxAnisotropy(0),
-//		comparisonFunc(COMPARISON_LESS),
-//		borderColor(FEVector4::One),
-//		minLOD(0.0f),
-//		maxLOD(0.0f)
-//	{
-//
-//	}
-//
-//	bool operator==(const FE_SAMPLER_STATE_FLAG& rhs) const
-//	{
-//		if (filter == rhs.filter &&
-//			addressU == rhs.addressU &&
-//			addressV == rhs.addressV &&
-//			addressW == rhs.addressW &&
-//			abs(mipLODBias - rhs.mipLODBias) <= FE_EPSILON &&
-//			maxAnisotropy == rhs.maxAnisotropy &&
-//			comparisonFunc == rhs.comparisonFunc &&
-//			borderColor == rhs.borderColor &&
-//			minLOD == rhs.minLOD &&
-//			maxLOD == rhs.maxLOD)
-//			return true;
-//
-//		return false;
-//	}
-//};
 
 class FEMaterial : public FEObject
 {
@@ -176,6 +128,8 @@ public:
 	bool SetTextureAngle(const UINT index, const FEVector3 i_angle);
 	bool GetTextureAmount(const UINT index, float& o_amount) const;
 	bool SetTextureAmount(const UINT index, const float i_amount);
+
+	void SetSamplerState(const UINT StartSlot, FE_SAMPLER_STATE_FLAG& sampler);
 
 	static FEMaterial* Find(INT64 id);
 	static FEMaterial* Find(LPCTSTR name);

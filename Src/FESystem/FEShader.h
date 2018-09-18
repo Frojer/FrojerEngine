@@ -42,6 +42,7 @@ private:
 	void UpdateConstantBuffer(const void* pCB, UINT size);
 
 	void SetShaderResources(UINT StartSlot, FETexture* pTexture);
+	void SetSamplerState(const UINT StartSlot, FE_SAMPLER_STATE_FLAG& sampler);
 
 protected:
 	FEShader(INT64 ID);

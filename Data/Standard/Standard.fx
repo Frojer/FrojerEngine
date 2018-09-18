@@ -75,7 +75,7 @@ SamplerState smp
 //
 float4 PS_Main(v2p i) : SV_TARGET
 {
-    float4 texDiff = tex.Sample(smp, i.uv * ot.zw);
+    float4 texDiff = tex.Sample(smp, i.uv);
 	//float4 col2 = {1, 0, 1, 1};
 	
     //return 1;

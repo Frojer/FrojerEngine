@@ -15,12 +15,13 @@ private:
 	ID3D11InputLayout*      _pVBLayout;
 
 	BYTE*	_pVSCode;
-	SIZE_T	 _VSCodeSize;
-	SIZE_T	 _PSCodeSize;
+	SIZE_T _VSCodeSize;
+	SIZE_T _PSCodeSize;
 
 private:
 	bool CreateShader(LPCTSTR i_vsName, LPCTSTR i_psName);
 	bool CreateInputLayout(FE_SHADER_SEMANTICS i_semanticsFlag);
+	bool CreateSamplerState(UINT index, FE_SAMPLER_STATE_FLAG& sampler);
 
 public:
 	FEDX11Shader();
@@ -32,6 +33,7 @@ public:
 	virtual void Render() const override;
 	virtual void SetConstantBuffer(UINT StartSlot, IFEBuffer* pConstantBuffer) override;
 	virtual void SetShaderResource(UINT StartSlot, IFETexture* pTexture) override;
+	virtual void SetSamplerState(UINT StartSlot, FE_SAMPLER_STATE_FLAG& sampler) override;
 };
 #endif
 #endif

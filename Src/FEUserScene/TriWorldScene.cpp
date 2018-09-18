@@ -47,11 +47,8 @@ void TriWorldScene::Load()
 	FEGameObject* pHero = FEGameObject::CopyObject(FEGameObject::FindPrefab(-7789239395380756604));
 	pHero->GetTransform()->SetRotationDegree(FEVector3(-90.0f, -90.0f, 0.0f));
 	FEGameObject* pBox = FEGameObject::CopyObject(FEGameObject::FindPrefab(2448678431520525937));
-	pBox->GetTransform()->SetPositionWorld(FEVector3(10.0f, 0.0f, 0.0f));
-	pBox->GetTransform()->SetRotationDegree(FEVector3(45.0f, 0.0f, 0.0f));
-	pBox->GetTransform()->m_vScale = FEVector3(0.1f, 0.1f, 0.1f);
-	//FEGameObject* pHero = FEGameObject::CopyObject(FEGameObject::FindPrefab(5993413170060267237));
-
+	pBox->GetTransform()->SetPositionWorld(FEVector3(10.0f, 1.0f, 0.0f));
+	
 	pSysCom->m_pTree = pTree;
 	pSysCom->m_pTerrain = pTerrain;
 	pSysCom->m_pHero = pHero;

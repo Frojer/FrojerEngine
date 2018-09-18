@@ -127,6 +127,10 @@ void FEShader::SetShaderResources(UINT StartSlot, FETexture* pTexture)
 {
 	_pShader->SetShaderResource(StartSlot, pTexture->_pTex);
 }
+void FEShader::SetSamplerState(const UINT StartSlot, FE_SAMPLER_STATE_FLAG& sampler)
+{
+	_pShader->SetSamplerState(StartSlot, sampler);
+}
 
 
 void FEShader::Release()

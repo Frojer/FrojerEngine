@@ -62,6 +62,8 @@ void FEDX11Renderer::Release()
 	if (_pDXDC) _pDXDC->ClearState();
 	//if (g_pSwapChain) g_pSwapChain->SetFullscreenState(false, NULL);
 
+	for (UINT i = 0; i < _smpStateArr.size(); i++)	_smpStateArr[i].second->Release();
+	_smpStateArr.clear();
 	SAFE_RELEASE(_pDS);				// ±Ì¿Ã/Ω∫≈ŸΩ« πˆ∆€ ¡¶∞≈.
 	SAFE_RELEASE(_pDSView);
 	SAFE_RELEASE(_pRTView);			// ∑ª¥ı≈∏∞Ÿ ¡¶∞≈.

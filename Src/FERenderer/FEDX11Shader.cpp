@@ -243,4 +243,41 @@ void FEDX11Shader::SetShaderResource(UINT StartSlot, IFETexture* pTexture)
 	pRenderer->GetDXDC()->VSSetShaderResources(StartSlot, 1, &pShaderResource);
 	pRenderer->GetDXDC()->PSSetShaderResources(StartSlot, 1, &pShaderResource);
 }
+void FEDX11Shader::SetSamplerState(UINT StartSlot, FE_SAMPLER_STATE_FLAG& sampler)
+{
+	FEDX11Renderer* pRenderer = (FEDX11Renderer*)IFERenderer::GetInstance();
+
+	for (UINT i = 0; i < pRenderer->_smpStateArr.size(); i++)
+	{
+		if (pRenderer->_smpStateArr[i].first == sampler)
+		{
+			pRenderer->GetDXDC()->VSSetSamplers(StartSlot, 1, &pRenderer->_smpStateArr[i].second);
+			pRenderer->GetDXDC()->PSSetSamplers(StartSlot, 1, &pRenderer->_smpStateArr[i].second);
+			return;
+		}
+	}
+
+	D3D11_SAMPLER_DESC sd;
+	sd.Filter = (D3D11_FILTER)sampler.filter;
+	sd.AddressU = (D3D11_TEXTURE_ADDRESS_MODE)sampler.addressU;
+	sd.AddressV = (D3D11_TEXTURE_ADDRESS_MODE)sampler.addressV;
+	sd.AddressW = (D3D11_TEXTURE_ADDRESS_MODE)sampler.addressW;
+	sd.MipLODBias = sampler.mipLODBias;
+	sd.MaxAnisotropy = sampler.maxAnisotropy;
+	sd.ComparisonFunc = (D3D11_COMPARISON_FUNC)sampler.comparisonFunc;
+	sd.BorderColor[0] = sampler.borderColor.x;
+	sd.BorderColor[1] = sampler.borderColor.y;
+	sd.BorderColor[2] = sampler.borderColor.z;
+	sd.BorderColor[3] = sampler.borderColor.w;
+	sd.MinLOD = sampler.minLOD;
+	sd.MaxLOD = sampler.maxLOD;
+	ID3D11SamplerState* pSS;
+
+	pRenderer->GetDevice()->CreateSamplerState(&sd, &pSS);
+
+	pRenderer->_smpStateArr.push_back(std::pair<FE_SAMPLER_STATE_FLAG, ID3D11SamplerState*>(sampler, pSS));
+
+	pRenderer->GetDXDC()->VSSetSamplers(StartSlot, 1, &pSS);
+	pRenderer->GetDXDC()->PSSetSamplers(StartSlot, 1, &pSS);
+}
 #endif
