@@ -10,8 +10,8 @@ struct v2p
 };
 
 
-
 Texture2D tex : register(t0);
+SamplerState smp;
 
 
 ////////////////////////////////////////////////////////////////////////////// 
@@ -22,34 +22,27 @@ v2p VS_Main(float4 pos : POSITION,
             float4 nor : NORMAL,
             float2 uv : TEXCOORD0)
 {
-    v2p o = (v2p)0;
-    pos.w = 1.0f;
-    nor.w = 0.0f;
-
-    o.col = FELighting(pos, nor);
-
-	// 변환
-    //pos = mul(pos, mWorld);
-    //pos = mul(pos, mView);
-    //pos = mul(pos, mProj);	 	
-
-    //pos = mul(pos, mWVP);
-
     float4 N, L;
-    
-    pos = mul(pos, mWV);
-    //N = mul(nor, mWV);
-    //L = light[0].direction;
-    //L = mul(vLightLocalDir[0], mWorld);
+    v2p o = (v2p)0;
 
+    pos.w = 1.0f;
+    pos = mul(pos, mWVP);
+
+    // 로컬 라이팅
     N = nor;
     L = vLightLocalDir[0];
-    
     o.col = dot(N, L);
+    //*/
 
-    //diff += light[i].diffuse * diffuse * abs(dot(nor, vLightLocalDir[i]));
-
-    pos = mul(pos, mProj);
+    /*// 뷰공간 라이팅
+    nor.w = 0;
+    N = mul(nor, mWV);
+    N = normalize(N);
+    L = light[0].direction;
+    L.w = 0;
+    L = mul(L, mView);
+    o.col = dot(N, L);
+    //*/
 
 	o.pos = pos;
 	o.nor = nor;
@@ -57,12 +50,6 @@ v2p VS_Main(float4 pos : POSITION,
 
     return o;
 }
-SamplerState smp
-{
-    Filter = MIN_MAG_MIP_LINEAR;
-    AddressU = MIRROR;
-    AddressV = MIRROR;
-};
 
 ////////////////////////////////////////////////////////////////////////////// 
 //
@@ -71,19 +58,8 @@ SamplerState smp
 float4 PS_Main(v2p i) : SV_TARGET
 {
     float4 texDiff = tex.Sample(smp, i.uv);
-	//float4 col2 = {1, 0, 1, 1};
 	
     clip(texDiff.a < 0.25 ? -1 : 1);
-
-    //return 1;
-    //return vLightLocalDir[0];
-    //return light[0].ambient;
-    //return light[0].diffuse;
-    return texDiff;
-    //return abs(i.uv.x);
-
+    
+    return i.col * texDiff;
 }
-
-
-
-/**************** end of file "Demo.fx" ***********************/

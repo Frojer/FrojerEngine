@@ -4,6 +4,7 @@
 
 #include <FEBuildSetting.h>
 #include <FEMath.h>
+#include <FEDefine.h>
 
 #ifdef FE_DX11
 

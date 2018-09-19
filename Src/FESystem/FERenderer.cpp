@@ -1,9 +1,9 @@
 #include "FERenderer.h"
 
 FERenderer::FERenderer()
-	: _RSState(0), _DSState(0), /*_BlendState(BS_ADD),*/ m_stencilRef(0), m_pMesh(nullptr), m_pMaterial(nullptr)
+	: _RSState(0), _DSState(0), m_stencilRef(0), m_pMesh(nullptr), m_pMaterial(nullptr)
 {
-
+	_RSState = FE_RS_MULTISAMPLE_ON;
 }
 
 FERenderer::~FERenderer()
@@ -75,6 +75,43 @@ bool FERenderer::GetCounterClockwise()
 {
 	return !GetClockwise();
 }
+void FERenderer::SetDepthClipEnable(bool i_bSet)
+{
+	_RSState &= 0xF7;
+	_RSState |= i_bSet ? FE_RS_DEPTH_CLIP_ON : FE_RS_DEPTH_CLIP_OFF;
+}
+bool FERenderer::GetDepthClipEnable()
+{
+	return (_RSState & 0x08) == FE_RS_DEPTH_CLIP_ON ? true : false;
+}
+void FERenderer::SetScissorEnable(bool i_bSet)
+{
+	_RSState &= 0xFB;
+	_RSState |= i_bSet ? FE_RS_SCISSOR_ON : FE_RS_SCISSOR_OFF;
+}
+bool FERenderer::GetScissorEnable()
+{
+	return (_RSState & 0x04) == FE_RS_SCISSOR_ON ? true : false;
+}
+void FERenderer::SetMultisampleEnable(bool i_bSet)
+{
+	_RSState &= 0xFD;
+	_RSState |= i_bSet ? FE_RS_MULTISAMPLE_ON : FE_RS_MULTISAMPLE_OFF;
+}
+bool FERenderer::GetMultisampleEnable()
+{
+	return (_RSState & 0x02) == FE_RS_MULTISAMPLE_ON ? true : false;
+}
+void FERenderer::SetAntialiasedLineEnable(bool i_bSet)
+{
+	_RSState &= 0xFE;
+	_RSState |= i_bSet ? FE_RS_ANTIALIASEDLINE_ON : FE_RS_ANTIALIASEDLINE_Off;
+}
+bool FERenderer::GetAntialiasedLineEnable()
+{
+	return (_RSState & 0x01) == FE_RS_ANTIALIASEDLINE_ON ? true : false;
+}
+
 void FERenderer::SetDepthEnable(bool enable)
 {
 	_DSState &= 0x7FFFFFFF;
@@ -116,7 +153,6 @@ void FERenderer::SetDepthFunc(COMPARISON_FUNC func)
 		break;
 	}
 }
-
 void FERenderer::SetStencilEnable(bool enable)
 {
 	_DSState &= 0xFBFFFFFF;

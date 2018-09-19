@@ -255,7 +255,7 @@ void ConvertASEMapFile(tifstream& f, tofstream& o, tstring i_filePath, tstring i
 		}
 		else
 		{
-			tifstream tf(i_filePath + GetFileNameWithExtension(mapClass) + FE_TEXT(".fet"));
+			tifstream tf(i_outPath + GetFileNameWithExtension(mapClass) + FE_TEXT(".fet"));
 
 			if (tf.is_open())
 			{
@@ -994,7 +994,7 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 			{
 				mesh->position[i] = verts[i].position;
 				mesh->color[i] = verts[i].color;
-				mesh->normal[i] = verts[i].normal;
+				mesh->normal[i] = Normalize(verts[i].normal);
 				mesh->texcoord[i] = verts[i].textureCoordinate;
 			}
 
@@ -1069,7 +1069,8 @@ void FEFileManager::ConvertAllFileInPath(tstring i_filePath)
 		else if (TCSCMP_SAME(extension.c_str(), FE_TEXT("png"))
 			|| TCSCMP_SAME(extension.c_str(), FE_TEXT("jpg"))
 			|| TCSCMP_SAME(extension.c_str(), FE_TEXT("bmp"))
-			|| TCSCMP_SAME(extension.c_str(), FE_TEXT("dds")))
+			|| TCSCMP_SAME(extension.c_str(), FE_TEXT("dds"))
+			|| TCSCMP_SAME(extension.c_str(), FE_TEXT("tga")))
 		{
 			if (_taccess((_outPath + i_filePath + fd.name + FE_TEXT(".fet")).c_str(), 0) == -1)
 				ConvertTextureFile(_dataPath + i_filePath, _outPath + i_filePath, fd.name);

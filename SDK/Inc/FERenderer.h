@@ -68,6 +68,14 @@ public:
 	bool		GetClockwise();
 	void		SetCounterClockwise(bool i_bSet);
 	bool		GetCounterClockwise();
+	void		SetDepthClipEnable(bool i_bSet);
+	bool		GetDepthClipEnable();
+	void		SetScissorEnable(bool i_bSet);
+	bool		GetScissorEnable();
+	void		SetMultisampleEnable(bool i_bSet);
+	bool		GetMultisampleEnable();
+	void		SetAntialiasedLineEnable(bool i_bSet);
+	bool		GetAntialiasedLineEnable();
 
 	void SetDepthEnable(bool enable);
 	void SetDepthWrite(bool enable);

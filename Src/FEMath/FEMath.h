@@ -66,6 +66,8 @@ public:
 	FEVector2(const FEVectorA& v);
 	~FEVector2() = default;
 
+	void Normalize();
+
 	//----------------
 	// 연산자 오버로딩
 	//----------------
@@ -111,6 +113,8 @@ public:
 	FEVector3(const FEVectorA& v);
 	~FEVector3() = default;
 
+	void Normalize();
+
 	//----------------
 	// 연산자 오버로딩
 	//----------------
@@ -149,6 +153,8 @@ public:
 	FEVector4(const FEVector3& v, float w = 0.0f) : XMFLOAT4(v.x, v.y, v.z, w) {};
 	FEVector4(const FEVectorA& v);
 	~FEVector4() = default;
+
+	void Normalize();
 
 	//----------------
 	// 연산자 오버로딩
@@ -213,6 +219,10 @@ public:
 };
 FEVector3 operator*(const FEVector3& lhs, const FEMatrix& rhs);
 FEVector4 operator*(const FEVector4& lhs, const FEMatrix& rhs);
+
+FEVector2 Normalize(const FEVector2& v);
+FEVector3 Normalize(const FEVector3& v);
+FEVector4 Normalize(const FEVector4& v);
 
 #elif
 // GL Math

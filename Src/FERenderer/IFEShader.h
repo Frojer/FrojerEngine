@@ -3,7 +3,7 @@
 #define _FE_ISHADER
 
 #include <FEBuildSetting.h>
-#include <FERendererDefine.h>
+#include "FERendererDefine.h"
 #include <FEDefine.h>
 #include "IFEBuffer.h"
 #include "IFETexture.h"

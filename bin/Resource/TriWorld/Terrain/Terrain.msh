@@ -1,6 +1,6 @@
 Material
 {
-	ID = -2957897947001753769
+	ID = 7460727127126524915
 	Name = "01 - Default"
 	Diffuse	1	1	1	1
 	Ambient	1	1	1
@@ -9,15 +9,15 @@ Material
 	Map 0
 	{
 		Amount = 1
-		MapID = 8600717691979058253
+		MapID = -6577460477853378189
 		Offset	0	0
-		Tiling	10	10
+		Tiling	1	1
 		Angle	0
 	}
 }
 MeshObject
 {
-	ObjectID = -8768445044629603646
+	ObjectID = 5697116093628749358
 	MeshID = 0
 	Name = "Terrain"
 	MaterialID = 0
@@ -26,26 +26,26 @@ MeshObject
 	IndexCount = 0
 	MeshObject
 	{
-		ObjectID = -9061793715314126119
-		MeshID = -5409052338949494067
+		ObjectID = 3006665813163885185
+		MeshID = -401054262855117929
 		Name = "Plane001"
-		MaterialID = -2957897947001753769
+		MaterialID = 7460727127126524915
 		VertexFormat = 13
 		VertexCount = 4
-		-100	-0	100
+		-100	0	100
 		0	1	0
-		0	1
-		-100	0	-100
+		0	-0
+		100	0	100
 		0	1	0
-		0	0
-		100	-0	100
-		0	1	0
-		1	1
+		1	-0
 		100	0	-100
 		0	1	0
-		1	0
+		1	-1
+		-100	0	-100
+		0	1	0
+		0	-1
 		IndexCount = 2
 		0	1	2
-		3	2	1
+		2	3	0
 	}
 }

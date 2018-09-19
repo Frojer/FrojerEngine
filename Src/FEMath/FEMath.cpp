@@ -231,6 +231,10 @@ FEVector2 operator*(const float lhs, const FEVector2& rhs)
 	v.y = lhs * rhs.y;
 	return v;
 }
+void FEVector2::Normalize()
+{
+	*this = XMVector2Normalize(FEMath::FEConvertToAlignData(*this));
+}
 
 
 
@@ -362,6 +366,10 @@ FEVector3 operator*(const float lhs, const FEVector3& rhs)
 	v.y = lhs * rhs.y;
 	v.z = lhs * rhs.z;
 	return v;
+}
+void FEVector3::Normalize()
+{
+	*this = XMVector3Normalize(FEMath::FEConvertToAlignData(*this));
 }
 
 
@@ -529,6 +537,10 @@ FEVector4 operator*(const float lhs, const FEVector4& rhs)
 	v.w = lhs * rhs.w;
 	return v;
 }
+void FEVector4::Normalize()
+{
+	*this = XMVector4Normalize(FEMath::FEConvertToAlignData(*this));
+}
 
 FEMatrix FEMatrix::Inverse(FEMatrix m, FEVector4* pDeterminant)
 {
@@ -583,6 +595,25 @@ FEVector4 operator*(const FEVector4& lhs, const FEMatrix& rhs)
 
 	result = FEMath::FEConvertToVector4(XMVector4Transform(v, m));
 	return result;
+}
+
+FEVector2 Normalize(const FEVector2& v)
+{
+	FEVector2 ret;
+	ret = XMVector2Normalize(FEMath::FEConvertToAlignData(v));
+	return ret;
+}
+FEVector3 Normalize(const FEVector3& v)
+{
+	FEVector3 ret;
+	ret = XMVector3Normalize(FEMath::FEConvertToAlignData(v));
+	return ret;
+}
+FEVector4 Normalize(const FEVector4& v)
+{
+	FEVector4 ret;
+	ret = XMVector4Normalize(FEMath::FEConvertToAlignData(v));
+	return ret;
 }
 
 FEMatrix FEMatrixLookAtLH(FEVector4 EyePosition, FEVector4 FocusPosition, FEVector4 UpDirection)
