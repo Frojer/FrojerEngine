@@ -1,10 +1,11 @@
 #include "FECamera.h"
 #include <IFERenderer.h>
+#include <FEMath.h>
 
 std::vector<FECamera*> FECamera::_vCam;
 
 FECamera::FECamera()
-	: m_FOV(45.0f), m_Aspect((float)IFERenderer::GetInstance()->m_setting.uiWindowWidth / IFERenderer::GetInstance()->m_setting.uiWindowHeight), m_Znear(1.0f), m_Zfar(1000.0f)
+	: m_FOV(FEConvertToRadian(45.0f)), m_Aspect((float)IFERenderer::GetInstance()->m_setting.uiWindowWidth / IFERenderer::GetInstance()->m_setting.uiWindowHeight), m_Znear(1.0f), m_Zfar(1000.0f)
 {
 	m_viewport.TopLeftX = 0.0f;
 	m_viewport.TopLeftY = 0.0f;

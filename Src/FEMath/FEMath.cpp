@@ -556,6 +556,11 @@ FEMatrix& FEMatrix::Inverse(FEVector4* pDeterminant)
 	*this = FEMath::FEConvertToMatrix(XMMatrixInverse(pDeterminant == nullptr ? nullptr : &FEMath::FEConvertToAlignData(*pDeterminant), FEMath::FEConvertToAlignData(*this)));
 	return *this;
 }
+FEMatrix& FEMatrix::Transpose()
+{
+	*this = XMMatrixTranspose(FEMath::FEConvertToAlignData(*this));
+	return *this;
+}
 FEMatrix& FEMatrix::operator= (const FEMatrixA& rhs)
 {
 	*this = FEMath::FEConvertToMatrix(rhs);

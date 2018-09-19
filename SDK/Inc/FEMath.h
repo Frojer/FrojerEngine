@@ -209,6 +209,7 @@ public:
 	//----------
 	void SetIdentity();
 	FEMatrix& Inverse(FEVector4* pDeterminant = nullptr);
+	FEMatrix& Transpose();
 
 	//----------------
 	// 연산자 오버로딩

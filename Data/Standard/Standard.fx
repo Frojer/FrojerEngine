@@ -4,9 +4,9 @@
 struct v2p
 {
     float4 pos : SV_POSITION;
-    float4 col : COLOR0;
-    float4 nor : NORMAL;
     float2 uv : TEXCOORD0;
+    float4 pos3d : TEXCOORD1;
+    float4 nor3d : TEXCOORD2;
 };
 
 
@@ -22,13 +22,20 @@ v2p VS_Main(float4 pos : POSITION,
             float4 nor : NORMAL,
             float2 uv : TEXCOORD0)
 {
-    float4 N, L;
     v2p o = (v2p)0;
 
     pos.w = 1.0f;
-    pos = mul(pos, mWVP);
+    nor.w = 0.0f;
+    
+    //pos = mul(pos, mWV);
+    //nor = mul(nor, mWV);
+    
+    o.pos3d = pos;
+    o.nor3d = nor;
 
-    // 로컬 라이팅
+    //pos = mul(pos, mProj);
+
+    /*// 로컬 라이팅
     N = nor;
     L = vLightLocalDir[0];
     o.col = dot(N, L);
@@ -45,7 +52,6 @@ v2p VS_Main(float4 pos : POSITION,
     //*/
 
 	o.pos = pos;
-	o.nor = nor;
     o.uv = uv;
 
     return o;
@@ -57,9 +63,12 @@ v2p VS_Main(float4 pos : POSITION,
 //
 float4 PS_Main(v2p i) : SV_TARGET
 {
+    float4 diff;
     float4 texDiff = tex.Sample(smp, i.uv);
 	
+    diff = FELighting(i.pos3d, i.nor3d);
+
     clip(texDiff.a < 0.25 ? -1 : 1);
     
-    return i.col * texDiff;
+    return diff;
 }

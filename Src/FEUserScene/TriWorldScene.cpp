@@ -39,17 +39,16 @@ void TriWorldScene::Load()
 	grid->y = true;
 	grid->z = true;
 
-	// Directional Light 만들기
-	FEGameObject* pDirectionalLight = new FEGameObject();
-	pDirectionalLight->GetTransform()->SetRotationDegree(FEVector3(50.0f, -30.0f, 0.0f));
-	auto light = pDirectionalLight->AddComponent<FELight>();
-	light->m_lightType = FE_LIGHT_TYPE_DIRECTION;
-	light->m_diffuse = FEVector4(1.0f, 1.0f, 1.0f, 1.0f);
-	light->m_ambient = FEVector4(0.2f, 0.2f, 0.2f, 1.0f);
-
 	// 터레인 만들기
 	FEGameObject* pTerrain = FEGameObject::CopyObject(FEGameObject::FindPrefab(5697116093628749358));
 	pTerrain->GetTransform()->m_vScale = FEVector3(0.5f, 0.5f, 0.5f);
+	//pTerrain->GetChildren().begin()->second->GetRenderer()->m_pMaterial->SetShader(FEShader::Find(FE_TEXT("Terrain")));
+	//FEVector2 offset;
+	//FEVector2 tiling;
+	//pTerrain->GetChildren().begin()->second->GetRenderer()->m_pMaterial->GetTextureOffset(0, offset);
+	//pTerrain->GetChildren().begin()->second->GetRenderer()->m_pMaterial->GetTextureTiling(0, tiling);
+	//tiling *= 10;
+	//pTerrain->GetChildren().begin()->second->GetRenderer()->m_pMaterial->SetVector(0, FEVector4(offset, tiling));
 
 	// 나무 만들기
 	FEGameObject* pTree = FEGameObject::CopyObject(FEGameObject::FindPrefab(7465656355178739812));
@@ -78,7 +77,7 @@ void TriWorldScene::Load()
 	wmComp->m_pWindmillWing[0] = (++pWindmill->GetChildren().begin())->second;
 	wmComp->m_pWindmillWing[0]->GetTransform()->m_vScale *= 0.65f;
 	wmComp->m_pWindmillWing[0]->GetTransform()->SetPositionLocal(FEVector3(0.0f, 1.5f, 1.0f));
-	pWindmill->GetTransform()->SetPositionWorld(FEVector3(0.0f, 0.0f, 0.0f));
+	pWindmill->GetTransform()->SetPositionWorld(FEVector3(5.0f, -0.0002f, -10.0f));
 	pWindmill->GetTransform()->Rotate(FEVector3(0.0f, 180.0f, 0.0f));
 
 	// 삼단 풍차 만들기
@@ -99,7 +98,7 @@ void TriWorldScene::Load()
 	wmComp->m_pWindmillWing[0]->GetTransform()->SetPositionLocal(FEVector3(0.0f, 2.0f, 1.0f));
 	wmComp->m_pWindmillWing[1]->GetTransform()->SetPositionLocal(FEVector3(0.0f, 0.0f, 0.5f));
 	wmComp->m_pWindmillWing[2]->GetTransform()->SetPositionLocal(FEVector3(0.0f, 0.0f, 0.5f));
-	pWindmill->GetTransform()->SetPositionWorld(FEVector3(10.0f, 0.0f, 0.0f));
+	pWindmill->GetTransform()->SetPositionWorld(FEVector3(-5.0f, -0.0001f, -10.0f));
 	pWindmill->GetTransform()->Rotate(FEVector3(0.0f, 180.0f, 0.0f));
 
 	// 삼단 풍차 타입 2 만들기
@@ -121,27 +120,45 @@ void TriWorldScene::Load()
 	wmComp->m_pWindmillWing[0]->GetTransform()->SetPositionLocal(FEVector3(0.0f, 2.0f, 1.0f));
 	wmComp->m_pWindmillWing[1]->GetTransform()->SetPositionLocal(FEVector3(1.0f, 4.0f, 0.0f));
 	wmComp->m_pWindmillWing[2]->GetTransform()->SetPositionLocal(FEVector3(-0.5f, 6.0f, 0.5f));
-	pWindmill->GetTransform()->SetPositionWorld(FEVector3(-10.0f, 0.0f, 0.0f));
+	pWindmill->GetTransform()->SetPositionWorld(FEVector3(0.0f, 0.0f, -10.0f));
 	pWindmill->GetTransform()->Rotate(FEVector3(0.0f, 180.0f, 0.0f));
 
 	// 영웅 만들기
 	FEGameObject* pHero = FEGameObject::CopyObject(FEGameObject::FindPrefab(6576196112351069742));
 	pHero->GetTransform()->SetRotationDegree(FEVector3(-90.0f, -90.0f, 0.0f));
 	pHero->AddComponent<Hero>()->m_pHero = pHero;
+	
+	// Directional Light 만들기
+	FEGameObject* pDirectionalLight = new FEGameObject();
+	pDirectionalLight->GetTransform()->SetRotationDegree(FEVector3(50.0f, -30.0f, 0.0f));
+	auto light = pDirectionalLight->AddComponent<FELight>();
+	light->m_lightType = FE_LIGHT_TYPE_DIRECTION;
+	light->m_diffuse = FEVector4(1.0f, 1.0f, 1.0f, 1.0f);
+	light->m_ambient = FEVector4(0.2f, 0.2f, 0.2f, 1.0f);
+
+	// Point Light 만들기
+	FEGameObject* pPointLight = new FEGameObject();
+	pPointLight->SetParent(pHero);
+	pPointLight->GetTransform()->SetPositionLocal(FEVector3(0.0f, 0.0f, 1.0f));
+	pPointLight->GetTransform()->m_vScale = FEVector3(0.02f, 0.02f, 0.02f);
+	auto pointLitCom = pPointLight->AddComponent<FELight>();
+	pointLitCom->m_diffuse = FEVector4(1.0f, 0.40784f, 0.090196f, 1.0f);
+	pointLitCom->m_ambient = FEVector4(0.5f, 0.20392f, 0.045098f, 1.0f);
+	pointLitCom->m_range = 25.0f;
+	pointLitCom->m_lightType = FE_LIGHT_TYPE_POINT;
+
+	FEGameObject* pTorch = FEGameObject::CopyObject(FEGameObject::FindPrefab(6379430736193720248));
+	pTorch->SetParent(pPointLight);
+	pTorch->GetRenderer()->m_pMaterial->SetShader(FEShader::Find(2465136134763));
 
 	// 박스 만들기
 	FEGameObject* pBox = FEGameObject::CopyObject(FEGameObject::FindPrefab(2460141765634699607));
-	pBox->GetTransform()->SetPositionWorld(FEVector3(10.0f, 1.0f, 0.0f));
+	pBox->GetTransform()->SetPositionWorld(FEVector3(-3.0f, 1.0f, -25.0f));
 	
+	pSysCom->m_pDirectionalLight = light;
+	pSysCom->m_pPointLight = pointLitCom;
 	pSysCom->m_pTree = pTree;
 	pSysCom->m_pTerrain = pTerrain;
 	pSysCom->m_pHero = pHero;
 	pSysCom->m_pBox = pBox;
-
-	FEMaterial* mtrl;
-	FEVector2 offset, tiling;
-	mtrl = pTerrain->GetChildren().begin()->second->GetRenderer()->m_pMaterial;
-	mtrl->GetTextureOffset(0, offset);
-	mtrl->GetTextureTiling(0, tiling);
-	mtrl->SetVector(0, FEVector4(offset, tiling));
 }

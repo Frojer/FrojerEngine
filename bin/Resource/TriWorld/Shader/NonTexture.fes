@@ -1,0 +1,12 @@
+NonTexture.vso
+NonTexture.pso
+
+ID = 2465136134763
+
+Name = "NonTexture"
+
+Semantics = 13
+CountTexture = 0
+CountMatrix = 0
+CountVector = 0
+CountScalar = 0

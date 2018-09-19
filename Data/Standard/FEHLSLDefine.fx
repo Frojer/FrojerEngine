@@ -49,9 +49,13 @@ cbuffer ObjectCB : register(b3)
 float4 FELighting(float4 pos, float4 nor)
 {
     float alpha = diffuse.a;
+    float4 N = nor;
+    float4 L;
     float4 diff = 0;
     float4 amb = 0;
-    pos.w = nor.w = 0;
+    float dist;
+    
+    N.w = 0;
 
     for (uint i = 0; i < FE_LIGHT_SIZE; i++)
     {
@@ -62,11 +66,19 @@ float4 FELighting(float4 pos, float4 nor)
         {
             // directional light
             case 0:
-                diff += light[i].diffuse * diffuse * abs(dot(nor, vLightLocalDir[i]));
+                //L = vLightLocalDir[i];
+                //diff += max(dot(N, L), 0) * light[i].diffuse * diffuse;
+                //amb = ambient * light[i].ambient;
                 break;
 
             // point light
             case 1:
+                // 로컬 라이팅
+                L = pos - vLightLocalPos[i];
+                dist = length(vLightLocalPos[i] - pos);
+                //L = pos - mul(light[i].position, mView);
+                //dist = length(mul(light[i].position, mView) - pos);
+                diff = 1 - min((dist / light[i].range), 1);
                 break;
 
             // spot light
@@ -74,8 +86,9 @@ float4 FELighting(float4 pos, float4 nor)
                 break;
         }
     }
-    
-    diff.a = alpha;
 
-    return diff;
+    diff.a = alpha;
+    amb.a = 0;
+
+    return diff + amb;
 }

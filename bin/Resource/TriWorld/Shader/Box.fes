@@ -1,0 +1,12 @@
+Box.vso
+Box.pso
+
+ID = 3253463476243
+
+Name = "Box"
+
+Semantics = 13
+CountTexture = 4
+CountMatrix = 0
+CountVector = 1
+CountScalar = 0

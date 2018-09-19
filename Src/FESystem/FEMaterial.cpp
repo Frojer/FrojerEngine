@@ -121,6 +121,8 @@ void FEMaterial::UpdateConstantBufferPerObject(FETransform* tr)
 	tr->GetMyObject();
 	// 월드 * 뷰 행렬 업데이트
 	FEMaterial::_perObjCB.mWV = FEMaterial::_perObjCB.mWorld * FEMaterial::_perCamCB.mView;
+	// 월드 * 뷰 노말 행렬  업데이트
+	//FEMaterial::_perObjCB.mWVNormal = FEMath::FEConvertToAlignData(tr->GetWorldMatrix().Inverse().Transpose()) * FEMaterial::_perCamCB.mView;
 	// 월드 * 뷰 * 프로젝션 행렬 업데이트
 	FEMaterial::_perObjCB.mWVP = FEMaterial::_perObjCB.mWorld * FEMaterial::_perCamCB.mView * FEMaterial::_perCamCB.mProj;
 	
@@ -139,7 +141,7 @@ void FEMaterial::UpdateConstantBufferPerObject(FETransform* tr)
 			FEMaterial::_perObjCB.vLightLocalDir[i] = FEMaterial::_lightCB[i].direction * FEConvertToAlignData(tr->GetRotationMatrix().Inverse());
 			break;
 		case FE_LIGHT_TYPE_POINT:
-			FEMaterial::_perObjCB.vLightLocalDir[i] = FEMaterial::_lightCB[i].direction * FEConvertToAlignData(tr->GetPositionMatrix().Inverse());
+			FEMaterial::_perObjCB.vLightLocalPos[i] = FEMaterial::_lightCB[i].position * FEConvertToAlignData(tr->GetWorldMatrix().Inverse());
 			break;
 		}
 
