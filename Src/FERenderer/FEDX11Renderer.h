@@ -42,6 +42,8 @@ private:
 	std::unordered_map<BYTE, ID3D11RasterizerState*> _RSStateMap;
 	// ±Ì¿Ã/Ω∫≈ŸΩ« πˆ∆€ ªÛ≈¬∞¥√º.
 	std::unordered_map<DWORD, ID3D11DepthStencilState*> _DSStateMap;
+	// BlendState ªÛ≈¬∞¥√º.
+	std::vector<std::pair<FE_BLEND_DESC, ID3D11BlendState*> > _BlendStateArr;
 	// SamplerState ªÛ≈¬∞¥√º
 	std::vector<std::pair<FE_SAMPLER_STATE_FLAG, ID3D11SamplerState*> > _smpStateArr;
 
@@ -64,13 +66,18 @@ private:
 	void DSStateRelease();
 	void DSStateLoad();
 
+	// ±Ì¿Ã/Ω∫≈ŸΩ« πˆ∆€ ªÛ≈¬∞¥√º
+	ID3D11BlendState* BlendStateCreate(const FE_BLEND_DESC& desc);
+	void BlendStateRelease();
+	void BlendStateLoad();
+
 public:
 	FEDX11Renderer();
 	virtual ~FEDX11Renderer();
 
 	virtual void SetRSState(BYTE flag) override;
 	virtual void SetDSState(DWORD flag, UINT stencilRef) override;
-	//virtual void SetBlendState(BLEND_STATE bs) override;
+	virtual void SetBlendState(const FE_BLEND_DESC& desc) override;
 
 	virtual void SetViewports(UINT NumViewports, const FEViewport *pViewports) override;
 

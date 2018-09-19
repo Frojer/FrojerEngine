@@ -259,8 +259,6 @@ void FEDX11Renderer::RasterStateCreate(BYTE flag)
 
 	_pDevice->CreateRasterizerState(&rd, &_RSStateMap[flag]);
 }
-
-
 void FEDX11Renderer::RasterStateRelease()
 {
 	FOR_STL(_RSStateMap)
@@ -270,8 +268,6 @@ void FEDX11Renderer::RasterStateRelease()
 
 	_RSStateMap.clear();
 }
-
-
 void FEDX11Renderer::RasterStateLoad()
 {
 	RasterStateCreate(FE_RS_SOLID);
@@ -558,8 +554,6 @@ void FEDX11Renderer::DSStateCreate(DWORD flag)
 
 	_pDevice->CreateDepthStencilState(&ds, &_DSStateMap[flag]);
 }
-
-
 void FEDX11Renderer::DSStateRelease()
 {
 	FOR_STL(_DSStateMap)
@@ -569,8 +563,6 @@ void FEDX11Renderer::DSStateRelease()
 
 	_DSStateMap.clear();
 }
-
-
 void FEDX11Renderer::DSStateLoad()
 {
 	//----------------------------------------------------------------
@@ -585,6 +577,45 @@ void FEDX11Renderer::DSStateLoad()
 	DSStateCreate(FE_DS_STENCIL_ON | FE_DS_STENCIL_FRONT_COMPARISON_NOT_EQUAL | FE_DS_STENCIL_BACK_COMPARISON_NOT_EQUAL);
 }
 
+
+ID3D11BlendState* FEDX11Renderer::BlendStateCreate(const FE_BLEND_DESC& desc)
+{
+	ID3D11BlendState* pBS;
+	D3D11_BLEND_DESC bd;
+	bd.AlphaToCoverageEnable = desc.AlphaToCoverageEnable;
+	bd.IndependentBlendEnable = desc.IndependentBlendEnable;
+	for (UINT i = 0; i < 8; i++)
+	{
+		bd.RenderTarget[i].BlendEnable = desc.RenderTarget[i].BlendEnable;
+		bd.RenderTarget[i].SrcBlend = (D3D11_BLEND)desc.RenderTarget[i].SrcBlend;
+		bd.RenderTarget[i].DestBlend = (D3D11_BLEND)desc.RenderTarget[i].DestBlend;
+		bd.RenderTarget[i].BlendOp = (D3D11_BLEND_OP)desc.RenderTarget[i].BlendOp;
+		bd.RenderTarget[i].SrcBlendAlpha = (D3D11_BLEND)desc.RenderTarget[i].SrcBlendAlpha;
+		bd.RenderTarget[i].DestBlendAlpha = (D3D11_BLEND)desc.RenderTarget[i].DestBlendAlpha;
+		bd.RenderTarget[i].BlendOpAlpha = (D3D11_BLEND_OP)desc.RenderTarget[i].BlendOpAlpha;
+		bd.RenderTarget[i].RenderTargetWriteMask = desc.RenderTarget[i].RenderTargetWriteMask;
+	}
+
+	_pDevice->CreateBlendState(&bd, &pBS);
+
+	_BlendStateArr.push_back(std::pair<FE_BLEND_DESC, ID3D11BlendState*>(desc, pBS));
+
+	return pBS;
+}
+void FEDX11Renderer::BlendStateRelease()
+{
+	for (UINT i = 0; i < _BlendStateArr.size(); i++)
+	{
+		SAFE_RELEASE(_BlendStateArr[i].second);
+	}
+
+	_BlendStateArr.clear();
+}
+void FEDX11Renderer::BlendStateLoad()
+{
+	FE_BLEND_DESC bd;
+	BlendStateCreate(bd);
+}
 
 void FEDX11Renderer::SetRSState(BYTE flag)
 {
@@ -605,6 +636,21 @@ void FEDX11Renderer::SetDSState(DWORD flag, UINT stencilRef)
 	}
 
 	_pDXDC->OMSetDepthStencilState(_DSStateMap[flag], stencilRef);
+}
+
+
+void FEDX11Renderer::SetBlendState(const FE_BLEND_DESC& desc)
+{
+	for (UINT i = 0; i < _BlendStateArr.size(); i++)
+	{
+		if (_BlendStateArr[i].first == desc)
+		{
+			_pDXDC->OMSetBlendState(_BlendStateArr[i].second, NULL, 0xFFFFFFFF);
+			return;
+		}
+	}
+
+	_pDXDC->OMSetBlendState(BlendStateCreate(desc), NULL, 0xFFFFFFFF);
 }
 
 

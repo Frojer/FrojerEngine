@@ -91,7 +91,8 @@ void FEDebug::DrawNormal(FEGameObject* pObj, FEVector4 col)
 		{
 			start = pos[i] * mWorld;
 			//end = (pos[i] + nor[i]) * mWorld;
-			end = (pos[i] * mWorld) + (nor[i] * pObj->GetTransform()->GetRotationMatrix());
+			end = (nor[i] * pObj->GetTransform()->GetRotationMatrix());
+			end += (pos[i] * mWorld);
 
 			DrawLine(start, end, col);
 		}

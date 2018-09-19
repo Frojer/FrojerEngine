@@ -45,6 +45,7 @@
     <ClInclude Include="TriWorldSystem.h">
       <Filter>Component\Header File</Filter>
     </ClInclude>
+    <ClInclude Include="Windmill.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FEUserScene.cpp" />
@@ -66,5 +67,6 @@
     <ClCompile Include="TriWorldSystem.cpp">
       <Filter>Component\Source File</Filter>
     </ClCompile>
+    <ClCompile Include="Windmill.cpp" />
   </ItemGroup>
 </Project>

@@ -1,10 +1,5 @@
 #include "FEHLSLDefine.fx"
 
-cbuffer ConstantBuffer
-{
-	float4 ot;
-};
-
 //VS 출력 구조체.
 struct v2p
 {
@@ -78,6 +73,8 @@ float4 PS_Main(v2p i) : SV_TARGET
     float4 texDiff = tex.Sample(smp, i.uv);
 	//float4 col2 = {1, 0, 1, 1};
 	
+    clip(texDiff.a < 0.25 ? -1 : 1);
+
     //return 1;
     //return vLightLocalDir[0];
     //return light[0].ambient;

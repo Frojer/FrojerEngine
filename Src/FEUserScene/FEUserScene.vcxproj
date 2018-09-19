@@ -183,6 +183,7 @@
     <ClInclude Include="TriWorldScene.h" />
     <ClInclude Include="TriWorldSystem.h" />
     <ClInclude Include="UserScenes.h" />
+    <ClInclude Include="Windmill.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimScene.cpp" />
@@ -192,6 +193,7 @@
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="TriWorldScene.cpp" />
     <ClCompile Include="TriWorldSystem.cpp" />
+    <ClCompile Include="Windmill.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

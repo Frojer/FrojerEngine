@@ -3,9 +3,9 @@
 #define _FE_RENDERER_COMPONENT
 
 #include "FEObjectHeader.h"
+#include <IFERenderer.h>
 
 class FEMesh;
-enum BLEND_STATE;
 
 enum CULL_MODE
 {
@@ -43,7 +43,7 @@ class FERenderer : public FEBehaviour
 private:
 	BYTE _RSState;
 	DWORD _DSState;
-	//BLEND_STATE _BlendState;
+	FE_BLEND_DESC _BlendState;
 
 public:
 	UINT m_stencilRef;
@@ -82,7 +82,8 @@ public:
 	void SetStencilPassOpBack(STENCIL_OP op);
 	void SetStencilFuncBack(COMPARISON_FUNC func);
 
-	void SetBlendState(BLEND_STATE bs);
+	void SetBlendState(const FE_BLEND_DESC& bs);
+	FE_BLEND_DESC GetBlendState();
 };
 
 #endif

@@ -8,6 +8,8 @@
 #include "FERendererDefine.h"
 #include "IFEBuffer.h"
 
+struct FE_BLEND_DESC;
+
 struct FESystemSetting
 {
 	UINT uiWindowWidth, uiWindowHeight;
@@ -52,7 +54,7 @@ public:
 
 	virtual void SetRSState(BYTE flag) = 0;
 	virtual void SetDSState(DWORD flag, UINT stencilRef) = 0;
-	//virtual void SetBlendState(BLEND_STATE bs) = 0;
+	virtual void SetBlendState(const FE_BLEND_DESC& desc) = 0;
 
 	virtual void SetViewports(UINT NumViewports, const FEViewport *pViewports) = 0;
 

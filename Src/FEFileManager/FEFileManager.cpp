@@ -753,7 +753,7 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 
 								f >> i >> x >> y >> z;
 								vTex[i].x = x;
-								vTex[i].y = y;
+								vTex[i].y = -y;
 							}
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("MESH_NUMTVFACES")))
@@ -1068,7 +1068,8 @@ void FEFileManager::ConvertAllFileInPath(tstring i_filePath)
 
 		else if (TCSCMP_SAME(extension.c_str(), FE_TEXT("png"))
 			|| TCSCMP_SAME(extension.c_str(), FE_TEXT("jpg"))
-			|| TCSCMP_SAME(extension.c_str(), FE_TEXT("bmp")))
+			|| TCSCMP_SAME(extension.c_str(), FE_TEXT("bmp"))
+			|| TCSCMP_SAME(extension.c_str(), FE_TEXT("dds")))
 		{
 			if (_taccess((_outPath + i_filePath + fd.name + FE_TEXT(".fet")).c_str(), 0) == -1)
 				ConvertTextureFile(_dataPath + i_filePath, _outPath + i_filePath, fd.name);
@@ -1117,24 +1118,11 @@ void FEFileManager::ExportFile(tstring i_filePath, tstring i_outPath, const FEMe
 }
 void FEFileManager::ExportFile(tstring i_filePath, tstring i_outPath, const FEShader* i_pShader)
 {
-	/*tofstream f(i_filePath + i_pShader->m_Name + FE_TEXT(".fem"));
-
-	f << FE_TEXT("Semantics = ") << i_pShader->GetSemantics() << std::endl;
-	f << FE_TEXT("CountTexture = ") << i_pShader->GetCountTexture() << std::endl;
-	f << FE_TEXT("CountMatrix = ") << i_pShader->GetCountMatrix() << std::endl;
-	f << FE_TEXT("CountVector = ") << i_pShader->GetCountVector() << std::endl;
-	f << FE_TEXT("CountScalar = ") << i_pShader->GetCountScalar() << std::endl;
-	f << FE_TEXT("UseLight = ") << i_pShader->IsUseLight();
-
-	f.close();*/
+	
 }
 void FEFileManager::ExportFile(tstring i_filePath, tstring i_outPath, const FEMaterial* i_pMtrl)
 {
-	tofstream f(i_filePath + i_pMtrl->m_Name + FE_TEXT(".fem"));
 
-	f << FE_TEXT("Shader = ") << i_pMtrl->GetShader()->m_Name << std::endl;
-
-	f.close();
 }
 
 

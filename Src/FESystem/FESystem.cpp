@@ -64,19 +64,11 @@ bool FESystem::LoadData()
 
 	FEShader::CreateDefaultConstantBuffer();
 
+	//// 기본 텍스쳐 생성
+	//FELoader::LoadTexture(FE_TEXT("Resource/Standard/"), FE_TEXT("Default.png.fet"));
+	//FELoader::LoadTexture(FE_TEXT("Resource/Standard/"), FE_TEXT("Error.png.fet"));
 	//// 기본 셰이더 생성
-	//FEShader* pShader = new FEShader(CreateUUIDHashCode64());
-	//pShader->m_Name = FE_TEXT("Standard");
-
-	////str = START_PATH;
-	////str.append(FE_TEXT("shd/"));
-	////pShader->CreateShader((str + FE_TEXT("Standard.vso")).c_str(), (str + FE_TEXT("Standard.pso")).c_str(), static_cast<FE_SHADER_SEMANTICS>(3));
-
-	//pShader->_countMatrix = 0;
-	//pShader->_countVector = 0;
-	//pShader->_countScalar = 0;
-
-	// 기본 텍스쳐 생성
+	//FELoader::LoadShader(FE_TEXT("Resource/Standard/"), FE_TEXT("Standard.fes"));
 	
 	// 모든 파일 로드
 	FELoader::FindTextureFile(START_PATH);

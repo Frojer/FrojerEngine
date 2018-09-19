@@ -3,6 +3,7 @@
 #include "FEDX11Renderer.h"
 #include <FEUtility.h>
 #include <WICTextureLoader.h>
+#include <DDSTextureLoader.h>
 
 #pragma comment(lib, "DirectXTK")
 
@@ -26,11 +27,11 @@ bool FEDX11Texture::Create(LPCTSTR filename)
 	tstring extension;
 	extension = GetFileNameExtension(filename);
 
-	//if (extension == FE_TEXT("jpg") || extension == FE_TEXT("png"))
+	if (extension == FE_TEXT("jpg") || extension == FE_TEXT("png") || extension == FE_TEXT("bmp"))
 		hr = DirectX::CreateWICTextureFromFile(pRenderer->GetDevice(), filename, nullptr, &_pTextureRV);
 
-	//else if (extension == FE_TEXT("dds"))
-	//	hr = DirectX::CreateDDSTextureFromFile(pRenderer->GetDevice(), filename, nullptr, &_pTextureRV);
+	else if (extension == FE_TEXT("dds"))
+		hr = DirectX::CreateDDSTextureFromFile(pRenderer->GetDevice(), filename, nullptr, &_pTextureRV);
 
 	//else return false;
 
