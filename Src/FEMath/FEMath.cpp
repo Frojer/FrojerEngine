@@ -553,7 +553,7 @@ void FEMatrix::SetIdentity()
 }
 FEMatrix& FEMatrix::Inverse(FEVector4* pDeterminant)
 {
-	*this = FEMath::FEConvertToMatrix(XMMatrixInverse(pDeterminant == nullptr ? nullptr : &FEMath::FEConvertToAlignData(*pDeterminant), FEMath::FEConvertToAlignData(*this)));
+	*this = XMMatrixInverse(pDeterminant == nullptr ? nullptr : &FEMath::FEConvertToAlignData(*pDeterminant), FEMath::FEConvertToAlignData(*this));
 	return *this;
 }
 FEMatrix& FEMatrix::Transpose()

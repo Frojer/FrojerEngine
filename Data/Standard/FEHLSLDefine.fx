@@ -41,16 +41,23 @@ cbuffer ObjectCB : register(b3)
     matrix mRP;
     matrix mWorld;
     matrix mWV;
+    matrix mWVNormal;
     matrix mWVP;
     float4 vLightLocalPos[FE_LIGHT_SIZE];
     float4 vLightLocalDir[FE_LIGHT_SIZE];
 };
+
+float4 FEMask(float4 a, float4 b, float mask)
+{
+    return (a * mask) + (b * (1 - mask));
+}
 
 float4 FELighting(float4 pos, float4 nor)
 {
     float alpha = diffuse.a;
     float4 N = nor;
     float4 L;
+    float4 lightPos;
     float4 diff = 0;
     float4 amb = 0;
     float dist;
@@ -66,19 +73,17 @@ float4 FELighting(float4 pos, float4 nor)
         {
             // directional light
             case 0:
-                //L = vLightLocalDir[i];
-                //diff += max(dot(N, L), 0) * light[i].diffuse * diffuse;
-                //amb = ambient * light[i].ambient;
+                L = mul(light[i].direction, mView);
+                diff += max(dot(N, L), 0) * diffuse * light[i].diffuse;
+                amb = ambient * light[i].ambient;
                 break;
 
             // point light
             case 1:
-                // 로컬 라이팅
-                L = pos - vLightLocalPos[i];
-                dist = length(vLightLocalPos[i] - pos);
-                //L = pos - mul(light[i].position, mView);
-                //dist = length(mul(light[i].position, mView) - pos);
-                diff = 1 - min((dist / light[i].range), 1);
+                lightPos = mul(light[i].position, mView);
+                L = -normalize(pos - lightPos);
+                dist = length(lightPos - pos);
+                diff += max(dot(N, L), 0) * diffuse * light[i].diffuse * (1 - min((dist / light[i].range), 1));
                 break;
 
             // spot light

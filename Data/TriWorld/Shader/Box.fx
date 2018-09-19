@@ -4,35 +4,35 @@
 struct v2p
 {
     float4 pos : SV_POSITION;
-    float4 col : COLOR0;
-    float4 nor : NORMAL;
     float2 uv : TEXCOORD0;
+    float4 pos3d : TEXCOORD1;
+    float4 nor3d : TEXCOORD2;
 };
 
 cbuffer ConstantBuffer
 {
-    
+    vector AutumnColor;
+    uint seasonIndex;
 }
 
 Texture2D texDiff : register(t0);
 Texture2D texMoss : register(t1);
 Texture2D texMask : register(t2);
-Texture2D texSnow : register(t3);
+Texture2D texWinter : register(t3);
 SamplerState smp;
 
 v2p VS_Main(float4 pos : POSITION,
             float4 nor : NORMAL,
             float2 uv : TEXCOORD0)
 {
-    v2p o = (v2p)0;
+    v2p o = (v2p) 0;
+
     pos.w = 1.0f;
-
-    o.col = FELighting(pos, nor);
+    nor.w = 0.0f;
     
-    pos = mul(pos, mWVP);
-
-	o.pos = pos;
-	o.nor = nor;
+    o.pos3d = mul(pos, mWV);
+    o.nor3d = normalize(mul(nor, mWV));
+    o.pos = mul(o.pos3d, mProj);
     o.uv = uv;
 
     return o;
@@ -40,10 +40,34 @@ v2p VS_Main(float4 pos : POSITION,
 
 float4 PS_Main(v2p i) : SV_TARGET
 {
-    float4 diff = texDiff.Sample(smp, i.uv);
+    float4 tex = texDiff.Sample(smp, i.uv);
     float4 moss = texMoss.Sample(smp, i.uv);
-    float4 mask = texMask.Sample(smp, i.uv);
-    float4 snow = texSnow.Sample(smp, i.uv);
+    float4 winterMask = texWinter.Sample(smp, i.uv);
+    float4 diff = 1;
 
-    return diff * i.col;
+    switch (seasonIndex)
+    {
+        case 0:
+            diff = FEMask(moss, tex, texMask.Sample(smp, i.uv).x);
+            break;
+
+        case 1:
+            moss *= AutumnColor;
+            moss *= 1.5f;
+            diff = FEMask(moss, tex, texMask.Sample(smp, i.uv).x);
+            break;
+
+        case 2:
+            diff = FEMask(moss, tex, texMask.Sample(smp, i.uv).x);
+            diff = ((diff * (1 - winterMask)) + winterMask);
+            break;
+    }
+	
+    diff *= FELighting(i.pos3d, i.nor3d);
+    
+    diff.a = tex.a;
+
+    clip(diff.a < 0.3f ? -1 : 1);
+
+    return diff;
 }

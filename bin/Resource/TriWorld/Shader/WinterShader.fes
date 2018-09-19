@@ -1,0 +1,12 @@
+WinterShader.vso
+WinterShader.pso
+
+ID = 7251236472355
+
+Name = "WinterShader"
+
+Semantics = 13
+CountTexture = 2
+CountMatrix = 0
+CountVector = 1
+CountScalar = 1

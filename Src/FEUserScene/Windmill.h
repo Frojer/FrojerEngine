@@ -1,6 +1,7 @@
 #pragma once
 
 #include <FEObjectHeader.h>
+#include "TriWorldSystem.h"
 
 enum WINDMILL_TYPE
 {
@@ -12,6 +13,7 @@ enum WINDMILL_TYPE
 class Windmill : public FEBehaviour
 {
 public:
+	TriWorldSystem* m_pSystem;
 	WINDMILL_TYPE m_type;
 	FEGameObject* m_pWindmillBody;
 	FEGameObject* m_pWindmillWing[3];

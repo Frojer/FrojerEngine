@@ -1,0 +1,8 @@
+ID = 자신의 ID (원래는 자동으로 UUID를 할당받아야하지만 일단은 수동으로 할당해주자)
+ShaderID = 사용하고자 하는 셰이더ID (이 ID를 통해 이 머테리얼이 어떤 셰이더를 사용하는지 결정)
+
+Name = "MaterialName" (어떤 이름으로 저장될지 작성)
+Diffuse	0.5882	0.5882	0.5882	1	(Diffuse 색상 작성)
+Ambient	0.5882	0.5882	0.5882		(Ambient 색상 작성)
+Specular	0.9	0.9	0.9				(Specular 색상 작성)
+Power = 10							(Specular 파워 작성)

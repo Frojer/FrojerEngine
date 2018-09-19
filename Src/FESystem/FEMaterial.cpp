@@ -122,7 +122,8 @@ void FEMaterial::UpdateConstantBufferPerObject(FETransform* tr)
 	// 월드 * 뷰 행렬 업데이트
 	FEMaterial::_perObjCB.mWV = FEMaterial::_perObjCB.mWorld * FEMaterial::_perCamCB.mView;
 	// 월드 * 뷰 노말 행렬  업데이트
-	//FEMaterial::_perObjCB.mWVNormal = FEMath::FEConvertToAlignData(tr->GetWorldMatrix().Inverse().Transpose()) * FEMaterial::_perCamCB.mView;
+	FEMatrix mTM = tr->GetWorldMatrix();
+	FEMaterial::_perObjCB.mWVNormal = FEMath::FEConvertToAlignData(mTM.Inverse().Transpose()) * FEMaterial::_perCamCB.mView;
 	// 월드 * 뷰 * 프로젝션 행렬 업데이트
 	FEMaterial::_perObjCB.mWVP = FEMaterial::_perObjCB.mWorld * FEMaterial::_perCamCB.mView * FEMaterial::_perCamCB.mProj;
 	

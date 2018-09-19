@@ -38,7 +38,7 @@ private:
 	ID3D11Texture2D*		 _pDS;			// 깊이-스텐실 버퍼.
 	ID3D11DepthStencilView*  _pDSView;		// 깊이-스텐실 뷰.
 
-	//상태 객체 배열 : "기능별" 그룹으로 관리합니다.
+	// 래스터라이저 상태객체
 	std::unordered_map<BYTE, ID3D11RasterizerState*> _RSStateMap;
 	// 깊이/스텐실 버퍼 상태객체.
 	std::unordered_map<DWORD, ID3D11DepthStencilState*> _DSStateMap;

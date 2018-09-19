@@ -8,8 +8,6 @@
 #include <FEGameObject.h>
 #include <windows.h>
 
-#define TREE_MAX 300
-
 TriWorldScene::TriWorldScene()
 {
 }
@@ -22,7 +20,9 @@ TriWorldScene::~TriWorldScene()
 
 void TriWorldScene::Load()
 {
-	IFEScene::s_BGColor = FEVector4(0, 0.125f, 0.3f, 1);
+#define AUTUMN_COLOR FEVector4(1.5f, 0.75f, 0.0f, 1.0f)
+
+	IFEScene::s_BGColor = FEVector4(0.45098f, 0.76862f, 1.0f, 1.0f);
 
 	// 시스템 생성
 	FEGameObject* pSystem = new FEGameObject(FEVector3::One, FEVector3::Zero, FEVector3::One);
@@ -42,7 +42,10 @@ void TriWorldScene::Load()
 	// 터레인 만들기
 	FEGameObject* pTerrain = FEGameObject::CopyObject(FEGameObject::FindPrefab(5697116093628749358));
 	pTerrain->GetTransform()->m_vScale = FEVector3(0.5f, 0.5f, 0.5f);
-	//pTerrain->GetChildren().begin()->second->GetRenderer()->m_pMaterial->SetShader(FEShader::Find(FE_TEXT("Terrain")));
+	pSysCom->m_pTerrainMtrl = pTerrain->GetChildren().begin()->second->GetRenderer()->m_pMaterial;
+	pSysCom->m_pTerrainMtrl->SetShader(FEShader::Find(FE_TEXT("WinterShader")));
+	pSysCom->m_pTerrainMtrl->SetVector(0, AUTUMN_COLOR);
+	pSysCom->m_pTerrainMtrl->SetTexture(1, FETexture::Find(1658363954890942618));
 	//FEVector2 offset;
 	//FEVector2 tiling;
 	//pTerrain->GetChildren().begin()->second->GetRenderer()->m_pMaterial->GetTextureOffset(0, offset);
@@ -52,6 +55,11 @@ void TriWorldScene::Load()
 
 	// 나무 만들기
 	FEGameObject* pTree = FEGameObject::CopyObject(FEGameObject::FindPrefab(7465656355178739812));
+	pSysCom->m_pTrees[0] = pTree;
+	pSysCom->m_pTreeMtrl = pTree->GetChildren().begin()->second->GetRenderer()->m_pMaterial;
+	pSysCom->m_pTreeMtrl->SetShader(FEShader::Find(FE_TEXT("WinterShader")));
+	pSysCom->m_pTreeMtrl->SetVector(0, AUTUMN_COLOR);
+	pSysCom->m_pTreeMtrl->SetTexture(1, FETexture::Find(-8342061839902120095));
 	/*FE_BLEND_DESC bd;
 	bd.RenderTarget[0].BlendEnable = true;
 	bd.RenderTarget[0].BlendOp = FE_BLEND_OP_ADD;
@@ -67,11 +75,18 @@ void TriWorldScene::Load()
 		pTree = FEGameObject::CopyObject(pTree);
 		pTree->GetTransform()->SetPositionWorld(pos);
 		pTree->GetTransform()->SetRotationDegree(FEVector3(0.0f, 180.0f, 0.0f));
+
+		pSysCom->m_pTrees[i] = pTree;
 	}
 
 	// 일반 풍차 만들기
 	FEGameObject* pWindmill = FEGameObject::CopyObject(FEGameObject::FindPrefab(8507257348452055230));
+	pSysCom->m_pWindmillMtrl = pWindmill->GetChildren().begin()->second->GetRenderer()->m_pMaterial;
+	pSysCom->m_pWindmillMtrl->SetShader(FEShader::Find(FE_TEXT("WinterShader")));
+	pSysCom->m_pWindmillMtrl->SetVector(0, FEVector4::One);
+	pSysCom->m_pWindmillMtrl->SetTexture(1, FETexture::Find(-2299588805160112115));
 	auto wmComp = pWindmill->AddComponent<Windmill>();
+	wmComp->m_pSystem = pSysCom;
 	wmComp->m_type = WINDMILL_NORMAL;
 	wmComp->m_pWindmillBody = pWindmill->GetChildren().begin()->second;
 	wmComp->m_pWindmillWing[0] = (++pWindmill->GetChildren().begin())->second;
@@ -83,6 +98,7 @@ void TriWorldScene::Load()
 	// 삼단 풍차 만들기
 	pWindmill = FEGameObject::CopyObject(FEGameObject::FindPrefab(8507257348452055230));
 	wmComp = pWindmill->AddComponent<Windmill>();
+	wmComp->m_pSystem = pSysCom;
 	wmComp->m_type = WINDMILL_TRIPLE_TYPE1;
 	wmComp->m_pWindmillBody = pWindmill->GetChildren().begin()->second;
 	wmComp->m_pWindmillBody->GetTransform()->m_vScale.y = 2.0f;
@@ -104,6 +120,7 @@ void TriWorldScene::Load()
 	// 삼단 풍차 타입 2 만들기
 	pWindmill = FEGameObject::CopyObject(FEGameObject::FindPrefab(8507257348452055230));
 	wmComp = pWindmill->AddComponent<Windmill>();
+	wmComp->m_pSystem = pSysCom;
 	wmComp->m_type = WINDMILL_TRIPLE_TYPE2;
 	wmComp->m_pWindmillBody = pWindmill->GetChildren().begin()->second;
 	wmComp->m_pWindmillBody->GetTransform()->m_vScale.y = 2.0f;
@@ -139,12 +156,12 @@ void TriWorldScene::Load()
 	// Point Light 만들기
 	FEGameObject* pPointLight = new FEGameObject();
 	pPointLight->SetParent(pHero);
-	pPointLight->GetTransform()->SetPositionLocal(FEVector3(0.0f, 0.0f, 1.0f));
+	pPointLight->GetTransform()->SetPositionLocal(FEVector3(1.5f, 0.0f, 1.0f));
 	pPointLight->GetTransform()->m_vScale = FEVector3(0.02f, 0.02f, 0.02f);
 	auto pointLitCom = pPointLight->AddComponent<FELight>();
 	pointLitCom->m_diffuse = FEVector4(1.0f, 0.40784f, 0.090196f, 1.0f);
 	pointLitCom->m_ambient = FEVector4(0.5f, 0.20392f, 0.045098f, 1.0f);
-	pointLitCom->m_range = 25.0f;
+	pointLitCom->m_range = 15.0f;
 	pointLitCom->m_lightType = FE_LIGHT_TYPE_POINT;
 
 	FEGameObject* pTorch = FEGameObject::CopyObject(FEGameObject::FindPrefab(6379430736193720248));
@@ -153,11 +170,16 @@ void TriWorldScene::Load()
 
 	// 박스 만들기
 	FEGameObject* pBox = FEGameObject::CopyObject(FEGameObject::FindPrefab(2460141765634699607));
+	pSysCom->m_pBoxMtrl = pBox->GetChildren().begin()->second->GetRenderer()->m_pMaterial;
+	pSysCom->m_pBoxMtrl->SetShader(FEShader::Find(FE_TEXT("Box")));
+	pSysCom->m_pBoxMtrl->SetVector(0, AUTUMN_COLOR);
+	pSysCom->m_pBoxMtrl->SetTexture(1, FETexture::Find(1790542892283644886));
+	pSysCom->m_pBoxMtrl->SetTexture(2, FETexture::Find(-9117736830242202577));
+	pSysCom->m_pBoxMtrl->SetTexture(3, FETexture::Find(3226161949705243547));
 	pBox->GetTransform()->SetPositionWorld(FEVector3(-3.0f, 1.0f, -25.0f));
 	
 	pSysCom->m_pDirectionalLight = light;
 	pSysCom->m_pPointLight = pointLitCom;
-	pSysCom->m_pTree = pTree;
 	pSysCom->m_pTerrain = pTerrain;
 	pSysCom->m_pHero = pHero;
 	pSysCom->m_pBox = pBox;

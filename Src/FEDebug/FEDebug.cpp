@@ -32,7 +32,7 @@ void FEDebug::Release()
 
 void FEDebug::DrawLine(FEVector3 start, FEVector3 end, FEVector4 color)
 {
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	FEVector3 point[2];
 
 	if (_pLineVB == nullptr)
@@ -73,12 +73,12 @@ void FEDebug::DrawLine(FEVector3 start, FEVector3 end, FEVector4 color)
 
 		IFERenderer::GetInstance()->Draw(2, 0);
 	}
-#endif
+//#endif
 }
 
 void FEDebug::DrawNormal(FEGameObject* pObj, FEVector4 col)
 {
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	if (pObj->GetRenderer() != nullptr)
 	{
 		std::vector<FEVector3> pos = pObj->GetRenderer()->m_pMesh->m_pos;
@@ -104,7 +104,7 @@ void FEDebug::DrawNormal(FEGameObject* pObj, FEVector4 col)
 	{
 		DrawNormal(iter->second, col);
 	}
-#endif
+//#endif
 }
 
 

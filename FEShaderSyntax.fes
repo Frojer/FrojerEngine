@@ -1,0 +1,12 @@
+ShaderObject.vso (FEFileConverter를 실행하면 HLSL 언어들이 컴파일되어 오브젝트형식으로 출력되는데 이곳에 사용하고자하는 셰이더 오브젝트의 상대위치를 적어준다) 
+ShaderObject.pso
+
+ID = 자신의 ID (원래는 자동으로 UUID를 할당받아야하지만 일단은 수동으로 할당해주자)
+
+Name = "ShaderName" (어떤 이름으로 저장될지 작성)
+
+Semantics = 13 (Semantics의 Flag값이다. IFEShader.h 에서 FE_SHADER_SEMANTICS를 참고하자)
+CountTexture = 0 (셰이더에서 사용하는 텍스쳐의 개수)
+CountMatrix = 0 (셰이더에서 사용하는 상수버퍼에서 행렬의 개수)
+CountVector = 0 (셰이더에서 사용하는 상수버퍼에서 벡터의 개수)
+CountScalar = 0 (셰이더에서 사용하는 상수버퍼에서 스칼라의 개수)

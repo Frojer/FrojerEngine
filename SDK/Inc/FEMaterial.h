@@ -61,8 +61,8 @@ private:
 		FEMatrixA mScale;
 		FEMatrixA mRP;
 		FEMatrixA mWorld;
-		//FEMatrixA mWVNormal;
 		FEMatrixA mWV;
+		FEMatrixA mWVNormal;
 		FEMatrixA mWVP;
 		FEVectorA vLightLocalPos[FE_LIGHT_SIZE];
 		FEVectorA vLightLocalDir[FE_LIGHT_SIZE];
