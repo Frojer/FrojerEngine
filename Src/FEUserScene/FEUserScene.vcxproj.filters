@@ -45,8 +45,10 @@
     <ClInclude Include="TriWorldSystem.h">
       <Filter>Component\Header File</Filter>
     </ClInclude>
-    <ClInclude Include="Windmill.h" />
     <ClInclude Include="Hero.h">
+      <Filter>Component\Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="Windmill.h">
       <Filter>Component\Header File</Filter>
     </ClInclude>
   </ItemGroup>
@@ -70,8 +72,10 @@
     <ClCompile Include="TriWorldSystem.cpp">
       <Filter>Component\Source File</Filter>
     </ClCompile>
-    <ClCompile Include="Windmill.cpp" />
     <ClCompile Include="Hero.cpp">
+      <Filter>Component\Source File</Filter>
+    </ClCompile>
+    <ClCompile Include="Windmill.cpp">
       <Filter>Component\Source File</Filter>
     </ClCompile>
   </ItemGroup>

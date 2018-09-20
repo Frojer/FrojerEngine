@@ -40,7 +40,7 @@ public:
 	FEMaterial* m_pTerrainMtrl;
 	FEMaterial* m_pTreeMtrl;
 	FEMaterial* m_pBoxMtrl;
-	FEMaterial* m_pHeroMtrl;
+	FEMaterial* m_pHeroMtrl[6];
 	FEMaterial* m_pWindmillMtrl;
 public:
 	TriWorldSystem();

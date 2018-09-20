@@ -4,6 +4,7 @@
 #include <FEDefine.h>
 #include <FEUtility.h>
 #include <FESceneManager.h>
+#include <FEDebug.h>
 
 FESystem* FESystem::_pInstance = nullptr;
 
@@ -104,9 +105,10 @@ void FESystem::Run()
 		FESceneManager::_pCurrentScene->Initialize();
 		FESceneManager::_pCurrentScene->Update();
 
+		pRenderer->ClearBackBuffer(FESceneManager::_pCurrentScene->s_BGColor);
+		FEDebug::GetInstance()->RenderLineDrawQueue();
 		FESceneManager::_pCurrentScene->Render();
 		pRenderer->Flip();
-		pRenderer->ClearBackBuffer(FESceneManager::_pCurrentScene->s_BGColor);
 	}
 }
 

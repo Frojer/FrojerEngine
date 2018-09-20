@@ -8,5 +8,5 @@ Name = "WinterShader"
 Semantics = 13
 CountTexture = 2
 CountMatrix = 0
-CountVector = 2
-CountScalar = 1
+CountVector = 3
+CountScalar = 3

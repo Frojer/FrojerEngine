@@ -55,7 +55,7 @@ void TriWorldScene::Load()
 	//pTerrain->GetChildren().begin()->second->GetRenderer()->m_pMaterial->SetVector(0, FEVector4(offset, tiling));
 
 	// 나무 만들기
-	FEGameObject* pTree = FEGameObject::CopyObject(FEGameObject::FindPrefab(7465656355178739812));
+	FEGameObject* pTree = FEGameObject::CopyObject(FEGameObject::FindPrefab(-4863405685890633829));
 	pSysCom->m_pTrees[0] = pTree;
 	pTree->GetChildren().begin()->second->GetRenderer()->SetRenderPriority(2);
 	pSysCom->m_pTreeMtrl = pTree->GetChildren().begin()->second->GetRenderer()->m_pMaterial;
@@ -63,12 +63,7 @@ void TriWorldScene::Load()
 	pSysCom->m_pTreeMtrl->SetVector(0, FEVector4(0.0f, 0.0f, 1.0f, 1.0f));
 	pSysCom->m_pTreeMtrl->SetVector(1, AUTUMN_COLOR);
 	pSysCom->m_pTreeMtrl->SetTexture(1, FETexture::Find(-8342061839902120095));
-	FE_BLEND_DESC bd;
-	bd.RenderTarget[0].BlendEnable = true;
-	bd.RenderTarget[0].BlendOp = FE_BLEND_OP_ADD;
-	bd.RenderTarget[0].SrcBlend = FE_BLEND_SRC_ALPHA;
-	bd.RenderTarget[0].DestBlend = FE_BLEND_INV_SRC_ALPHA;	
-	pTree->GetChildren().begin()->second->GetRenderer()->SetBlendState(bd);
+	
 	srand(GetTickCount());
 	for (int i = 1; i < TREE_MAX; i++)
 	{
@@ -82,6 +77,12 @@ void TriWorldScene::Load()
 		pSysCom->m_pTrees[i] = pTree;
 	}
 
+	FE_BLEND_DESC bd;
+	bd.RenderTarget[0].BlendEnable = true;
+	bd.RenderTarget[0].BlendOp = FE_BLEND_OP_ADD;
+	bd.RenderTarget[0].SrcBlend = FE_BLEND_SRC_ALPHA;
+	bd.RenderTarget[0].DestBlend = FE_BLEND_INV_SRC_ALPHA;
+	
 	// 일반 풍차 만들기
 	FEGameObject* pWindmill = FEGameObject::CopyObject(FEGameObject::FindPrefab(8507257348452055230));
 	pWindmill->GetChildren().begin()->second->GetRenderer()->SetRenderPriority(3);
@@ -164,7 +165,44 @@ void TriWorldScene::Load()
 	FEGameObject* pHero = FEGameObject::CopyObject(FEGameObject::FindPrefab(6576196112351069742));
 	pHero->GetTransform()->SetRotationDegree(FEVector3(-90.0f, -90.0f, 0.0f));
 	pHero->AddComponent<Hero>()->m_pHero = pHero;
-	
+	auto heroChildren = pHero->GetChildren();
+	for (auto iter = heroChildren.begin(); iter != heroChildren.end(); iter++)
+	{
+		(*iter).second->GetRenderer()->m_pMaterial->SetShader(FEShader::Find(239857098132532));
+		tstring name = (*iter).second->GetRenderer()->m_pMaterial->m_Name;
+
+		if (name == FE_TEXT("01_Weapon"))
+		{
+			(*iter).second->GetRenderer()->m_pMaterial->SetTexture(1, FETexture::Find(-5353454438910911562));
+			pSysCom->m_pHeroMtrl[0] = (*iter).second->GetRenderer()->m_pMaterial;
+		}
+		else if (name == FE_TEXT("02_Body"))
+		{
+			(*iter).second->GetRenderer()->m_pMaterial->SetTexture(1, FETexture::Find(44271754137392169));
+			pSysCom->m_pHeroMtrl[1] = (*iter).second->GetRenderer()->m_pMaterial;
+		}
+		else if (name == FE_TEXT("03_Armor"))
+		{
+			(*iter).second->GetRenderer()->m_pMaterial->SetTexture(1, FETexture::Find(4944513887461841849));
+			pSysCom->m_pHeroMtrl[2] = (*iter).second->GetRenderer()->m_pMaterial;
+		}
+		else if (name == FE_TEXT("04-Head"))
+		{
+			(*iter).second->GetRenderer()->m_pMaterial->SetTexture(1, FETexture::Find(5655988242469624978));
+			pSysCom->m_pHeroMtrl[3] = (*iter).second->GetRenderer()->m_pMaterial;
+		}
+		else if (name == FE_TEXT("05-HeadGear"))
+		{
+			(*iter).second->GetRenderer()->m_pMaterial->SetTexture(1, FETexture::Find(-2147603919002659658));
+			pSysCom->m_pHeroMtrl[4] = (*iter).second->GetRenderer()->m_pMaterial;
+		}
+		else if (name == FE_TEXT("06-Pack"))
+		{
+			(*iter).second->GetRenderer()->m_pMaterial->SetTexture(1, FETexture::Find(-2001513419937601028));
+			pSysCom->m_pHeroMtrl[5] = (*iter).second->GetRenderer()->m_pMaterial;
+		}
+	}
+
 	// Directional Light 만들기
 	FEGameObject* pDirectionalLight = new FEGameObject();
 	pDirectionalLight->GetTransform()->SetRotationDegree(FEVector3(50.0f, -30.0f, 0.0f));

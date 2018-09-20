@@ -7,6 +7,7 @@
 #include <IFEBuffer.h>
 #include <IFEShader.h>
 #include <FEObjectHeader.h>
+#include <queue>
 
 struct PointCB
 {
@@ -17,18 +18,26 @@ struct PointCB
 class FEDebug
 {
 private:
+	struct Line
+	{
+		FEVector3 pos[2];
+		FEVector4 color;
+	};
 	static FEDebug* _pInstance;
 
 	static PointCB _PointCBData;
 	IFEBuffer* _pLineVB;
 	IFEBuffer* _pLineCB;
 	IFEShader* _pLineShader;
+	std::queue<Line> _lineDrawQueue;
 
 private:
 	FEDebug();
 
 	bool Initialize();
 	void Release();
+
+	void RenderLineDrawQueue();
 
 public:
 	~FEDebug();
@@ -40,5 +49,7 @@ public:
 
 	void ErrorMessage(tstring text);
 	void WarningMessage(tstring text);
+
+	friend class FESystem;
 };
 #endif

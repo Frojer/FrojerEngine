@@ -30,50 +30,58 @@ void FEDebug::Release()
 
 }
 
-void FEDebug::DrawLine(FEVector3 start, FEVector3 end, FEVector4 color)
+void FEDebug::RenderLineDrawQueue()
 {
-//#ifdef _DEBUG
-	FEVector3 point[2];
+	//#ifdef _DEBUG
 
 	if (_pLineVB == nullptr)
 	{
-		_pLineVB = IFEBuffer::CreateBuffer(FE_BIND_VERTEX_BUFFER, FE_USAGE_DYNAMIC, true, sizeof(point));
+		_pLineVB = IFEBuffer::CreateBuffer(FE_BIND_VERTEX_BUFFER, FE_USAGE_DYNAMIC, true, sizeof(FEVector3) * 2);
 		_pLineCB = IFEBuffer::CreateBuffer(FE_BIND_CONSTANT_BUFFER, FE_USAGE_DYNAMIC, true, sizeof(PointCB));
 		_pLineShader = IFEShader::CreateShader(FE_TEXT("Resource/Standard/Line.vso"), FE_TEXT("Resource/Standard/Line.pso"), FE_SHADER_SEMANTIC_POSITION);
 	}
-
-	// VB 업데이트
-	point[0] = start;
-	point[1] = end;
-	_pLineVB->UpdateBuffer(point, sizeof(point));
-
-	// Set VB
-	UINT stride = sizeof(FEVector3);
-	UINT offset = 0;
-	IFERenderer::GetInstance()->SetVertexBuffer(0, 1, _pLineVB, &stride, &offset);
-
-	// Set RenderState
-	IFERenderer::GetInstance()->SetPrimitiveTopology(FE_PRIMITIVE_TOPOLOGY_LINELIST);
-	IFERenderer::GetInstance()->SetRSState(0);
-	IFERenderer::GetInstance()->SetDSState(0, 0);
-
-	// CB 업데이트
-	_PointCBData.vColor = FEMath::FEConvertToAlignData(color);
-	auto cams = FECamera::GetAllCameras();
-	for (auto iter = cams.begin(); iter != cams.end(); iter++)
+	while (!_lineDrawQueue.empty())
 	{
-		_PointCBData.mVP = FEMath::FEConvertToAlignData((*iter)->GetViewMatrixLH() * (*iter)->GetPerspectiveFovLH());
-		_pLineCB->UpdateBuffer(&_PointCBData, sizeof(_PointCBData));
+		Line line = _lineDrawQueue.front();
+		_lineDrawQueue.pop();
 
-		// Set CB
-		_pLineShader->SetConstantBuffer(0, _pLineCB);
+		// VB 업데이트
+		_pLineVB->UpdateBuffer(line.pos, sizeof(line.pos));
 
-		// Set Shader
-		_pLineShader->Render();
+		// Set VB
+		UINT stride = sizeof(FEVector3);
+		UINT offset = 0;
+		IFERenderer::GetInstance()->SetVertexBuffer(0, 1, _pLineVB, &stride, &offset);
 
-		IFERenderer::GetInstance()->Draw(2, 0);
+		// Set RenderState
+		IFERenderer::GetInstance()->SetPrimitiveTopology(FE_PRIMITIVE_TOPOLOGY_LINELIST);
+		IFERenderer::GetInstance()->SetRSState(0);
+		IFERenderer::GetInstance()->SetDSState(0, 0);
+
+		// CB 업데이트
+		_PointCBData.vColor = FEMath::FEConvertToAlignData(line.color);
+		auto cams = FECamera::GetAllCameras();
+		for (auto iter = cams.begin(); iter != cams.end(); iter++)
+		{
+			_PointCBData.mVP = FEMath::FEConvertToAlignData((*iter)->GetViewMatrixLH() * (*iter)->GetPerspectiveFovLH());
+			_pLineCB->UpdateBuffer(&_PointCBData, sizeof(_PointCBData));
+
+			// Set CB
+			_pLineShader->SetConstantBuffer(0, _pLineCB);
+
+			// Set Shader
+			_pLineShader->Render();
+
+			IFERenderer::GetInstance()->Draw(2, 0);
+		}
 	}
-//#endif
+	//#endif
+}
+
+void FEDebug::DrawLine(FEVector3 start, FEVector3 end, FEVector4 color)
+{
+	FEDebug::Line line = { start, end, color };
+	_lineDrawQueue.push(line);
 }
 
 void FEDebug::DrawNormal(FEGameObject* pObj, FEVector4 col)

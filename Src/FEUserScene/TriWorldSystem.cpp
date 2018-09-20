@@ -39,6 +39,10 @@ TriWorldSystem::~TriWorldSystem()
 
 void TriWorldSystem::Update()
 {
+#define FOG_NONE 100000.0f
+#define FOG_NEAR 25.0f
+#define FOG_FAR 75.0f
+
 	if (IsKeyUp(VK_F6))		if (++m_timeSlot == TIME_MAX)	m_timeSlot = 0;
 	if (IsKeyUp(VK_F7))		if (++m_season == SEASON_MAX)	m_season = 0;
 
@@ -46,23 +50,55 @@ void TriWorldSystem::Update()
 	{
 		IFEScene::s_BGColor = WINTER_COLOR;
 		//// FOGCOLOR
-		//if (pBoxMaterial != nullptr)	pBoxMaterial->SetVector(4, WINTER_COLOR);
-		//if (pTerrainMtrl != nullptr)	pTerrainMtrl->SetVector(4, WINTER_COLOR);
-		//if (pTreeMtrl != nullptr)		pTreeMtrl->SetVector(4, WINTER_COLOR);
-		//if (pWindmillMtrl != nullptr)	pWindmillMtrl->SetVector(4, WINTER_COLOR);
-		//if (pLakeMtrl != nullptr)		pLakeMtrl->SetVector(3, WINTER_COLOR);
+		if (m_pBoxMtrl != nullptr)		m_pBoxMtrl->SetVector(1, WINTER_COLOR);
+		if (m_pTerrainMtrl != nullptr)	m_pTerrainMtrl->SetVector(2, WINTER_COLOR);
+		if (m_pTreeMtrl != nullptr)		m_pTreeMtrl->SetVector(2, WINTER_COLOR);
+		if (m_pWindmillMtrl != nullptr)	m_pWindmillMtrl->SetVector(2, WINTER_COLOR);
+		for (int i = 0; i < 6; i++)		m_pHeroMtrl[i]->SetVector(0, WINTER_COLOR);
 	}
-
 	else
 	{
 		IFEScene::s_BGColor = s_timeColorBG[m_timeSlot];
 
-		//// FOGCOLOR
-		//if (pBoxMaterial != nullptr)	pBoxMaterial->SetVector(4, s_timeColorBG[m_timeSlot]);
-		//if (pTerrainMtrl != nullptr)	pTerrainMtrl->SetVector(4, s_timeColorBG[m_timeSlot]);
-		//if (pTreeMtrl != nullptr)		pTreeMtrl->SetVector(4, s_timeColorBG[m_timeSlot]);
-		//if (pWindmillMtrl != nullptr)	pWindmillMtrl->SetVector(4, s_timeColorBG[m_timeSlot]);
-		//if (pLakeMtrl != nullptr)		pLakeMtrl->SetVector(3, s_timeColorBG[m_timeSlot]);
+		// FOGCOLOR
+		if (m_pBoxMtrl != nullptr)		m_pBoxMtrl->SetVector(1, s_timeColorBG[m_timeSlot]);
+		if (m_pTerrainMtrl != nullptr)	m_pTerrainMtrl->SetVector(2, s_timeColorBG[m_timeSlot]);
+		if (m_pTreeMtrl != nullptr)		m_pTreeMtrl->SetVector(2, s_timeColorBG[m_timeSlot]);
+		if (m_pWindmillMtrl != nullptr)	m_pWindmillMtrl->SetVector(2, s_timeColorBG[m_timeSlot]);
+		for (int i = 0; i < 6; i++)		m_pHeroMtrl[i]->SetVector(0, s_timeColorBG[m_timeSlot]);
+	}
+
+	if (m_timeSlot > 1)
+	{
+		m_pBoxMtrl->SetScalar(1, FOG_NEAR);
+		m_pBoxMtrl->SetScalar(2, FOG_FAR);
+		m_pTerrainMtrl->SetScalar(1, FOG_NEAR);
+		m_pTerrainMtrl->SetScalar(2, FOG_FAR);
+		m_pTreeMtrl->SetScalar(1, FOG_NEAR);
+		m_pTreeMtrl->SetScalar(2, FOG_FAR);
+		m_pWindmillMtrl->SetScalar(1, FOG_NEAR);
+		m_pWindmillMtrl->SetScalar(2, FOG_FAR);
+		for (int i = 0; i < 6; i++)
+		{
+			m_pHeroMtrl[i]->SetScalar(0, FOG_NEAR);
+			m_pHeroMtrl[i]->SetScalar(1, FOG_FAR);
+		}
+	}
+	else
+	{
+		m_pBoxMtrl->SetScalar(1, FOG_NONE);
+		m_pBoxMtrl->SetScalar(2, FOG_NONE);
+		m_pTerrainMtrl->SetScalar(1, FOG_NONE);
+		m_pTerrainMtrl->SetScalar(2, FOG_NONE);
+		m_pTreeMtrl->SetScalar(1, FOG_NONE);
+		m_pTreeMtrl->SetScalar(2, FOG_NONE);
+		m_pWindmillMtrl->SetScalar(1, FOG_NONE);
+		m_pWindmillMtrl->SetScalar(2, FOG_NONE);
+		for (int i = 0; i < 6; i++)
+		{
+			m_pHeroMtrl[i]->SetScalar(0, FOG_NONE);
+			m_pHeroMtrl[i]->SetScalar(1, FOG_NONE);
+		}
 	}
 
 	if (m_season == SEASON_WINTER)

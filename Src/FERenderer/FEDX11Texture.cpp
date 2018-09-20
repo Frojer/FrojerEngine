@@ -27,7 +27,10 @@ bool FEDX11Texture::Create(LPCTSTR filename)
 	tstring extension;
 	extension = GetFileNameExtension(filename);
 
-	if (extension == FE_TEXT("jpg") || extension == FE_TEXT("png") || extension == FE_TEXT("bmp") || extension == FE_TEXT("tga"))
+	if (TCSCMP_SAME(extension.c_str(), FE_TEXT("jpg")) ||
+		TCSCMP_SAME(extension.c_str(), FE_TEXT("png")) ||
+		TCSCMP_SAME(extension.c_str(), FE_TEXT("bmp")) ||
+		TCSCMP_SAME(extension.c_str(), FE_TEXT("tga")))
 	{
 		// Mip-map 텍스처 생성
 		hr = DirectX::CreateWICTextureFromFileEx(pRenderer->GetDevice(), pRenderer->GetDXDC(), filename, 0,

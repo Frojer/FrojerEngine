@@ -128,3 +128,11 @@ float4 FESpecularLighting(float4 pos, float4 nor, float p)
 
     return spec;
 }
+float FEFogLinear(float4 pos, float near, float far)
+{
+    float dist = distance(0, pos);
+    if (dist < near)
+        return 0;
+    
+    return (min(dist, far) - near) / (far - near);
+}
