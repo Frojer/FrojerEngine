@@ -94,7 +94,7 @@ void FESystem::Run()
 
 	while (!m_bExit)
 	{
-		if (!_pWindow->MessagePump())		// ¸Þ¼¼Áö ÆßÇÁ.
+		if (!_pWindow->MessagePump())
 			break;
 		
 		FETime::_pInstance->TimeUpdate();

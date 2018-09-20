@@ -37,6 +37,11 @@ enum COMPARISON_FUNC
 	COMPARISON_GREATER_EQUAL,
 	COMPARISON_ALWAYS
 };
+enum RENDER_TYPE : BYTE
+{
+	RENDER_TYPE_NORMAL,
+	RENDER_TYPE_TWOFACE,
+};
 
 class FERenderer : public FEBehaviour
 {
@@ -48,6 +53,7 @@ private:
 
 public:
 	UINT m_stencilRef;
+	RENDER_TYPE m_renderType;
 
 	FEMesh* m_pMesh;
 	FEMaterial* m_pMaterial;

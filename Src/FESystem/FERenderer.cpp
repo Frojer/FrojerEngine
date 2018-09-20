@@ -2,7 +2,7 @@
 #include "FESceneManager.h"
 
 FERenderer::FERenderer()
-	: _RSState(0), _DSState(0), _RenderPriority(0), m_stencilRef(0), m_pMesh(nullptr), m_pMaterial(nullptr)
+	: _RSState(0), _DSState(0), _RenderPriority(0), m_stencilRef(0), m_renderType(RENDER_TYPE_NORMAL), m_pMesh(nullptr), m_pMaterial(nullptr)
 {
 
 }
@@ -24,11 +24,33 @@ void FERenderer::Render()
 		m_pMesh->Render();
 		m_pMaterial->Render();
 
-		pRenderer->SetRSState(_RSState);
-		pRenderer->SetDSState(_DSState, m_stencilRef);
-		pRenderer->SetBlendState(_BlendState);
+		switch (m_renderType)
+		{
+		case RENDER_TYPE_NORMAL:
+			pRenderer->SetRSState(_RSState);
+			pRenderer->SetDSState(_DSState, m_stencilRef);
+			pRenderer->SetBlendState(_BlendState);
 
-		pRenderer->DrawIndexed(m_pMesh->m_indics.size() * 3, 0, 0);
+			pRenderer->DrawIndexed(m_pMesh->m_indics.size() * 3, 0, 0);
+			break;
+		case RENDER_TYPE_TWOFACE:
+			auto cullMode = GetCullMode();
+
+			// 뒷면을 먼저 그린후
+			SetCullMode(CULL_FRONT);
+			pRenderer->SetRSState(_RSState);
+			pRenderer->SetDSState(_DSState, m_stencilRef);
+			pRenderer->SetBlendState(_BlendState);
+			pRenderer->DrawIndexed(m_pMesh->m_indics.size() * 3, 0, 0);
+
+			// 앞면을 그린다
+			SetCullMode(CULL_BACK);
+			pRenderer->SetRSState(_RSState);
+			pRenderer->DrawIndexed(m_pMesh->m_indics.size() * 3, 0, 0);
+
+			SetCullMode(cullMode);
+			break;
+		}
 	}
 }
 
@@ -427,12 +449,12 @@ void FERenderer::SetRenderPriority(const UINT i_priority)
 	_RenderPriority = i_priority;
 	pScene->_renderMap[_RenderPriority].push_back(this);
 
-	if (IFEScene::_maxPrioirty < i_priority)	IFEScene::_maxPrioirty = i_priority;
-	else if (pScene->_renderMap[IFEScene::_maxPrioirty].begin() == pScene->_renderMap[IFEScene::_maxPrioirty].end())
+	if (IFEScene::_maxPriority < i_priority)	IFEScene::_maxPriority = i_priority;
+	else if (pScene->_renderMap[IFEScene::_maxPriority].begin() == pScene->_renderMap[IFEScene::_maxPriority].end())
 	{
 		do
 		{
-			--IFEScene::_maxPrioirty;
-		} while (pScene->_renderMap[IFEScene::_maxPrioirty].begin() == pScene->_renderMap[IFEScene::_maxPrioirty].end());
+			--IFEScene::_maxPriority;
+		} while (pScene->_renderMap[IFEScene::_maxPriority].begin() == pScene->_renderMap[IFEScene::_maxPriority].end());
 	}
 }

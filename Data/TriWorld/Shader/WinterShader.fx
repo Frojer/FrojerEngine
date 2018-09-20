@@ -11,6 +11,7 @@ struct v2p
 
 cbuffer ConstantBuffer
 {
+    vector ot;
     vector AutumnColor;
     uint seasonIndex;
 }
@@ -31,7 +32,7 @@ v2p VS_Main(float4 pos : POSITION,
     o.pos3d = mul(pos, mWV);
     o.nor3d = normalize(mul(nor, mWV));
     o.pos = mul(o.pos3d, mProj);
-    o.uv = uv;
+    o.uv = (uv + ot.xy) * ot.zw;
 
     return o;
 }
@@ -61,7 +62,7 @@ float4 PS_Main(v2p i) : SV_TARGET
     
     diff.a = tex.a;
 
-    //clip(diff.a < 0.3f ? -1 : 1);
+    clip(diff.a < 0.3f ? -1 : 1);
 
     return diff;
 }

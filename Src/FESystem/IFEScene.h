@@ -12,7 +12,7 @@ class FEGameObject;
 class IFEScene
 {
 protected:
-	static UINT _maxPrioirty;
+	static UINT _maxPriority;
 	std::unordered_map<INT64, FEGameObject*>	_mapObj;
 	std::list<FEGameObject*>	_hierarchyList;
 	std::unordered_map<UINT, std::list<FERenderer*> > _renderMap;

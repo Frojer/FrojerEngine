@@ -111,12 +111,18 @@ void FEGameObject::Update()
 {
 	FOR_STL(_components)
 		iter->second->Update();
+
+	FOR_STL(_children)
+		iter->second->Update();
 }
 
 
 void FEGameObject::AfterUpdate()
 {
 	FOR_STL(_components)
+		iter->second->AfterUpdate();
+
+	FOR_STL(_children)
 		iter->second->AfterUpdate();
 }
 

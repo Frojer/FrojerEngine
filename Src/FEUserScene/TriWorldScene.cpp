@@ -44,7 +44,8 @@ void TriWorldScene::Load()
 	pTerrain->GetTransform()->m_vScale = FEVector3(0.5f, 0.5f, 0.5f);
 	pSysCom->m_pTerrainMtrl = pTerrain->GetChildren().begin()->second->GetRenderer()->m_pMaterial;
 	pSysCom->m_pTerrainMtrl->SetShader(FEShader::Find(FE_TEXT("WinterShader")));
-	pSysCom->m_pTerrainMtrl->SetVector(0, AUTUMN_COLOR);
+	pSysCom->m_pTerrainMtrl->SetVector(0, FEVector4(0.0f, 0.0f, 10.0f, 10.0f));
+	pSysCom->m_pTerrainMtrl->SetVector(1, AUTUMN_COLOR);
 	pSysCom->m_pTerrainMtrl->SetTexture(1, FETexture::Find(1658363954890942618));
 	//FEVector2 offset;
 	//FEVector2 tiling;
@@ -59,7 +60,8 @@ void TriWorldScene::Load()
 	pTree->GetChildren().begin()->second->GetRenderer()->SetRenderPriority(2);
 	pSysCom->m_pTreeMtrl = pTree->GetChildren().begin()->second->GetRenderer()->m_pMaterial;
 	pSysCom->m_pTreeMtrl->SetShader(FEShader::Find(FE_TEXT("WinterShader")));
-	pSysCom->m_pTreeMtrl->SetVector(0, AUTUMN_COLOR);
+	pSysCom->m_pTreeMtrl->SetVector(0, FEVector4(0.0f, 0.0f, 1.0f, 1.0f));
+	pSysCom->m_pTreeMtrl->SetVector(1, AUTUMN_COLOR);
 	pSysCom->m_pTreeMtrl->SetTexture(1, FETexture::Find(-8342061839902120095));
 	FE_BLEND_DESC bd;
 	bd.RenderTarget[0].BlendEnable = true;
@@ -82,16 +84,20 @@ void TriWorldScene::Load()
 
 	// 일반 풍차 만들기
 	FEGameObject* pWindmill = FEGameObject::CopyObject(FEGameObject::FindPrefab(8507257348452055230));
-	pWindmill->GetChildren().begin()->second->GetRenderer()->SetRenderPriority(1);
+	pWindmill->GetChildren().begin()->second->GetRenderer()->SetRenderPriority(3);
+	pWindmill->GetChildren().begin()->second->GetRenderer()->SetBlendState(bd);
+	pWindmill->GetChildren().begin()->second->GetRenderer()->m_renderType = RENDER_TYPE_TWOFACE;
 	pSysCom->m_pWindmillMtrl = pWindmill->GetChildren().begin()->second->GetRenderer()->m_pMaterial;
 	pSysCom->m_pWindmillMtrl->SetShader(FEShader::Find(FE_TEXT("WinterShader")));
-	pSysCom->m_pWindmillMtrl->SetVector(0, FEVector4::One);
+	pSysCom->m_pWindmillMtrl->SetVector(0, FEVector4(0.0f, 0.0f, 1.0f, 1.0f));
+	pSysCom->m_pWindmillMtrl->SetVector(1, FEVector4::One);
 	pSysCom->m_pWindmillMtrl->SetTexture(1, FETexture::Find(-2299588805160112115));
 	auto wmComp = pWindmill->AddComponent<Windmill>();
 	wmComp->m_pSystem = pSysCom;
 	wmComp->m_type = WINDMILL_NORMAL;
 	wmComp->m_pWindmillBody = pWindmill->GetChildren().begin()->second;
 	wmComp->m_pWindmillWing[0] = (++pWindmill->GetChildren().begin())->second;
+	wmComp->m_pWindmillWing[0]->GetRenderer()->SetBlendState(bd);
 	wmComp->m_pWindmillWing[0]->GetTransform()->m_vScale *= 0.65f;
 	wmComp->m_pWindmillWing[0]->GetTransform()->SetPositionLocal(FEVector3(0.0f, 1.5f, 1.0f));
 	pWindmill->GetTransform()->SetPositionWorld(FEVector3(5.0f, -0.0002f, -10.0f));
@@ -99,7 +105,9 @@ void TriWorldScene::Load()
 
 	// 삼단 풍차 만들기
 	pWindmill = FEGameObject::CopyObject(FEGameObject::FindPrefab(8507257348452055230));
-	pWindmill->GetChildren().begin()->second->GetRenderer()->SetRenderPriority(1);
+	pWindmill->GetChildren().begin()->second->GetRenderer()->SetRenderPriority(3);
+	pWindmill->GetChildren().begin()->second->GetRenderer()->SetBlendState(bd);
+	pWindmill->GetChildren().begin()->second->GetRenderer()->m_renderType = RENDER_TYPE_TWOFACE;
 	wmComp = pWindmill->AddComponent<Windmill>();
 	wmComp->m_pSystem = pSysCom;
 	wmComp->m_type = WINDMILL_TRIPLE_TYPE1;
@@ -110,6 +118,9 @@ void TriWorldScene::Load()
 	wmComp->m_pWindmillWing[1]->SetParent(wmComp->m_pWindmillWing[0]);
 	wmComp->m_pWindmillWing[2] = FEGameObject::CopyObject(wmComp->m_pWindmillWing[0]);
 	wmComp->m_pWindmillWing[2]->SetParent(wmComp->m_pWindmillWing[1]);
+	wmComp->m_pWindmillWing[0]->GetRenderer()->SetBlendState(bd);
+	wmComp->m_pWindmillWing[1]->GetRenderer()->SetBlendState(bd);
+	wmComp->m_pWindmillWing[2]->GetRenderer()->SetBlendState(bd);
 	wmComp->m_pWindmillWing[0]->GetTransform()->m_vScale *= 0.65f;
 	wmComp->m_pWindmillWing[0]->GetTransform()->m_vScale *= 1.5f;
 	wmComp->m_pWindmillWing[1]->GetTransform()->m_vScale /= 1.5f;
@@ -122,7 +133,9 @@ void TriWorldScene::Load()
 
 	// 삼단 풍차 타입 2 만들기
 	pWindmill = FEGameObject::CopyObject(FEGameObject::FindPrefab(8507257348452055230));
-	pWindmill->GetChildren().begin()->second->GetRenderer()->SetRenderPriority(1);
+	pWindmill->GetChildren().begin()->second->GetRenderer()->SetRenderPriority(3);
+	pWindmill->GetChildren().begin()->second->GetRenderer()->SetBlendState(bd);
+	pWindmill->GetChildren().begin()->second->GetRenderer()->m_renderType = RENDER_TYPE_TWOFACE;
 	wmComp = pWindmill->AddComponent<Windmill>();
 	wmComp->m_pSystem = pSysCom;
 	wmComp->m_type = WINDMILL_TRIPLE_TYPE2;
@@ -133,6 +146,9 @@ void TriWorldScene::Load()
 	wmComp->m_pWindmillWing[1]->SetParent(pWindmill);
 	wmComp->m_pWindmillWing[2] = FEGameObject::CopyObject(wmComp->m_pWindmillWing[0]);
 	wmComp->m_pWindmillWing[2]->SetParent(pWindmill);
+	wmComp->m_pWindmillWing[0]->GetRenderer()->SetBlendState(bd);
+	wmComp->m_pWindmillWing[1]->GetRenderer()->SetBlendState(bd);
+	wmComp->m_pWindmillWing[2]->GetRenderer()->SetBlendState(bd);
 	wmComp->m_pWindmillWing[0]->GetTransform()->m_vScale *= 0.975;
 	wmComp->m_pWindmillWing[1]->GetTransform()->m_vScale *= 0.65f;
 	wmComp->m_pWindmillWing[2]->GetTransform()->m_vScale *= 0.8f;
@@ -174,7 +190,7 @@ void TriWorldScene::Load()
 
 	// 박스 만들기
 	FEGameObject* pBox = FEGameObject::CopyObject(FEGameObject::FindPrefab(2460141765634699607));
-	pBox->GetChildren().begin()->second->GetRenderer()->SetRenderPriority(1);
+	pBox->GetChildren().begin()->second->GetRenderer()->SetRenderPriority(0);
 	pSysCom->m_pBoxMtrl = pBox->GetChildren().begin()->second->GetRenderer()->m_pMaterial;
 	pSysCom->m_pBoxMtrl->SetShader(FEShader::Find(FE_TEXT("Box")));
 	pSysCom->m_pBoxMtrl->SetVector(0, AUTUMN_COLOR);
