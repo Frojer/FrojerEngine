@@ -9,3 +9,18 @@
     3.c Load() 함수에서 씬을 구성한다 (오브젝트 추가, 및 오브젝트에 컴포넌트 추가)
     3.d FEUserScene.cpp파일 내의 LoadUserScene() 함수에 pSM->AddScene(new SceneClass); 넣어준다 (Add 순서대로 Index 매겨짐)
 4. 빌드 후 실행한다
+
+ - TriWorld(bin\Game.exe) 조작법 - 
+방향키 좌우키 : Y축 회전
+방향키 상하키 : 전/후진
+C/V : 주인공(드워프) 위/아래 이동
+Z/X : 횟불 (포인트라이트) 반경 증/감소
+
+1/2/3 : x/y/z 그리드 On/Off
+4 : 노말 시각화 On/Off
+
+F6 : 시간 변경
+F7 : 계절 변경
+
+WASD : 카메라 이동
+IJKL : 카메라 회전

@@ -35,9 +35,8 @@ void TriWorldScene::Load()
 	// 그리드 생성하기
 	FEGameObject* pGrid = new FEGameObject();
 	auto grid = pGrid->AddComponent<Grid>();
-	grid->x = false;
-	grid->y = true;
-	grid->z = true;
+
+	pSysCom->m_pGrid = grid;
 
 	// 터레인 만들기
 	FEGameObject* pTerrain = FEGameObject::CopyObject(FEGameObject::FindPrefab(5697116093628749358));

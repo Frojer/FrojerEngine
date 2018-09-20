@@ -1,5 +1,6 @@
 #pragma once
 #include <FEObjectHeader.h>
+#include "Grid.h"
 
 #define TREE_MAX 300
 
@@ -30,6 +31,9 @@ public:
 	BYTE m_season;
 
 	float m_cold = 1.0f;
+	bool m_bDrawNormal = true;
+
+	Grid* m_pGrid;
 
 	FELight* m_pDirectionalLight;
 	FELight* m_pPointLight;
