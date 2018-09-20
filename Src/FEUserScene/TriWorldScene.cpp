@@ -56,16 +56,17 @@ void TriWorldScene::Load()
 	// 나무 만들기
 	FEGameObject* pTree = FEGameObject::CopyObject(FEGameObject::FindPrefab(7465656355178739812));
 	pSysCom->m_pTrees[0] = pTree;
+	pTree->GetChildren().begin()->second->GetRenderer()->SetRenderPriority(2);
 	pSysCom->m_pTreeMtrl = pTree->GetChildren().begin()->second->GetRenderer()->m_pMaterial;
 	pSysCom->m_pTreeMtrl->SetShader(FEShader::Find(FE_TEXT("WinterShader")));
 	pSysCom->m_pTreeMtrl->SetVector(0, AUTUMN_COLOR);
 	pSysCom->m_pTreeMtrl->SetTexture(1, FETexture::Find(-8342061839902120095));
-	/*FE_BLEND_DESC bd;
+	FE_BLEND_DESC bd;
 	bd.RenderTarget[0].BlendEnable = true;
 	bd.RenderTarget[0].BlendOp = FE_BLEND_OP_ADD;
 	bd.RenderTarget[0].SrcBlend = FE_BLEND_SRC_ALPHA;
 	bd.RenderTarget[0].DestBlend = FE_BLEND_INV_SRC_ALPHA;	
-	pTree->GetChildren().begin()->second->GetRenderer()->SetBlendState(bd);*/
+	pTree->GetChildren().begin()->second->GetRenderer()->SetBlendState(bd);
 	srand(GetTickCount());
 	for (int i = 1; i < TREE_MAX; i++)
 	{
@@ -81,6 +82,7 @@ void TriWorldScene::Load()
 
 	// 일반 풍차 만들기
 	FEGameObject* pWindmill = FEGameObject::CopyObject(FEGameObject::FindPrefab(8507257348452055230));
+	pWindmill->GetChildren().begin()->second->GetRenderer()->SetRenderPriority(1);
 	pSysCom->m_pWindmillMtrl = pWindmill->GetChildren().begin()->second->GetRenderer()->m_pMaterial;
 	pSysCom->m_pWindmillMtrl->SetShader(FEShader::Find(FE_TEXT("WinterShader")));
 	pSysCom->m_pWindmillMtrl->SetVector(0, FEVector4::One);
@@ -97,6 +99,7 @@ void TriWorldScene::Load()
 
 	// 삼단 풍차 만들기
 	pWindmill = FEGameObject::CopyObject(FEGameObject::FindPrefab(8507257348452055230));
+	pWindmill->GetChildren().begin()->second->GetRenderer()->SetRenderPriority(1);
 	wmComp = pWindmill->AddComponent<Windmill>();
 	wmComp->m_pSystem = pSysCom;
 	wmComp->m_type = WINDMILL_TRIPLE_TYPE1;
@@ -119,6 +122,7 @@ void TriWorldScene::Load()
 
 	// 삼단 풍차 타입 2 만들기
 	pWindmill = FEGameObject::CopyObject(FEGameObject::FindPrefab(8507257348452055230));
+	pWindmill->GetChildren().begin()->second->GetRenderer()->SetRenderPriority(1);
 	wmComp = pWindmill->AddComponent<Windmill>();
 	wmComp->m_pSystem = pSysCom;
 	wmComp->m_type = WINDMILL_TRIPLE_TYPE2;
@@ -170,6 +174,7 @@ void TriWorldScene::Load()
 
 	// 박스 만들기
 	FEGameObject* pBox = FEGameObject::CopyObject(FEGameObject::FindPrefab(2460141765634699607));
+	pBox->GetChildren().begin()->second->GetRenderer()->SetRenderPriority(1);
 	pSysCom->m_pBoxMtrl = pBox->GetChildren().begin()->second->GetRenderer()->m_pMaterial;
 	pSysCom->m_pBoxMtrl->SetShader(FEShader::Find(FE_TEXT("Box")));
 	pSysCom->m_pBoxMtrl->SetVector(0, AUTUMN_COLOR);

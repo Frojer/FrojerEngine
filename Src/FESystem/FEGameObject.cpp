@@ -240,9 +240,12 @@ FEGameObject* FEGameObject::CopyObject(const FEGameObject* origin)
 			if (iter->second->_typeID == typeid(FERenderer).hash_code())
 			{
 				pObj->_pRenderer = static_cast<FERenderer*>(pCom);
+				FESceneManager::GetCurrentScene()->_renderMap[pObj->_pRenderer->_RenderPriority].push_back(pObj->_pRenderer);
 			}
 		}
 	}
+
+	pObj->_isPrefab = false;
 
 	FOR_STL(origin->_children)
 	{

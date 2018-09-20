@@ -1,7 +1,7 @@
  - 사용법 -
 1, Data폴더에 사용할 리소스들을 담는다
 2. SDK/FEFileConverter/FEFileConverter.bat 파일을 실행시켜 리소스들을 컨버팅한다 (경로는 bin/Resource)
-    2.a 현제 셰이더코드는 자동으로 제작을 못하므로 수동으로 형식에 맞게 집어넣는다 (FEShaderSyntax.fes 참고)
+    2.a 현재 셰이더코드는 자동으로 제작을 못하므로 수동으로 형식에 맞게 집어넣는다 (FEShaderSyntax.fes 참고)
     2.b 새로운 머테리얼을 파일형식으로 저장하고싶다면 수동으로 형식에 맞게 집어넣는다 (FEMaterialSyntax.fem 참고)
 3. Scene 생성 (추후에 .scene 리소스 파일을 통해 읽도록 수정 필요)
     3.a 솔루션의 UserScene프로젝트에 IFEScenn 클래스를 상속받는 클래스를 작성한다

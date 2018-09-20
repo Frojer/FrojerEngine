@@ -1,5 +1,6 @@
 #include "IFEScene.h"
 
+UINT IFEScene::_maxPrioirty = 0;
 FEVector4 IFEScene::s_BGColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 IFEScene::~IFEScene()
@@ -43,10 +44,14 @@ void IFEScene::Render()
 			// 카메라 상수버퍼 갱신
 			FEMaterial::UpdateConstantBufferPerCamera(FEMath::FEConvertToAlignData(cams[i]->GetViewMatrixLH()), FEMath::FEConvertToAlignData(cams[i]->GetPerspectiveFovLH()));
 
-			auto iter = _hierarchyList.begin();
-
-			while (iter != _hierarchyList.end())
-				(*iter++)->Render();
+			for (UINT i = 0; i <= IFEScene::_maxPrioirty; i++)
+			{
+				auto iter = _renderMap[i].begin();
+				while (iter != _renderMap[i].end())
+				{
+					(*iter++)->Render();
+				}
+			}
 		}
 	}
 }

@@ -5,6 +5,7 @@
 #include <FEMath.h>
 #include <typeinfo>
 #include "FEObjectHeader.h"
+#include "FESceneManager.h"
 
 class FEComponent;
 class FETransform;
@@ -16,6 +17,7 @@ private:
 	static std::unordered_map<INT64, FEGameObject*> _prefabMap;
 	
 	bool _bDead;
+	bool _isPrefab;
 
 protected:
 	FEGameObject* _pParent;
@@ -79,7 +81,9 @@ public:
 		{
 			if (_pRenderer == nullptr)
 			{
-				pCom = new T;
+				pCom = new FERenderer;
+				if (!_isPrefab)
+					FESceneManager::GetCurrentScene()->_renderMap[(static_cast<FERenderer*>(pCom))->_RenderPriority].push_back(static_cast<FERenderer*>(pCom));
 				_pRenderer = (FERenderer*)pCom;
 			}
 			else

@@ -61,7 +61,7 @@ float4 PS_Main(v2p i) : SV_TARGET
     
     diff.a = tex.a;
 
-    clip(diff.a < 0.3f ? -1 : 1);
+    //clip(diff.a < 0.3f ? -1 : 1);
 
     return diff;
 }

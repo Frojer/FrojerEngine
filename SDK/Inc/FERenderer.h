@@ -44,6 +44,7 @@ private:
 	BYTE _RSState;
 	DWORD _DSState;
 	FE_BLEND_DESC _BlendState;
+	UINT _RenderPriority;
 
 public:
 	UINT m_stencilRef;
@@ -92,6 +93,11 @@ public:
 
 	void SetBlendState(const FE_BLEND_DESC& bs);
 	FE_BLEND_DESC GetBlendState();
+
+	void SetRenderPriority(const UINT i_priority);
+
+	friend class FEGameObject;
+	friend class IFEScene;
 };
 
 #endif

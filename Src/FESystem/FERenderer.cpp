@@ -1,9 +1,10 @@
 #include "FERenderer.h"
+#include "FESceneManager.h"
 
 FERenderer::FERenderer()
-	: _RSState(0), _DSState(0), m_stencilRef(0), m_pMesh(nullptr), m_pMaterial(nullptr)
+	: _RSState(0), _DSState(0), _RenderPriority(0), m_stencilRef(0), m_pMesh(nullptr), m_pMaterial(nullptr)
 {
-	_RSState = FE_RS_MULTISAMPLE_ON;
+
 }
 
 FERenderer::~FERenderer()
@@ -414,4 +415,24 @@ void FERenderer::SetBlendState(const FE_BLEND_DESC& bs)
 FE_BLEND_DESC FERenderer::GetBlendState()
 {
 	return _BlendState;
+}
+
+void FERenderer::SetRenderPriority(const UINT i_priority)
+{
+	if (GetMyObject() == nullptr || _RenderPriority == i_priority)
+		return;
+
+	auto pScene = FESceneManager::GetCurrentScene();
+	pScene->_renderMap[_RenderPriority].remove(this);
+	_RenderPriority = i_priority;
+	pScene->_renderMap[_RenderPriority].push_back(this);
+
+	if (IFEScene::_maxPrioirty < i_priority)	IFEScene::_maxPrioirty = i_priority;
+	else if (pScene->_renderMap[IFEScene::_maxPrioirty].begin() == pScene->_renderMap[IFEScene::_maxPrioirty].end())
+	{
+		do
+		{
+			--IFEScene::_maxPrioirty;
+		} while (pScene->_renderMap[IFEScene::_maxPrioirty].begin() == pScene->_renderMap[IFEScene::_maxPrioirty].end());
+	}
 }

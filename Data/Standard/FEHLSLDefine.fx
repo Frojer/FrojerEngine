@@ -97,3 +97,34 @@ float4 FELighting(float4 pos, float4 nor)
 
     return diff + amb;
 }
+float4 FESpecularLighting(float4 pos, float4 nor, float p)
+{
+    float4 N = nor;
+    float4 L;
+    float4 E;
+    float4 H;
+    float4 spec = 0;
+
+    for (int i = 0; i < FE_LIGHT_SIZE; i++)
+    {
+        if (light[i].lightType != 0)
+            continue;
+
+        L = light[i].direction;
+        L.w = 0;
+        L = mul(L, mView);
+
+		// 시선백터 계산.
+        E = normalize(-pos);
+
+		// 하프벡터 계산.
+        H = normalize(L + E);
+
+		// 조명 계산 
+        spec += pow(max(dot(N, H), 0), p) * light[i].specular * specular;
+    }
+
+    spec.w = 1;
+
+    return spec;
+}

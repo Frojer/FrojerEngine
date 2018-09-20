@@ -296,6 +296,7 @@ void FELoader::LoadMesh(tifstream &f, FEGameObject* pParent)
 	// Object ID
 	f >> str >> str >> uuid;
 	pObj = new FEGameObject(uuid);
+	pObj->_isPrefab = true;
 
 	pObj->_pParent = pParent;
 	if (pParent != nullptr)		pParent->_children[uuid] = pObj;
