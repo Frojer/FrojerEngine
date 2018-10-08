@@ -1,5 +1,7 @@
 #include "AnimScene.h"
 #include "FETEST.h"
+#include "Grid.h"
+#include "CameraController.h"
 #include <FEDefine.h>
 #include <FEGameObject.h>
 
@@ -17,39 +19,13 @@ void AnimScene::Load()
 {
 	IFEScene::s_BGColor = FEVector4(0, 0.125f, 0.3f, 1);
 
-	/*
-	FEGameObject* pSys = new FEGameObject(FEVector3(10.0f, 0.0f, 5.0f), FEVector3::Zero, FEVector3::One);
-	pSys->m_Name = FE_TEXT("System");
-	FEGameObject* pHero = new FEGameObject(FEVector3(0.0f, 10.0f, 5.0f), FEVector3::Zero, FEVector3::One);
-	pHero->m_Name = FE_TEXT("Hero");
-	FEGameObject* pMonster = new FEGameObject(FEVector3(0.0f, 0.0f, 15.0f), FEVector3::Zero, FEVector3::One);
-	pMonster->m_Name = FE_TEXT("Monster");
-	FEGameObject* pNPC = new FEGameObject(FEVector3(1.0f, 20.0f, 5.0f), FEVector3::Zero, FEVector3::One);
-	pNPC->m_Name = FE_TEXT("NPC");
-	FEGameObject* pBoss = new FEGameObject(FEVector3(107.0f, 0.0f, 15.0f), FEVector3::Zero, FEVector3::One);
-	pBoss->m_Name = FE_TEXT("Boss");
-
-	pMonster->SetParent(pBoss);
-
-	pSys->AddComponent<FETEST>();
-
-	IFEObject* obj = new IFEObject;
-
-	auto id = pSys->GetComponent<FETEST>()->GetID();
-
-	auto newSys = FEGameObject::CopyObject(pSys);
-	*/
-
-	FEGameObject* pCam = new FEGameObject(FEVector3(0.0f, 0.0f, -10.0f), FEVector3::Zero, FEVector3::One);
+	FEGameObject* pGrid = new FEGameObject();
+	auto grid = pGrid->AddComponent<Grid>();
+	grid->y = true;
+	grid->z = true;
+	FEGameObject* pCam = new FEGameObject(FEVector3(0.0f, 10.0f, -10.0f), FEVector3::Zero, FEVector3::One);
 	pCam->m_Name = FE_TEXT("카메라");
-	pCam->AddComponent<FECamera>();
-
-	FEGameObject* pTriangle = new FEGameObject(FEVector3(0.0f, 0.0f, 0.0f), FEVector3::Zero, FEVector3::One);
-	pTriangle->m_Name = FE_TEXT("삼각형");
-	FERenderer* renderer = pTriangle->AddComponent<FERenderer>();
-	renderer->m_pMaterial = FEMaterial::Find(FE_TEXT("DemoMaterial"));
-	renderer->m_pMesh = FEMesh::Find(FE_TEXT("Sphere001"));
-	pTriangle->AddComponent<FETEST>();
+	pCam->AddComponent<CameraController>()->pCam = pCam->AddComponent<FECamera>();
 
 	FEGameObject* pLight = new FEGameObject(FEVector3::Zero, FEVector3::Zero, FEVector3::One);
 	pLight->m_Name = FE_TEXT("Direction Light");
@@ -58,11 +34,6 @@ void AnimScene::Load()
 	light->m_diffuse = FEVector4(1.0f, 1.0f, 1.0f, 1.0f);
 	light->m_ambient = FEVector4(0.2f, 0.2f, 0.2f, 1.0f);
 	light->m_lightType = FE_LIGHT_TYPE_DIRECTION;
-	
 
-	//renderer->m_pMesh->m_topology = PRIMITIVE_TOPOLOGY_LINELIST;
-
-	//FEShader* pShader = new FEShader;
-	//pTriangle->GetRenderer()->m_pMaterial = new FEMaterial()
-
+	FEGameObject* pBox = FEGameObject::CopyObject(FEGameObject::FindPrefab(3116793003176156851));
 }
