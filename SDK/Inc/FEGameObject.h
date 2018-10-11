@@ -41,6 +41,7 @@ protected:
 
 	void Update();
 	void AfterUpdate();
+	void AnimationUpdate();
 	void Render();
 
 public:

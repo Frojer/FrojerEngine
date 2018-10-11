@@ -127,6 +127,16 @@ void FEGameObject::AfterUpdate()
 }
 
 
+void FEGameObject::AnimationUpdate()
+{
+	FOR_STL(_components)
+		iter->second->AnimationUpdate();
+
+	FOR_STL(_children)
+		iter->second->AnimationUpdate();
+}
+
+
 void FEGameObject::Render()
 {
 	FOR_STL(_components)

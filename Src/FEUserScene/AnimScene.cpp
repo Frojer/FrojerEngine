@@ -23,7 +23,8 @@ void AnimScene::Load()
 	auto grid = pGrid->AddComponent<Grid>();
 	grid->y = true;
 	grid->z = true;
-	FEGameObject* pCam = new FEGameObject(FEVector3(0.0f, 10.0f, -10.0f), FEVector3::Zero, FEVector3::One);
+	//FEGameObject* pCam = new FEGameObject(FEVector3(0.0f, 0.0f, -30.0f), FEVector3::Zero, FEVector3::One);
+	FEGameObject* pCam = new FEGameObject(FEVector3(0.0f, 10.0f, -25.0f), FEVector3::Right * FEConvertToRadian(25.0f), FEVector3::One);
 	pCam->m_Name = FE_TEXT("Ä«¸Þ¶ó");
 	pCam->AddComponent<CameraController>()->pCam = pCam->AddComponent<FECamera>();
 
@@ -35,5 +36,11 @@ void AnimScene::Load()
 	light->m_ambient = FEVector4(0.2f, 0.2f, 0.2f, 1.0f);
 	light->m_lightType = FE_LIGHT_TYPE_DIRECTION;
 
-	FEGameObject* pBox = FEGameObject::CopyObject(FEGameObject::FindPrefab(3116793003176156851));
+	FEGameObject* pBox = FEGameObject::CopyObject(FEGameObject::FindPrefab(2780651539010169386));
+	auto pAnim = pBox->GetComponent<FEAnimation>();
+	pAnim->_maxAnimTime = 3.3333333f;
+	pAnim->Play();
+	pAnim->_bLoop = true;
+	FE_SAMPLER_STATE_FLAG ss;
+	pBox->GetChildren().begin()->second->GetRenderer()->m_pMaterial->SetSamplerState(0, ss);
 }

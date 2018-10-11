@@ -1,6 +1,6 @@
 Material
 {
-	ID = -3446201748340409917
+	ID = -9152977929974134594
 	Name = "01 - Default"
 	Diffuse	1	1	1	1
 	Ambient	1	1	1
@@ -9,7 +9,7 @@ Material
 	Map 0
 	{
 		Amount = 1
-		MapID = 6998551342476159814
+		MapID = 292341296300530164
 		Offset	0	0
 		Tiling	1	1
 		Angle	0
@@ -17,19 +17,20 @@ Material
 }
 MeshObject
 {
-	ObjectID = 8507257348452055230
+	ObjectID = -4976990738581723485
 	MeshID = 0
 	Name = "Windmill"
 	MaterialID = 0
 	VertexFormat = 0
 	VertexCount = 0
 	IndexCount = 0
+	UseAnim = 0
 	MeshObject
 	{
-		ObjectID = 3369672469154959583
-		MeshID = -7195898760251722978
+		ObjectID = -5783012888028494860
+		MeshID = -7442062836972751515
 		Name = "Body"
-		MaterialID = -3446201748340409917
+		MaterialID = -9152977929974134594
 		VertexFormat = 13
 		VertexCount = 12
 		0	3	0
@@ -73,13 +74,14 @@ MeshObject
 		3	4	5
 		6	7	8
 		9	10	11
+		UseAnim = 0
 	}
 	MeshObject
 	{
-		ObjectID = -8729516698780791631
-		MeshID = -466533273210170299
+		ObjectID = -6866867168255163317
+		MeshID = -8970577162273816686
 		Name = "Wing"
-		MaterialID = -3446201748340409917
+		MaterialID = -9152977929974134594
 		VertexFormat = 13
 		VertexCount = 16
 		-2	-0.5	0
@@ -106,16 +108,16 @@ MeshObject
 		-0.5	0	-0.001
 		-0	0	1
 		0.5697	-0.5313
-		0	-0.5	-0
+		0	-0.5	0
 		0	0	1
 		0.5697	-0.5307
-		2	-0.5	-0
+		2	-0.5	0
 		0	-0	1
 		0.5697	-0.0189
-		2	0.5	-0
+		2	0.5	0
 		0	0	1
 		0.7207	-0.0189
-		0	0.5	-0
+		0	0.5	0
 		-0	0	1
 		0.7207	-0.5307
 		-0.5	0	-0.001
@@ -139,5 +141,6 @@ MeshObject
 		10	11	8
 		12	13	14
 		14	15	12
+		UseAnim = 0
 	}
 }

@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="FEAnimation.cpp" />
+    <ClCompile Include="FEAnimationClip.cpp" />
     <ClCompile Include="FEBehaviour.cpp" />
     <ClCompile Include="FECamera.cpp" />
     <ClCompile Include="FEDirectInput.cpp" />
@@ -42,6 +44,8 @@
     <ClCompile Include="IFEScene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FEAnimation.h" />
+    <ClInclude Include="FEAnimationClip.h" />
     <ClInclude Include="FEBehaviour.h" />
     <ClInclude Include="FECamera.h" />
     <ClInclude Include="FEComponent.h" />

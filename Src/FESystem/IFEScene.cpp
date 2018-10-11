@@ -25,6 +25,10 @@ void IFEScene::Update()
 	iter = _mapObj.begin();
 	while (iter != _mapObj.end())
 		iter++->second->AfterUpdate();
+
+	iter = _mapObj.begin();
+	while (iter != _mapObj.end())
+		iter++->second->AnimationUpdate();
 }
 
 

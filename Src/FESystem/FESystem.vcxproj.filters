@@ -115,6 +115,8 @@
     <ClCompile Include="FEDirectInput.cpp">
       <Filter>Input\Source File</Filter>
     </ClCompile>
+    <ClCompile Include="FEAnimationClip.cpp" />
+    <ClCompile Include="FEAnimation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FELoader.h">
@@ -189,6 +191,8 @@
     <ClInclude Include="FEDirectInput.h">
       <Filter>Input\Header File</Filter>
     </ClInclude>
+    <ClInclude Include="FEAnimationClip.h" />
+    <ClInclude Include="FEAnimation.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

@@ -287,6 +287,7 @@ void FELoader::LoadMesh(tifstream &f, FEGameObject* pParent)
 	TCHAR str[BUFFER_SIZE];
 	INT64 mtrlID, meshID;
 	UINT vc, ic, vf;
+	bool useAnim;
 	FEMesh* pMesh = nullptr;
 	FEGameObject* pObj;
 
@@ -347,6 +348,22 @@ void FELoader::LoadMesh(tifstream &f, FEGameObject* pParent)
 			f >> pMesh->m_indics[i].a >> pMesh->m_indics[i].b >> pMesh->m_indics[i].c;
 
 		pMesh->UpdateMeshData();
+
+		f >> str >> str >> useAnim;
+		if (useAnim)
+		{
+			FEAnimation* pAnim = pObj->AddComponent<FEAnimation>();
+			UINT apc, arc, asc;
+			f >> str >> str >> apc;
+			pAnim->m_animPos.resize(apc);
+			for (int i = 0; i < apc; i++)		f >> pAnim->m_animPos[i].animTime >> pAnim->m_animPos[i].pos.x >> pAnim->m_animPos[i].pos.y >> pAnim->m_animPos[i].pos.z;
+			f >> str >> str >> arc;
+			pAnim->m_animRot.resize(arc);
+			for (int i = 0; i < arc; i++)		f >> pAnim->m_animRot[i].animTime >> pAnim->m_animRot[i].axis.x >> pAnim->m_animRot[i].axis.y >> pAnim->m_animRot[i].axis.z >> pAnim->m_animRot[i].angle;
+			f >> str >> str >> asc;
+			pAnim->m_animScale.resize(asc);
+			for (int i = 0; i < asc; i++)		f >> pAnim->m_animScale[i].animTime >> pAnim->m_animScale[i].scale.x >> pAnim->m_animScale[i].scale.y >> pAnim->m_animScale[i].scale.z >> pAnim->m_animScale[i].axis.x >> pAnim->m_animScale[i].axis.y >> pAnim->m_animScale[i].axis.z >> pAnim->m_animScale[i].angle;
+		}
 
 		pObj->AddComponent<FERenderer>();
 		if (mtrlID == 0)

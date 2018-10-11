@@ -27,6 +27,7 @@ protected:
 	virtual void Initialize() {};
 	virtual void Update() {};
 	virtual void AfterUpdate() {};
+	virtual void AnimationUpdate() {};
 	virtual void Render() {};
 
 	friend class FEGameObject;

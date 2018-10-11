@@ -8,6 +8,7 @@
 #include "FETexture.h"
 #include "FEShader.h"
 #include "FEMaterial.h"
+#include "FEAnimationClip.h"
 #include "FEGameObject.h"
 
 #include "FEComponent.h"
@@ -16,5 +17,6 @@
 #include "FELight.h"
 #include "FECamera.h"
 #include "FERenderer.h"
+#include "FEAnimation.h"
 
 #endif

@@ -23,6 +23,25 @@ FEFileManager::~FEFileManager()
 
 }
 
+struct ASE_ANIM_POS
+{
+	float animTime;
+	FEVector3 pos;
+};
+struct ASE_ANIM_ROT
+{
+	float animTime;
+	FEVector3 axis;
+	float angle;
+};
+struct ASE_ANIM_SCALE
+{
+	float animTime;
+	FEVector3 scale;
+	FEVector3 axis;
+	float angle;
+};
+
 struct ASE_MESH
 {
 	INT64 ID;
@@ -41,8 +60,14 @@ struct ASE_MESH
 	std::vector<FEVector3>		normal;
 	std::vector<FEVector2>		texcoord;
 
+	// 애니메이션
+	bool useAnim;
+	std::vector<ASE_ANIM_POS> animPos;
+	std::vector<ASE_ANIM_ROT> animRot;
+	std::vector<ASE_ANIM_SCALE> animScale;
+
 	ASE_MESH()
-		: ID(0), mtrlID(0), vf(0)
+		: ID(0), mtrlID(0), vf(0), useAnim(false)
 	{
 		
 	}
@@ -152,6 +177,27 @@ void WriteMeshData(tofstream& o, ASE_MESH* mesh, UINT depth)
 		TAP	o << mesh->index[i].a << FE_TEXT('\t') << mesh->index[i].b << FE_TEXT('\t') << mesh->index[i].c << std::endl;
 	}
 
+	TAP	o << FE_TEXT("UseAnim = ") << mesh->useAnim << std::endl;
+	if (mesh->useAnim)
+	{
+		// 애니메이션 정보 쓰기
+		TAP	o << FE_TEXT("AnimPos = ") << mesh->animPos.size() << std::endl;
+		for (i = 0; i < mesh->animPos.size(); i++)
+		{
+			TAP o << mesh->animPos[i].animTime << FE_TEXT('\t') << mesh->animPos[i].pos.x << FE_TEXT('\t') << mesh->animPos[i].pos.y << FE_TEXT('\t') << mesh->animPos[i].pos.z << std::endl;
+		}
+		TAP o << FE_TEXT("AnimRot = ") << mesh->animRot.size() << std::endl;
+		for (int i = 0; i < mesh->animRot.size(); i++)
+		{
+			TAP o << mesh->animRot[i].animTime << FE_TEXT('\t') << mesh->animRot[i].axis.x << FE_TEXT('\t') << mesh->animRot[i].axis.y << FE_TEXT('\t') << mesh->animRot[i].axis.z << FE_TEXT('\t') << mesh->animRot[i].angle << std::endl;
+		}
+		TAP o << FE_TEXT("AnimScale = ") << mesh->animScale.size() << std::endl;
+		for (int i = 0; i < mesh->animScale.size(); i++)
+		{
+			TAP o << mesh->animScale[i].animTime << FE_TEXT('\t') << mesh->animScale[i].scale.x << FE_TEXT('\t') << mesh->animScale[i].scale.y << FE_TEXT('\t') << mesh->animScale[i].scale.z << FE_TEXT('\t') << mesh->animScale[i].axis.x << FE_TEXT('\t') << mesh->animScale[i].axis.y << FE_TEXT('\t') << mesh->animScale[i].axis.z << FE_TEXT('\t') << mesh->animScale[i].angle << std::endl;
+		}
+	}
+
 	for (auto iter = mesh->children.begin(); iter != mesh->children.end(); iter++)
 	{
 		WriteMeshData(o, (*iter), depth);
@@ -198,6 +244,40 @@ void VertexWeld(std::vector<FE_VF_PositionColorNormalTexture>& verts, std::vecto
 
 	return;
 }
+//void WriteASEAnim(tofstream& o, ASE_MESH* mesh, UINT depth)
+//{
+//#define TAP for (UINT di = 0; di < depth; di++) o << FE_TEXT('\t');
+//	TAP o << FE_TEXT("Animation") << std::endl;
+//	TAP o << FE_TEXT("{") << std::endl;
+//
+//	depth++;
+//
+//	TAP o << FE_TEXT("Name = ") << mesh->name << std::endl;
+//	TAP o << FE_TEXT("Pos") << FE_TEXT('\t') << mesh->animPos.size() << std::endl;
+//	for (int i = 0; i < mesh->animPos.size(); i++)
+//	{
+//		TAP o << mesh->animPos[i].animTime << FE_TEXT('\t') << mesh->animPos[i].pos.x << FE_TEXT('\t') << mesh->animPos[i].pos.y << FE_TEXT('\t') << mesh->animPos[i].pos.z << std::endl;
+//	}
+//	TAP o << FE_TEXT("Rot") << FE_TEXT('\t') << mesh->animRot.size() << std::endl;
+//	for (int i = 0; i < mesh->animRot.size(); i++)
+//	{
+//		TAP o << mesh->animRot[i].animTime << FE_TEXT('\t') << mesh->animRot[i].axis.x << FE_TEXT('\t') << mesh->animRot[i].axis.y << FE_TEXT('\t') << mesh->animRot[i].axis.z << FE_TEXT('\t') << mesh->animRot[i].angle << std::endl;
+//	}
+//	TAP o << FE_TEXT("Scale") << FE_TEXT('\t') << mesh->animScale.size() << std::endl;
+//	for (int i = 0; i < mesh->animScale.size(); i++)
+//	{
+//		TAP o << mesh->animScale[i].animTime << FE_TEXT('\t') << mesh->animScale[i].scale.x << FE_TEXT('\t') << mesh->animScale[i].scale.y << FE_TEXT('\t') << mesh->animScale[i].scale.z << FE_TEXT('\t') << mesh->animScale[i].axis.x << FE_TEXT('\t') << mesh->animScale[i].axis.y << FE_TEXT('\t') << mesh->animScale[i].axis.z << FE_TEXT('\t') << mesh->animScale[i].angle << std::endl;
+//	}
+//
+//	for (auto iter = mesh->children.begin(); iter != mesh->children.end(); iter++)
+//	{
+//		WriteASEAnim(o, (*iter), depth);
+//	}
+//
+//	depth--;
+//	o << FE_TEXT("}") << std::endl;
+//#undef TAP
+//}
 void ConvertASEMapFile(tifstream& f, tofstream& o, tstring i_filePath, tstring i_outPath, TCHAR buf[])
 {
 	int a, b, c, i = 0;
@@ -466,6 +546,9 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 
 	TCHAR buf[BUFFER_SIZE];
 
+	int frameSpeed;
+	int ticksPerFrame;
+
 	std::vector<INT64> vMtrl;
 	std::list<ASE_MESH*> meshList;
 
@@ -517,31 +600,31 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 
 				if (TCSCMP_SAME(buf + 1, FE_TEXT("SCENE_FILENAME")))
 				{
-
+					f.getline(buf, BUFFER_SIZE);
 				}
 				else if (TCSCMP_SAME(buf + 1, FE_TEXT("SCENE_FIRSTFRAME")))
 				{
-
+					f >> a;
 				}
 				else if (TCSCMP_SAME(buf + 1, FE_TEXT("SCENE_LASTFRAME")))
 				{
-
+					f >> a;
 				}
 				else if (TCSCMP_SAME(buf + 1, FE_TEXT("SCENE_FRAMESPEED")))
 				{
-
+					f >> frameSpeed;
 				}
 				else if (TCSCMP_SAME(buf + 1, FE_TEXT("SCENE_TICKSPERFRAME")))
 				{
-
+					f >> ticksPerFrame;
 				}
 				else if (TCSCMP_SAME(buf + 1, FE_TEXT("SCENE_BACKGROUND_STATIC")))
 				{
-
+					f >> x >> y >> z;
 				}
 				else if (TCSCMP_SAME(buf + 1, FE_TEXT("SCENE_AMBIENT_STATIC")))
 				{
-
+					f >> x >> y >> z;
 				}
 			}
 		}
@@ -572,6 +655,8 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 		else if (TCSCMP_SAME(buf + 1, FE_TEXT("GEOMOBJECT")))
 		{
 			ASE_MESH* mesh = new ASE_MESH;
+			FEMatrix m = FEMatrix::Identity;
+			FEMatrixA mA;
 
 			mesh->ID = CreateUUIDHashCode64();
 
@@ -625,19 +710,20 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("TM_ROW0")))
 						{
-							f >> x >> y >> z;
+							f >> m.m[0][0] >> m.m[0][1] >> m.m[0][2];
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("TM_ROW1")))
 						{
-							f >> x >> y >> z;
+							f >> m.m[1][0] >> m.m[1][1] >> m.m[1][2];
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("TM_ROW2")))
 						{
-							f >> x >> y >> z;
+							f >> m.m[2][0] >> m.m[2][1] >> m.m[2][2];
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("TM_ROW3")))
 						{
-							f >> x >> y >> z;
+							f >> m.m[3][0] >> m.m[3][1] >> m.m[3][2];
+							mA = FEMath::FEConvertToAlignData(m);
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("TM_POS")))
 						{
@@ -706,6 +792,7 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 								vPos[i].x = x;
 								vPos[i].y = y;
 								vPos[i].z = z;
+								vPos[i] = vPos[i] * m;
 							}
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("MESH_FACE_LIST")))
@@ -874,6 +961,76 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 				{
 					f >> i;
 				}
+				else if (TCSCMP_SAME(buf + 1, FE_TEXT("TM_ANIMATION")))
+				{
+					mesh->useAnim = true;
+					
+					f >> buf;
+
+					while (true)
+					{
+						f >> buf;
+
+						if (buf[0] == FE_TEXT('}'))			break;
+						else if (buf[0] == FE_TEXT('{'))	EscapeBlock(f);
+						else if (buf[0] != FE_TEXT('*'))	continue;
+						if (TCSCMP_SAME(buf + 1, FE_TEXT("NODE_NAME")))
+						{
+							f.getline(buf, BUFFER_SIZE);
+						}
+						else if (TCSCMP_SAME(buf + 1, FE_TEXT("CONTROL_POS_TRACK")))
+						{
+							f >> buf;
+							
+							while (true)
+							{
+								f >> buf;
+
+								if (buf[0] == FE_TEXT('}'))			break;
+								else if (buf[0] == FE_TEXT('{'))	EscapeBlock(f);
+
+								ASE_ANIM_POS animPos;
+								f >> animPos.animTime >> animPos.pos.x >> animPos.pos.y >> animPos.pos.z;
+								animPos.animTime = animPos.animTime / (frameSpeed * ticksPerFrame);
+								mesh->animPos.push_back(animPos);
+							}
+						}
+						else if (TCSCMP_SAME(buf + 1, FE_TEXT("CONTROL_ROT_TRACK")))
+						{
+							f >> buf;
+
+							while (true)
+							{
+								f >> buf;
+
+								if (buf[0] == FE_TEXT('}'))			break;
+								else if (buf[0] == FE_TEXT('{'))	EscapeBlock(f);
+
+								ASE_ANIM_ROT animRot;
+								f >> animRot.animTime >> animRot.axis.x >> animRot.axis.y >> animRot.axis.z >> animRot.angle;
+								animRot.animTime = animRot.animTime / (frameSpeed * ticksPerFrame);
+								mesh->animRot.push_back(animRot);
+							}
+						}
+						else if (TCSCMP_SAME(buf + 1, FE_TEXT("CONTROL_SCALE_TRACK")))
+						{
+							f >> buf;
+
+							while (true)
+							{
+								f >> buf;
+
+								if (buf[0] == FE_TEXT('}'))			break;
+								else if (buf[0] == FE_TEXT('{'))	EscapeBlock(f);
+
+								ASE_ANIM_SCALE animScale;
+								f >> animScale.animTime >> animScale.scale.x >> animScale.scale.y >> animScale.scale.z >> animScale.axis.x >> animScale.axis.y >> animScale.axis.z >> animScale.angle;
+								animScale.animTime = animScale.animTime / (frameSpeed * ticksPerFrame);
+								mesh->animScale.push_back(animScale);
+							}
+						}
+					}
+				}
 				else if (TCSCMP_SAME(buf + 1, FE_TEXT("MATERIAL_REF")))
 				{
 					f >> i;
@@ -1025,7 +1182,9 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 		}
 	}
 
-	WriteMeshData(o, &root, 0);
+	// 메쉬 데이터 쓰기
+	if (root.children.size() == 1)		WriteMeshData(o, *root.children.begin(), 0);
+	else								WriteMeshData(o, &root, 0);
 
 	auto iter = meshList.begin();
 	while (iter != meshList.end())
