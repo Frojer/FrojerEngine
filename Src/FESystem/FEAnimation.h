@@ -35,8 +35,8 @@ public:
 	float _animTime;
 
 public:
-	bool _bLoop;
-	float _maxAnimTime;
+	float m_maxAnimTime;
+	bool m_bLoop;
 	std::vector<ANIM_POS> m_animPos;
 	std::vector<ANIM_ROT> m_animRot;
 	std::vector<ANIM_SCALE> m_animScale;

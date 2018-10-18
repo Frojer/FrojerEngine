@@ -10,16 +10,17 @@
 #define FE_PIDIV4 0.785398163f
 #define FE_EPSILON 0.0001f
 
-float FEConvertToDegree(float radian);
-float FEConvertToRadian(float degree);
-
-#ifdef _WIN32
-#include <DirectXMath.h>
-
 class FEVector2;
 class FEVector3;
 class FEVector4;
 class FEMatrix;
+
+float FEConvertToDegree(float radian);
+float FEConvertToRadian(float degree);
+void toEulerAngle(const FEVector4& q, float& roll, float& pitch, float& yaw);
+
+#ifdef _WIN32
+#include <DirectXMath.h>
 
 typedef DirectX::XMVECTOR FEVectorA;
 typedef DirectX::XMMATRIX FEMatrixA;
@@ -34,7 +35,9 @@ namespace FEMath
 	FEMatrix FEMatrixTranslation(const FEVector3& Offset);
 	FEMatrix FEMatrixRotationRollPitchYaw(const FEVector3& Angles);
 	FEMatrix FEMatrixScaling(const FEVector3& Scale);
-
+	FEVector4 FEQuaternionRotationAxis(const FEVector3 axis, const float angle);
+	FEVector4 FEQuaternionMultiply(const FEVector4 Q1, const FEVector4 Q2);
+	FEVector4 FEQuaternionSlerp(const FEVector4 Q1, const FEVector4 Q2, const float t);
 	FEVectorA FEConvertToAlignData(const FEVector2& V);
 	FEVectorA FEConvertToAlignData(const FEVector3& V);
 	FEVectorA FEConvertToAlignData(const FEVector4& V);

@@ -52,6 +52,13 @@ struct ASE_MESH
 
 	std::list<ASE_MESH*> children;
 
+	FEVector3 vPos;
+	FEVector3 vRotAxis;
+	float fRotAngle;
+	FEVector3 vScale;
+	FEVector3 vScaleAxis;
+	float fScaleAngle;
+
 	unsigned char vf;
 
 	std::vector<FEVector3>		position;
@@ -154,6 +161,20 @@ void WriteMeshData(tofstream& o, ASE_MESH* mesh, UINT depth)
 	// 머테리얼 ID 쓰기
 	if (mesh->mtrlID != 0)	{ TAP	o << FE_TEXT("MaterialID = ") << mesh->mtrlID << std::endl;	}
 	else					{ TAP	o << FE_TEXT("MaterialID = ") << 0 << std::endl; }
+
+	// 트렌스폼 쓰기
+	FEVector4 Q;
+	if (mesh->vRotAxis != FEVector3::Zero)
+		Q = FEMath::FEQuaternionRotationAxis(mesh->vRotAxis, mesh->fRotAngle);
+	else
+		Q = FEVector3::Zero;
+	FEVector3 rot;
+	TAP	o << FE_TEXT("Pos = ") << mesh->vPos.x << FE_TEXT('\t') << mesh->vPos.y << FE_TEXT('\t') << mesh->vPos.z << FE_TEXT('\t') << std::endl;
+	toEulerAngle(Q, rot.x, rot.y, rot.z);
+	TAP	o << FE_TEXT("Rot = ") << rot.x << FE_TEXT('\t') << rot.y << FE_TEXT('\t') << rot.z << FE_TEXT('\t') << std::endl;
+	TAP	o << FE_TEXT("QScaleAngle = ") << mesh->vScaleAxis.x << FE_TEXT('\t') << mesh->vScaleAxis.y << FE_TEXT('\t') << mesh->vScaleAxis.z << FE_TEXT('\t') << std::endl;
+	TAP	o << FE_TEXT("QScale = ") << mesh->vScale.x << FE_TEXT('\t') << mesh->vScale.y << FE_TEXT('\t') << mesh->vScale.z << FE_TEXT('\t') << std::endl;
+	TAP	o << FE_TEXT("Scale = ") << mesh->vScale.x << FE_TEXT('\t') << mesh->vScale.y << FE_TEXT('\t') << mesh->vScale.z << FE_TEXT('\t') << std::endl;
 
 	// 버텍스 포맷 쓰기
 	TAP	o << FE_TEXT("VertexFormat = ") << mesh->vf << std::endl;
@@ -546,7 +567,11 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 
 	TCHAR buf[BUFFER_SIZE];
 
+	// 애니메이션은 총 몇프레임으로 되어있는가?
+	int lastFrame;
+	// 초당 몇 프레임인가?
 	int frameSpeed;
+	// 프레임당 몇 틱인가? (ASE Animation 파일 내의 TICK값)
 	int ticksPerFrame;
 
 	std::vector<INT64> vMtrl;
@@ -608,7 +633,7 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 				}
 				else if (TCSCMP_SAME(buf + 1, FE_TEXT("SCENE_LASTFRAME")))
 				{
-					f >> a;
+					f >> lastFrame;
 				}
 				else if (TCSCMP_SAME(buf + 1, FE_TEXT("SCENE_FRAMESPEED")))
 				{
@@ -617,6 +642,7 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 				else if (TCSCMP_SAME(buf + 1, FE_TEXT("SCENE_TICKSPERFRAME")))
 				{
 					f >> ticksPerFrame;
+					o << FE_TEXT("AnimationTime = ") << (float)lastFrame / (float)frameSpeed << std::endl;
 				}
 				else if (TCSCMP_SAME(buf + 1, FE_TEXT("SCENE_BACKGROUND_STATIC")))
 				{
@@ -656,7 +682,15 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 		{
 			ASE_MESH* mesh = new ASE_MESH;
 			FEMatrix m = FEMatrix::Identity;
-			FEMatrixA mA;
+
+			vPos.clear();
+			iPos.clear();
+			vColor.clear();
+			iColor.clear();
+			vVertexNormal.clear();
+			vFaceNormal.clear();
+			vTex.clear();
+			iTex.clear();
 
 			mesh->ID = CreateUUIDHashCode64();
 
@@ -714,40 +748,39 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("TM_ROW1")))
 						{
-							f >> m.m[1][0] >> m.m[1][1] >> m.m[1][2];
+							f >> m.m[1][0] >> m.m[2][2] >> m.m[2][1];
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("TM_ROW2")))
 						{
-							f >> m.m[2][0] >> m.m[2][1] >> m.m[2][2];
+							f >> m.m[2][0] >> m.m[1][2] >> m.m[1][1];
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("TM_ROW3")))
 						{
 							f >> m.m[3][0] >> m.m[3][1] >> m.m[3][2];
-							mA = FEMath::FEConvertToAlignData(m);
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("TM_POS")))
 						{
-							f >> pos.x >> pos.y >> pos.z;
+							f >> mesh->vPos.x >> mesh->vPos.z >> mesh->vPos.y;
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("TM_ROTAXIS")))
 						{
-							f >> rot.x >> rot.y >> rot.z;
+							f >> mesh->vRotAxis.x >> mesh->vRotAxis.z >> mesh->vRotAxis.y;
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("TM_ROTANGLE")))
 						{
-							f >> rotAngle;
+							f >> mesh->fRotAngle;
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("TM_SCALE")))
 						{
-							f >> scale.x >> scale.y >> scale.z;
+							f >> mesh->vScale.x >> mesh->vScale.z >> mesh->vScale.y;
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("TM_SCALEAXIS")))
 						{
-							f >> scaleAxis.x >> scaleAxis.y >> scaleAxis.z;
+							f >> mesh->vScaleAxis.x >> mesh->vScaleAxis.z >> mesh->vScaleAxis.y;
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("TM_SCALEAXISANG")))
 						{
-							f >> scaleAxisAngle;
+							f >> mesh->fScaleAngle;
 						}
 					}
 				}
@@ -788,7 +821,7 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 								if (buf[0] == FE_TEXT('}'))			break;
 								else if (buf[0] == FE_TEXT('{'))	EscapeBlock(f);
 
-								f >> i >> x >> y >> z;
+								f >> i >> x >> z >> y;
 								vPos[i].x = x;
 								vPos[i].y = y;
 								vPos[i].z = z;
@@ -929,7 +962,7 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 
 								if (TCSCMP_SAME(buf + 1, FE_TEXT("MESH_FACENORMAL")))
 								{
-									f >> i >> x >> y >> z;
+									f >> i >> x >> z >> y;
 
 									vFaceNormal[i].x = x;
 									vFaceNormal[i].y = y;
@@ -937,7 +970,7 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 								}
 								else if (TCSCMP_SAME(buf + 1, FE_TEXT("MESH_VERTEXNORMAL")))
 								{
-									f >> i >> x >> y >> z;
+									f >> i >> x >> z >> y;
 
 									vVertexNormal[normalCount].x = x;
 									vVertexNormal[normalCount].y = y;
@@ -990,7 +1023,7 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 								else if (buf[0] == FE_TEXT('{'))	EscapeBlock(f);
 
 								ASE_ANIM_POS animPos;
-								f >> animPos.animTime >> animPos.pos.x >> animPos.pos.y >> animPos.pos.z;
+								f >> animPos.animTime >> animPos.pos.x >> animPos.pos.z >> animPos.pos.y;
 								animPos.animTime = animPos.animTime / (frameSpeed * ticksPerFrame);
 								mesh->animPos.push_back(animPos);
 							}
@@ -1007,7 +1040,7 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 								else if (buf[0] == FE_TEXT('{'))	EscapeBlock(f);
 
 								ASE_ANIM_ROT animRot;
-								f >> animRot.animTime >> animRot.axis.x >> animRot.axis.y >> animRot.axis.z >> animRot.angle;
+								f >> animRot.animTime >> animRot.axis.x >> animRot.axis.z >> animRot.axis.y >> animRot.angle;
 								animRot.animTime = animRot.animTime / (frameSpeed * ticksPerFrame);
 								mesh->animRot.push_back(animRot);
 							}
@@ -1024,7 +1057,7 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 								else if (buf[0] == FE_TEXT('{'))	EscapeBlock(f);
 
 								ASE_ANIM_SCALE animScale;
-								f >> animScale.animTime >> animScale.scale.x >> animScale.scale.y >> animScale.scale.z >> animScale.axis.x >> animScale.axis.y >> animScale.axis.z >> animScale.angle;
+								f >> animScale.animTime >> animScale.scale.x >> animScale.scale.z >> animScale.scale.y >> animScale.axis.x >> animScale.axis.z >> animScale.axis.y >> animScale.angle;
 								animScale.animTime = animScale.animTime / (frameSpeed * ticksPerFrame);
 								mesh->animScale.push_back(animScale);
 							}
@@ -1038,10 +1071,10 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 				}
 			}
 
-			if (iPos.size() != 0)			mesh->vf |= FE_VF_POSITION;
-			if (iColor.size() != 0)			mesh->vf |= FE_VF_VERTEX_COLOR;
+			if (vPos.size() != 0)			mesh->vf |= FE_VF_POSITION;
+			if (vColor.size() != 0)			mesh->vf |= FE_VF_VERTEX_COLOR;
 			if (vVertexNormal.size() != 0)	mesh->vf |= FE_VF_NORMAL;
-			if (iTex.size() != 0)			mesh->vf |= FE_VF_TEXTURE;
+			if (vTex.size() != 0)			mesh->vf |= FE_VF_TEXTURE;
 
 			std::vector<FE_VF_PositionColorNormalTexture> verts;
 			std::vector<FE_IndexFormat> indics;
@@ -1140,6 +1173,12 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 
 			// 버텍스 압축
 			VertexWeld(verts, indics);
+
+			if (verts.size() == 1)
+			{
+				verts.clear();
+				indics.clear();
+			}
 
 			mesh->index = indics;
 

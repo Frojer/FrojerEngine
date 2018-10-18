@@ -14,6 +14,7 @@
 
 #define BUFFER_SIZE 1024
 
+float FELoader::animationTime = 0.0f;
 std::unordered_map<INT64, tstring> FELoader::resourceMap;
 
 FESystemSetting FELoader::LoadSetting()
@@ -286,6 +287,7 @@ void FELoader::LoadMesh(tifstream &f, FEGameObject* pParent)
 	INT64 uuid;
 	TCHAR str[BUFFER_SIZE];
 	INT64 mtrlID, meshID;
+	FEVector3 v;
 	UINT vc, ic, vf;
 	bool useAnim;
 	FEMesh* pMesh = nullptr;
@@ -312,6 +314,14 @@ void FELoader::LoadMesh(tifstream &f, FEGameObject* pParent)
 
 	// Material ID
 	f >> str >> str >> mtrlID;
+
+	// Transform Info
+	f >> str >> str >> v.x >> v.y >> v.z;
+	pObj->GetTransform()->SetPositionLocal(v);
+	f >> str >> str >> v.x >> v.y >> v.z;
+	pObj->GetTransform()->SetRotationRadian(v);
+	f >> str >> str >> v.x >> v.y >> v.z;
+	pObj->GetTransform()->m_vScale = v;
 
 	// Vertex Format
 	f >> str >> str >> vf;
@@ -353,6 +363,7 @@ void FELoader::LoadMesh(tifstream &f, FEGameObject* pParent)
 		if (useAnim)
 		{
 			FEAnimation* pAnim = pObj->AddComponent<FEAnimation>();
+			pAnim->m_maxAnimTime = animationTime;
 			UINT apc, arc, asc;
 			f >> str >> str >> apc;
 			pAnim->m_animPos.resize(apc);
@@ -395,6 +406,8 @@ void FELoader::LoadMesh(tstring i_meshPath, tstring i_name)
 		//FEDebug::WarningMessage(FE_TEXT("Failed to load Material."));
 		return;
 	}
+
+	f >> str >> str >> animationTime;
 
 	while (!f.eof())
 	{

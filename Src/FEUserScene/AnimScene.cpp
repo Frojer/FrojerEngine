@@ -36,11 +36,8 @@ void AnimScene::Load()
 	light->m_ambient = FEVector4(0.2f, 0.2f, 0.2f, 1.0f);
 	light->m_lightType = FE_LIGHT_TYPE_DIRECTION;
 
-	FEGameObject* pBox = FEGameObject::CopyObject(FEGameObject::FindPrefab(2780651539010169386));
+	FEGameObject* pBox = FEGameObject::CopyObject(FEGameObject::FindPrefab(-6779826267264017719));
 	auto pAnim = pBox->GetComponent<FEAnimation>();
-	pAnim->_maxAnimTime = 3.3333333f;
-	pAnim->Play();
-	pAnim->_bLoop = true;
 	FE_SAMPLER_STATE_FLAG ss;
-	pBox->GetChildren().begin()->second->GetRenderer()->m_pMaterial->SetSamplerState(0, ss);
+	pBox->GetRenderer()->m_pMaterial->SetSamplerState(0, ss);
 }

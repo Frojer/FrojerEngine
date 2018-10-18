@@ -9,6 +9,26 @@ float FEConvertToRadian(float degree)
 	return degree / 180 * FE_PI;
 }
 
+void toEulerAngle(const FEVector4& q, float& roll, float& pitch, float& yaw)
+{
+	// roll (x-axis rotation)
+	double sinr_cosp = +2.0 * (q.w * q.x + q.y * q.z);
+	double cosr_cosp = +1.0 - 2.0 * (q.x * q.x + q.y * q.y);
+	roll = atan2(sinr_cosp, cosr_cosp);
+
+	// pitch (y-axis rotation)
+	double sinp = +2.0 * (q.w * q.y - q.z * q.x);
+	if (fabs(sinp) >= 1)
+		pitch = copysign(FE_PI / 2, sinp); // use 90 degrees if out of range
+	else
+		pitch = asin(sinp);
+
+	// yaw (z-axis rotation)
+	double siny_cosp = +2.0 * (q.w * q.z + q.x * q.y);
+	double cosy_cosp = +1.0 - 2.0 * (q.y * q.y + q.z * q.z);
+	yaw = atan2(siny_cosp, cosy_cosp);
+}
+
 using namespace DirectX;
 
 const FEVector2 FEVector2::Zero		( 0.0f,  0.0f);
@@ -47,6 +67,24 @@ FEMatrix FEMath::FEMatrixScaling(const FEVector3& Scale)
 	FEMatrix result;
 	XMStoreFloat4x4(&result, XMMatrixScalingFromVector(XMLoadFloat3(&Scale)));
 	return result;
+}
+FEVector4 FEMath::FEQuaternionRotationAxis(const FEVector3 axis, const float angle)
+{
+	FEVector4 ret = XMQuaternionRotationAxis(FEMath::FEConvertToAlignData(axis), angle);
+
+	return ret;
+}
+FEVector4 FEMath::FEQuaternionMultiply(const FEVector4 Q1, const FEVector4 Q2)
+{
+	FEVector4 ret = XMQuaternionMultiply(FEConvertToAlignData(Q1), FEConvertToAlignData(Q2));
+
+	return ret;
+}
+FEVector4 FEMath::FEQuaternionSlerp(const FEVector4 Q1, const FEVector4 Q2, const float t)
+{
+	FEVector4 ret = FEQuaternionSlerp(FEConvertToAlignData(Q1), FEConvertToAlignData(Q2), t);
+
+	return ret;
 }
 
 
