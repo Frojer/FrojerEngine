@@ -287,7 +287,7 @@ void FELoader::LoadMesh(tifstream &f, FEGameObject* pParent)
 	INT64 uuid;
 	TCHAR str[BUFFER_SIZE];
 	INT64 mtrlID, meshID;
-	FEVector3 v;
+	FEVector4 v;
 	UINT vc, ic, vf;
 	bool useAnim;
 	FEMesh* pMesh = nullptr;
@@ -316,12 +316,17 @@ void FELoader::LoadMesh(tifstream &f, FEGameObject* pParent)
 	f >> str >> str >> mtrlID;
 
 	// Transform Info
+	// Position
 	f >> str >> str >> v.x >> v.y >> v.z;
 	pObj->GetTransform()->SetPositionLocal(v);
-	f >> str >> str >> v.x >> v.y >> v.z;
-	pObj->GetTransform()->SetRotationRadian(v);
+	// Rotation
+	f >> str >> str >> v.x >> v.y >> v.z >> v.w;
+	pObj->GetTransform()->SetRotationQuaternion(v);
+	// Scale
 	f >> str >> str >> v.x >> v.y >> v.z;
 	pObj->GetTransform()->m_vScale = v;
+	f >> str >> str >> v.x >> v.y >> v.z >> v.w;
+	//pObj->GetTransform()->_qScaleRot = v;
 
 	// Vertex Format
 	f >> str >> str >> vf;
@@ -370,7 +375,7 @@ void FELoader::LoadMesh(tifstream &f, FEGameObject* pParent)
 			for (int i = 0; i < apc; i++)		f >> pAnim->m_animPos[i].animTime >> pAnim->m_animPos[i].pos.x >> pAnim->m_animPos[i].pos.y >> pAnim->m_animPos[i].pos.z;
 			f >> str >> str >> arc;
 			pAnim->m_animRot.resize(arc);
-			for (int i = 0; i < arc; i++)		f >> pAnim->m_animRot[i].animTime >> pAnim->m_animRot[i].axis.x >> pAnim->m_animRot[i].axis.y >> pAnim->m_animRot[i].axis.z >> pAnim->m_animRot[i].angle;
+			for (int i = 0; i < arc; i++)		f >> pAnim->m_animRot[i].animTime >> pAnim->m_animRot[i].qRot.x >> pAnim->m_animRot[i].qRot.y >> pAnim->m_animRot[i].qRot.z >> pAnim->m_animRot[i].qRot.w;
 			f >> str >> str >> asc;
 			pAnim->m_animScale.resize(asc);
 			for (int i = 0; i < asc; i++)		f >> pAnim->m_animScale[i].animTime >> pAnim->m_animScale[i].scale.x >> pAnim->m_animScale[i].scale.y >> pAnim->m_animScale[i].scale.z >> pAnim->m_animScale[i].axis.x >> pAnim->m_animScale[i].axis.y >> pAnim->m_animScale[i].axis.z >> pAnim->m_animScale[i].angle;

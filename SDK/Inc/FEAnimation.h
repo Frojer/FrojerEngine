@@ -20,8 +20,7 @@ public:
 	struct ANIM_ROT
 	{
 		float animTime;
-		FEVector3 axis;
-		float angle;
+		FEVector4 qRot;
 	};
 	struct ANIM_SCALE
 	{

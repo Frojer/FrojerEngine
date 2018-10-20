@@ -3,7 +3,7 @@
 using namespace FEMath;
 
 FETransform::FETransform()
-	: _vPos(FEVector3::Zero), _vRot(FEVector3::Zero), _qScale(FEVector3::One), _qScaleRot(FEVector4::Zero), m_vScale(FEVector3::One)
+	: _vPos(FEVector3::Zero), _qRot(0.0f, 0.0f, 0.0f, 1.0f), _qScaleRot(FEVector4::Zero), m_vScale(FEVector3::One)
 {
 }
 
@@ -21,7 +21,7 @@ FEMatrix FETransform::GetWorldMatrix()
 	FEGameObject* pObj = GetMyObject();
 
 	mPos = FEMatrixTranslation(_vPos);
-	mRot = FEMatrixRotationRollPitchYaw(_vRot);
+	mRot = FEMatrixRotationQuaternion(_qRot);
 	mScale = FEMatrixScaling(m_vScale);
 
 	if (pObj->GetParent() != nullptr)
@@ -55,7 +55,7 @@ FEMatrix FETransform::GetRotationMatrix()
 	FEGameObject* pObj = GetMyObject();
 
 	FEMatrix mRot;
-	mRot = FEMatrixRotationRollPitchYaw(_vRot);
+	mRot = FEMatrixRotationQuaternion(_qRot);
 
 	if (pObj->GetParent() != nullptr)
 		mRot *= pObj->GetParent()->GetTransform()->GetRotationMatrix();
@@ -70,7 +70,7 @@ FEMatrix FETransform::GetRotPosMatrix()
 
 	FEMatrix mPos, mRot, mRP;
 	mPos = FEMatrixTranslation(_vPos);
-	mRot = FEMatrixRotationRollPitchYaw(_vRot);
+	mRot = FEMatrixRotationQuaternion(_qRot);
 
 	mRP = mRot * mPos;
 
@@ -102,13 +102,17 @@ void FETransform::Translate(const FEVector3& translate, Space space)
 	else
 		SetPositionWorld(GetPositionWorld() + translate);
 }
-
 void FETransform::Rotate(const FEVector3& eulerAngles, Space space)
 {
-	if (space)
-		_vRot += eulerAngles / 180.0f * FE_PI;
-	else
-		_vRot += eulerAngles / 180.0f * FE_PI;
+	//FEVector3 angle = eulerAngles / 180.0f * FE_PI;
+	//_qRot = FEQuaternionMultiply(_qRot, FEQuaternionRotationRollPitchYaw(angle));
+	_qRot = FEQuaternionMultiply(_qRot, FEQuaternionRotationAxis(GetRightVector(), FEConvertToRadian(eulerAngles.x)));
+	_qRot = FEQuaternionMultiply(_qRot, FEQuaternionRotationAxis(FEVector3::Up, FEConvertToRadian(eulerAngles.y)));
+	_qRot = FEQuaternionMultiply(_qRot, FEQuaternionRotationAxis(GetLookAt(), FEConvertToRadian(eulerAngles.z)));
+}
+void FETransform::Rotate(const FEVector3& axis, float angle)
+{
+	_qRot = FEQuaternionMultiply(_qRot, FEQuaternionRotationAxis(axis, angle));
 }
 
 
@@ -127,17 +131,21 @@ void FETransform::SetPositionLocal(const FEVector3& pos)
 {
 	_vPos = pos;
 }
-
-
+void FETransform::SetRotationQuaternion(const FEVector4& Q)
+{
+	_qRot = Q;
+}
 void FETransform::SetRotationDegree(const FEVector3& angle)
 {
-	_vRot = angle * (FE_PI / 180.0f);
+	_qRot = FEQuaternionRotationAxis(GetRightVector(), FEConvertToRadian(angle.x));
+	_qRot = FEQuaternionMultiply(_qRot, FEQuaternionRotationAxis(FEVector3::Up, FEConvertToRadian(angle.y)));
+	_qRot = FEQuaternionMultiply(_qRot, FEQuaternionRotationAxis(FEVector3::Forward, FEConvertToRadian(angle.z)));
 }
 
 
 void FETransform::SetRotationRadian(const FEVector3& radian)
 {
-	_vRot = radian;
+	_qRot = FEQuaternionRotationRollPitchYaw(radian);
 }
 
 
@@ -153,31 +161,26 @@ FEVector3 FETransform::GetPositionLocal()
 }
 
 
-FEVector3 FETransform::GetRotationRadian()
+FEVector4 FETransform::GetRotationQuaternion()
 {
-	return _vRot;
+	return _qRot;
 }
 
-
-FEVector3 FETransform::GetRotationDegree()
-{
-	return _vRot * (FE_PI / 180.0f);
-}
 
 
 FEVector3 FETransform::GetLookAt()
 {
-	return FEVector3::Forward * FEMatrixRotationRollPitchYaw(_vRot);
+	return FEVector3::Forward * FEMatrixRotationQuaternion(_qRot);
 }
 
 
 FEVector3 FETransform::GetUpVector()
 {
-	return FEVector3::Up * FEMatrixRotationRollPitchYaw(_vRot);
+	return FEVector3::Up * FEMatrixRotationQuaternion(_qRot);
 }
 
 
 FEVector3 FETransform::GetRightVector()
 {
-	return FEVector3::Right * FEMatrixRotationRollPitchYaw(_vRot);
+	return FEVector3::Right * FEMatrixRotationQuaternion(_qRot);
 }

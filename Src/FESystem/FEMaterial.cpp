@@ -46,7 +46,7 @@ void FEMaterial::UpdateConstantBufferLight()
 {
 	// 라이트 데이터 업데이트
 	auto iter = FELight::_lightList.begin();
-	FEVector3 vec;
+	FEVector4 vec;
 
 	for (UINT i = 0; iter != FELight::_lightList.end() && i < FE_LIGHT_SIZE; iter++)
 	{
@@ -59,8 +59,8 @@ void FEMaterial::UpdateConstantBufferLight()
 		FEMaterial::_lightCB[i].ambient = FEMath::FEConvertToAlignData((*iter)->m_ambient);
 		FEMaterial::_lightCB[i].specular = FEMath::FEConvertToAlignData((*iter)->m_specular);
 		FEMaterial::_lightCB[i].position = FEMath::FEConvertToAlignData(FEVector4((*iter)->GetMyObject()->GetTransform()->GetPositionWorld(), 1));
-		vec = (*iter)->GetMyObject()->GetTransform()->GetRotationRadian();
-		FEMaterial::_lightCB[i].direction = FEMath::FEConvertToAlignData(FEVector4(-(FEVector3::Forward * FEMath::FEMatrixRotationRollPitchYaw(vec)), 0));
+		vec = (*iter)->GetMyObject()->GetTransform()->GetRotationQuaternion();
+		FEMaterial::_lightCB[i].direction = FEMath::FEConvertToAlignData(FEVector4(-(FEVector3::Forward * FEMath::FEMatrixRotationQuaternion(vec)), 0));
 		FEMaterial::_lightCB[i].range = (*iter)->m_range;
 		FEMaterial::_lightCB[i].lightType = (*iter)->m_lightType;
 
@@ -176,17 +176,15 @@ void FEMaterial::Render()
 	if (_pShader == nullptr)
 		return;
 
-	//auto sampler = FETexture::GetSampler(1);
-	//
-	//// 셈플러 설정
-	//_pShader->_pDXDC->PSSetSamplers(0, 1, &sampler);
+	// 셈플러 설정
+	FE_SAMPLER_STATE_FLAG ss;
+	_pShader->SetSamplerState(0, ss);
 	
 	for (UINT i = 0; i < _vecTexInfo.size(); i++)
 	{
 		// 셰이더 리소스 설정.
 		if (_vecTexInfo[i].pTexture == nullptr)
-			//_pShader->SetShaderResources(i, _pDefaultTex);
-			continue;
+			_pShader->SetShaderResources(i, _pDefaultTex);
 		else
 			_pShader->SetShaderResources(i, _vecTexInfo[i].pTexture);
 	}

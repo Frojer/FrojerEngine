@@ -194,7 +194,4 @@
     <ClInclude Include="FEAnimationClip.h" />
     <ClInclude Include="FEAnimation.h" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
-  </ItemGroup>
 </Project>

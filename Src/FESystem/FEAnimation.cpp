@@ -3,7 +3,7 @@
 #include <FEMath.h>
 
 FEAnimation::FEAnimation()
-	: _animState(PAUSE), _animTime(0.0f), m_maxAnimTime(0.0f), m_bLoop(true)
+	: _animState(RUN), _animTime(0.0f), m_maxAnimTime(0.0f), m_bLoop(true)
 {
 }
 FEAnimation::~FEAnimation()
@@ -39,11 +39,8 @@ void FEAnimation::AnimationUpdate()
 				}
 			}
 		}
-
-		FEVector4 totalQ, nextQ;
 		if (m_animRot.size() != 0)
 		{
-			totalQ = FEMath::FEQuaternionRotationAxis(FEMath::FEConvertToAlignData(m_animRot[0].axis), m_animRot[0].angle);
 			if (m_animRot[0].animTime <= _animTime)
 			{
 				for (int i = 1; i < m_animRot.size(); i++)
@@ -51,16 +48,9 @@ void FEAnimation::AnimationUpdate()
 					if (m_animRot[i].animTime > _animTime)
 					{
 						weight = (_animTime - m_animRot[i - 1].animTime) / (m_animRot[i].animTime - m_animRot[i - 1].animTime);
-						nextQ = FEMath::FEQuaternionMultiply(totalQ, DirectX::XMQuaternionRotationAxis(FEMath::FEConvertToAlignData(m_animRot[i].axis), m_animRot[i].angle));
-
-						totalQ = FEMath::FEQuaternionSlerp(totalQ, nextQ, weight);
-						toEulerAngle(totalQ, v.x, v.y, v.z);
-
-						GetMyObject()->GetTransform()->SetRotationRadian(v);
+						GetMyObject()->GetTransform()->SetRotationQuaternion(FEMath::FEQuaternionSlerp(m_animRot[i - 1].qRot, m_animRot[i].qRot, weight));
 						break;
 					}
-
-					totalQ = FEMath::FEQuaternionMultiply(totalQ, DirectX::XMQuaternionRotationAxis(FEMath::FEConvertToAlignData(m_animRot[i].axis), m_animRot[i].angle));
 				}
 			}
 		}
@@ -85,7 +75,7 @@ void FEAnimation::AnimationUpdate()
 		}
 
 
-		_animTime += FETime::GetDeltaTime();
+		_animTime += FETime::GetDeltaTime() * 0.2f;
 		if (_animTime >= m_maxAnimTime)
 		{
 			_animTime -= m_maxAnimTime;

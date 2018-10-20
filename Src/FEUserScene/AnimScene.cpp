@@ -21,6 +21,7 @@ void AnimScene::Load()
 
 	FEGameObject* pGrid = new FEGameObject();
 	auto grid = pGrid->AddComponent<Grid>();
+	grid->x = true;
 	grid->y = true;
 	grid->z = true;
 	//FEGameObject* pCam = new FEGameObject(FEVector3(0.0f, 0.0f, -30.0f), FEVector3::Zero, FEVector3::One);
@@ -36,8 +37,6 @@ void AnimScene::Load()
 	light->m_ambient = FEVector4(0.2f, 0.2f, 0.2f, 1.0f);
 	light->m_lightType = FE_LIGHT_TYPE_DIRECTION;
 
-	FEGameObject* pBox = FEGameObject::CopyObject(FEGameObject::FindPrefab(-6779826267264017719));
+	FEGameObject* pBox = FEGameObject::CopyObject(FEGameObject::FindPrefab(-2457711889405180742));
 	auto pAnim = pBox->GetComponent<FEAnimation>();
-	FE_SAMPLER_STATE_FLAG ss;
-	pBox->GetRenderer()->m_pMaterial->SetSamplerState(0, ss);
 }

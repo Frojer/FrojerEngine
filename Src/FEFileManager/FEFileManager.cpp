@@ -31,15 +31,13 @@ struct ASE_ANIM_POS
 struct ASE_ANIM_ROT
 {
 	float animTime;
-	FEVector3 axis;
-	float angle;
+	FEVector4 qRot = FEVector4(0.0f, 0.0f, 0.0f, 1.0f);
 };
 struct ASE_ANIM_SCALE
 {
 	float animTime;
 	FEVector3 scale;
-	FEVector3 axis;
-	float angle;
+	FEVector4 qScaleRot;
 };
 
 struct ASE_MESH
@@ -52,12 +50,17 @@ struct ASE_MESH
 
 	std::list<ASE_MESH*> children;
 
+	FEVector3 vPosWorld;
+	FEVector4 qRotWorld;
+	FEVector3 vScaleWorld;
+	FEVector4 qScaleRotWorld;
+
 	FEVector3 vPos;
-	FEVector3 vRotAxis;
-	float fRotAngle;
+	FEVector4 qRot;
 	FEVector3 vScale;
-	FEVector3 vScaleAxis;
-	float fScaleAngle;
+	FEVector4 qScaleRot;
+
+	FEMatrix TM;
 
 	unsigned char vf;
 
@@ -74,9 +77,8 @@ struct ASE_MESH
 	std::vector<ASE_ANIM_SCALE> animScale;
 
 	ASE_MESH()
-		: ID(0), mtrlID(0), vf(0), useAnim(false)
+		: ID(0), mtrlID(0), vScale(1.0f, 1.0f, 1.0f), vScaleWorld(1.0f, 1.0f, 1.0f), vf(0), TM(FEMatrix::Identity), useAnim(false)
 	{
-		
 	}
 };
 
@@ -164,17 +166,10 @@ void WriteMeshData(tofstream& o, ASE_MESH* mesh, UINT depth)
 
 	// 트렌스폼 쓰기
 	FEVector4 Q;
-	if (mesh->vRotAxis != FEVector3::Zero)
-		Q = FEMath::FEQuaternionRotationAxis(mesh->vRotAxis, mesh->fRotAngle);
-	else
-		Q = FEVector3::Zero;
-	FEVector3 rot;
-	TAP	o << FE_TEXT("Pos = ") << mesh->vPos.x << FE_TEXT('\t') << mesh->vPos.y << FE_TEXT('\t') << mesh->vPos.z << FE_TEXT('\t') << std::endl;
-	toEulerAngle(Q, rot.x, rot.y, rot.z);
-	TAP	o << FE_TEXT("Rot = ") << rot.x << FE_TEXT('\t') << rot.y << FE_TEXT('\t') << rot.z << FE_TEXT('\t') << std::endl;
-	TAP	o << FE_TEXT("QScaleAngle = ") << mesh->vScaleAxis.x << FE_TEXT('\t') << mesh->vScaleAxis.y << FE_TEXT('\t') << mesh->vScaleAxis.z << FE_TEXT('\t') << std::endl;
-	TAP	o << FE_TEXT("QScale = ") << mesh->vScale.x << FE_TEXT('\t') << mesh->vScale.y << FE_TEXT('\t') << mesh->vScale.z << FE_TEXT('\t') << std::endl;
-	TAP	o << FE_TEXT("Scale = ") << mesh->vScale.x << FE_TEXT('\t') << mesh->vScale.y << FE_TEXT('\t') << mesh->vScale.z << FE_TEXT('\t') << std::endl;
+	TAP	o << FE_TEXT("Pos = ") << mesh->vPos.x << FE_TEXT('\t') << mesh->vPos.y << FE_TEXT('\t') << mesh->vPos.z << std::endl;
+	TAP	o << FE_TEXT("QRot = ") << mesh->qRot.x << FE_TEXT('\t') << mesh->qRot.y << FE_TEXT('\t') << mesh->qRot.z << FE_TEXT('\t') << mesh->qRot.w << std::endl;
+	TAP	o << FE_TEXT("Scale = ") << mesh->vScale.x << FE_TEXT('\t') << mesh->vScale.y << FE_TEXT('\t') << mesh->vScale.z << std::endl;
+	TAP	o << FE_TEXT("QScaleRot = ") << mesh->qScaleRot.x << FE_TEXT('\t') << mesh->qScaleRot.y << FE_TEXT('\t') << mesh->qScaleRot.z << FE_TEXT('\t') << mesh->qScaleRot.w << std::endl;
 
 	// 버텍스 포맷 쓰기
 	TAP	o << FE_TEXT("VertexFormat = ") << mesh->vf << std::endl;
@@ -210,12 +205,12 @@ void WriteMeshData(tofstream& o, ASE_MESH* mesh, UINT depth)
 		TAP o << FE_TEXT("AnimRot = ") << mesh->animRot.size() << std::endl;
 		for (int i = 0; i < mesh->animRot.size(); i++)
 		{
-			TAP o << mesh->animRot[i].animTime << FE_TEXT('\t') << mesh->animRot[i].axis.x << FE_TEXT('\t') << mesh->animRot[i].axis.y << FE_TEXT('\t') << mesh->animRot[i].axis.z << FE_TEXT('\t') << mesh->animRot[i].angle << std::endl;
+			TAP o << mesh->animRot[i].animTime << FE_TEXT('\t') << mesh->animRot[i].qRot.x << FE_TEXT('\t') << mesh->animRot[i].qRot.y << FE_TEXT('\t') << mesh->animRot[i].qRot.z << FE_TEXT('\t') << mesh->animRot[i].qRot.w << std::endl;
 		}
 		TAP o << FE_TEXT("AnimScale = ") << mesh->animScale.size() << std::endl;
 		for (int i = 0; i < mesh->animScale.size(); i++)
 		{
-			TAP o << mesh->animScale[i].animTime << FE_TEXT('\t') << mesh->animScale[i].scale.x << FE_TEXT('\t') << mesh->animScale[i].scale.y << FE_TEXT('\t') << mesh->animScale[i].scale.z << FE_TEXT('\t') << mesh->animScale[i].axis.x << FE_TEXT('\t') << mesh->animScale[i].axis.y << FE_TEXT('\t') << mesh->animScale[i].axis.z << FE_TEXT('\t') << mesh->animScale[i].angle << std::endl;
+			TAP o << mesh->animScale[i].animTime << FE_TEXT('\t') << mesh->animScale[i].scale.x << FE_TEXT('\t') << mesh->animScale[i].scale.y << FE_TEXT('\t') << mesh->animScale[i].scale.z << FE_TEXT('\t') << mesh->animScale[i].qScaleRot.x << FE_TEXT('\t') << mesh->animScale[i].qScaleRot.y << FE_TEXT('\t') << mesh->animScale[i].qScaleRot.z << FE_TEXT('\t') << mesh->animScale[i].qScaleRot.w << std::endl;
 		}
 	}
 
@@ -744,43 +739,46 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("TM_ROW0")))
 						{
-							f >> m.m[0][0] >> m.m[0][1] >> m.m[0][2];
+							f >> mesh->TM.m[0][0] >> mesh->TM.m[0][2] >> mesh->TM.m[0][1];
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("TM_ROW1")))
 						{
-							f >> m.m[1][0] >> m.m[2][2] >> m.m[2][1];
+							f >> mesh->TM.m[2][0] >> mesh->TM.m[2][2] >> mesh->TM.m[2][1];
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("TM_ROW2")))
 						{
-							f >> m.m[2][0] >> m.m[1][2] >> m.m[1][1];
+							f >> mesh->TM.m[1][0] >> mesh->TM.m[1][2] >> mesh->TM.m[1][1];
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("TM_ROW3")))
 						{
-							f >> m.m[3][0] >> m.m[3][1] >> m.m[3][2];
+							f >> mesh->TM.m[3][0] >> mesh->TM.m[3][2] >> mesh->TM.m[3][1];
+							m = FEMatrix::Inverse(mesh->TM);
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("TM_POS")))
 						{
-							f >> mesh->vPos.x >> mesh->vPos.z >> mesh->vPos.y;
+							f >> mesh->vPosWorld.x >> mesh->vPosWorld.z >> mesh->vPosWorld.y;
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("TM_ROTAXIS")))
 						{
-							f >> mesh->vRotAxis.x >> mesh->vRotAxis.z >> mesh->vRotAxis.y;
+							f >> x >> z >> y;
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("TM_ROTANGLE")))
 						{
-							f >> mesh->fRotAngle;
+							f >> w;
+							FEVector3(x, y, z) != FEVector3::Zero ? mesh->qRotWorld = FEMath::FEQuaternionRotationAxis(FEVector3(x, y, z), w) : mesh->qRotWorld = FEVector4(0.0f, 0.0f, 0.0f, 1.0f);
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("TM_SCALE")))
 						{
-							f >> mesh->vScale.x >> mesh->vScale.z >> mesh->vScale.y;
+							f >> mesh->vScaleWorld.x >> mesh->vScaleWorld.z >> mesh->vScaleWorld.y;
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("TM_SCALEAXIS")))
 						{
-							f >> mesh->vScaleAxis.x >> mesh->vScaleAxis.z >> mesh->vScaleAxis.y;
+							f >> x >> z >> y;
 						}
 						else if (TCSCMP_SAME(buf + 1, FE_TEXT("TM_SCALEAXISANG")))
 						{
-							f >> mesh->fScaleAngle;
+							f >> w;
+							FEVector3(x, y, z) != FEVector3::Zero ? mesh->qScaleRotWorld = FEMath::FEQuaternionRotationAxis(FEVector3(x, y, z), w) : mesh->qScaleRotWorld = FEVector4(0.0f, 0.0f, 0.0f, 1.0f);
 						}
 					}
 				}
@@ -1002,6 +1000,7 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 
 					while (true)
 					{
+						FEVector4 Q;
 						f >> buf;
 
 						if (buf[0] == FE_TEXT('}'))			break;
@@ -1032,6 +1031,8 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 						{
 							f >> buf;
 
+							ASE_ANIM_ROT animRot;
+
 							while (true)
 							{
 								f >> buf;
@@ -1039,9 +1040,10 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 								if (buf[0] == FE_TEXT('}'))			break;
 								else if (buf[0] == FE_TEXT('{'))	EscapeBlock(f);
 
-								ASE_ANIM_ROT animRot;
-								f >> animRot.animTime >> animRot.axis.x >> animRot.axis.z >> animRot.axis.y >> animRot.angle;
+								f >> animRot.animTime >> x >> z >> y >> w;
 								animRot.animTime = animRot.animTime / (frameSpeed * ticksPerFrame);
+								FEVector3(x, y, z) != FEVector3::Zero ? Q = FEMath::FEQuaternionRotationAxis(FEVector3(x, y, z), w) : Q = FEVector4(0.0f, 0.0f, 0.0f, 1.0f);
+								animRot.qRot = FEMath::FEQuaternionMultiply(animRot.qRot, Q);
 								mesh->animRot.push_back(animRot);
 							}
 						}
@@ -1057,8 +1059,10 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 								else if (buf[0] == FE_TEXT('{'))	EscapeBlock(f);
 
 								ASE_ANIM_SCALE animScale;
-								f >> animScale.animTime >> animScale.scale.x >> animScale.scale.z >> animScale.scale.y >> animScale.axis.x >> animScale.axis.z >> animScale.axis.y >> animScale.angle;
+								f >> animScale.animTime >> animScale.scale.x >> animScale.scale.z >> animScale.scale.y >> x >> z >> y >> w;
 								animScale.animTime = animScale.animTime / (frameSpeed * ticksPerFrame);
+								FEVector3(x, y, z) != FEVector3::Zero ? Q = FEMath::FEQuaternionRotationAxis(FEVector3(x, y, z), w) : Q = FEVector4(0.0f, 0.0f, 0.0f, 1.0f);
+								animScale.qScaleRot = FEMath::FEQuaternionMultiply(animScale.qScaleRot, Q);
 								mesh->animScale.push_back(animScale);
 							}
 						}
@@ -1200,6 +1204,7 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 
 	// 메쉬 계층구조의 루트
 	ASE_MESH root;
+	FEMatrix m;
 	root.name = FE_TEXT(" \"") + GetFileName(i_fileName) + FE_TEXT('"');
 
 	// 매쉬 계층구조 만들기
@@ -1208,6 +1213,9 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 		if ((*iter)->parentName.empty())
 		{
 			root.children.push_back((*iter));
+			(*iter)->vPos = (*iter)->vPosWorld * FEMatrix::Inverse((*iter)->TM);
+			(*iter)->qRot = (*iter)->qRotWorld;
+			(*iter)->vScale = (*iter)->vScaleWorld;
 			continue;
 		}
 
@@ -1215,6 +1223,12 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 		{
 			if ((*iter)->parentName == (*iter2)->name)
 			{
+				m = (*iter)->TM * FEMatrix::Inverse((*iter2)->TM);
+				(*iter)->vPos = (*iter)->vPosWorld * FEMatrix::Inverse((*iter2)->TM) * FEMath::FEMatrixScaling((*iter2)->vScaleWorld);
+				(*iter)->qRot = FEMath::FEQuaternionMultiply((*iter)->qRotWorld, FEMath::FEQuaternionInverse((*iter2)->qRotWorld));
+				(*iter)->vScale.x = (*iter)->vScaleWorld.x / (*iter2)->vScaleWorld.x;
+				(*iter)->vScale.y = (*iter)->vScaleWorld.y / (*iter2)->vScaleWorld.y;
+				(*iter)->vScale.z = (*iter)->vScaleWorld.z / (*iter2)->vScaleWorld.z;
 				(*iter2)->children.push_back((*iter));
 				break;
 			}

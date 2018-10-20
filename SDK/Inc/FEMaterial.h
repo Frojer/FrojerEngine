@@ -135,6 +135,7 @@ public:
 	static FEMaterial* Find(INT64 id);
 	static FEMaterial* Find(LPCTSTR name);
 
+	friend class FESystem;
 	friend class FELoader;
 	friend class IFEScene;
 	friend class FEShader;

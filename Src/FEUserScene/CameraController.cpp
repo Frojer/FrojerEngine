@@ -18,10 +18,10 @@ void CameraController::Update()
 	if (IsKeyDown('E'))		pCam->GetMyObject()->GetTransform()->Translate(pCam->GetMyObject()->GetTransform()->GetUpVector() * FETime::GetDeltaTime() * -5.0f);
 
 	// È¸Àü
-	if (IsKeyDown('I'))		pCam->GetMyObject()->GetTransform()->Rotate(FEVector3(-1.0f, 0.0f, 0.0f) * FETime::GetDeltaTime()	 * 50.0f);
-	if (IsKeyDown('K'))		pCam->GetMyObject()->GetTransform()->Rotate(FEVector3(1.0f, 0.0f, 0.0f) * FETime::GetDeltaTime()	 * 50.0f);
-	if (IsKeyDown('J'))		pCam->GetMyObject()->GetTransform()->Rotate(FEVector3(0.0f, -1.0f, 0.0f) * FETime::GetDeltaTime()	 * 50.0f);
-	if (IsKeyDown('L'))		pCam->GetMyObject()->GetTransform()->Rotate(FEVector3(0.0f, 1.0f, 0.0f) * FETime::GetDeltaTime()	 * 50.0f);
-	if (IsKeyDown('U'))		pCam->GetMyObject()->GetTransform()->Rotate(FEVector3(0.0f, 0.0f, 0.1f) * FETime::GetDeltaTime()	 * 50.0f);
-	if (IsKeyDown('O'))		pCam->GetMyObject()->GetTransform()->Rotate(FEVector3(0.0f, 0.0f, -0.1f) * FETime::GetDeltaTime()	 * 50.0f);
+	if (IsKeyDown('I'))		pCam->GetMyObject()->GetTransform()->Rotate(FEVector3(-50.0f, 0.0f, 0.0f) * FETime::GetDeltaTime());
+	if (IsKeyDown('K'))		pCam->GetMyObject()->GetTransform()->Rotate(FEVector3(50.0f, 0.0f, 0.0f) * FETime::GetDeltaTime());
+	if (IsKeyDown('J'))		pCam->GetMyObject()->GetTransform()->Rotate(FEVector3(0.0f, -50.0f, 0.0f) * FETime::GetDeltaTime());
+	if (IsKeyDown('L'))		pCam->GetMyObject()->GetTransform()->Rotate(FEVector3(0.0f, 50.0f, 0.0f) * FETime::GetDeltaTime());
+	if (IsKeyDown('U'))		pCam->GetMyObject()->GetTransform()->Rotate(FEVector3(0.0f, 0.0f, 50.0f) * FETime::GetDeltaTime());
+	if (IsKeyDown('O'))		pCam->GetMyObject()->GetTransform()->Rotate(FEVector3(0.0f, 0.0f, -50.0f) * FETime::GetDeltaTime());
 }

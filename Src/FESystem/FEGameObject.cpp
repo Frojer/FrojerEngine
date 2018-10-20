@@ -238,7 +238,7 @@ FEGameObject* FEGameObject::CopyObject(const FEGameObject* origin)
 		if (iter->second->_typeID == typeid(FETransform).hash_code())
 		{
 			pObj->GetTransform()->SetPositionLocal(iter->second->GetMyObject()->GetTransform()->GetPositionLocal());
-			pObj->GetTransform()->SetRotationRadian(iter->second->GetMyObject()->GetTransform()->GetRotationRadian());
+			pObj->GetTransform()->SetRotationQuaternion(iter->second->GetMyObject()->GetTransform()->GetRotationQuaternion());
 			pObj->GetTransform()->m_vScale = iter->second->GetMyObject()->GetTransform()->m_vScale;
 		}
 

@@ -1,7 +1,7 @@
 AnimationTime = 3.33333
 Material
 {
-	ID = 773554818986185583
+	ID = 8653292624559729969
 	Name = "01 - Default"
 	Diffuse	1	1	1	1
 	Ambient	1	1	1
@@ -10,7 +10,7 @@ Material
 	Map 0
 	{
 		Amount = 1
-		MapID = -5033696825515741842
+		MapID = -5409033377203052983
 		Offset	0	0
 		Tiling	1	1
 		Angle	0
@@ -18,13 +18,14 @@ Material
 }
 MeshObject
 {
-	ObjectID = -5474132144003734316
-	MeshID = -3561733283837187954
+	ObjectID = 6873775052971052880
+	MeshID = -178723454362026420
 	Name = "Plane001"
-	MaterialID = 773554818986185583
-	Pos = 0	0	0	
-	Rot = 0	0	0	
-	Scale = 1	1	1	
+	MaterialID = 8653292624559729969
+	Pos = 0	0	0
+	Rot = 0	0	0	0
+	Scale = 1	1	1
+	QScaleRot = 0	0	0	0
 	VertexFormat = 13
 	VertexCount = 9
 	-1.5181	0.0008	0

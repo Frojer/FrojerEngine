@@ -32,12 +32,16 @@ namespace FEMath
 	typedef FEVector4 Vector4;
 	typedef FEMatrix Matrix;
 
+	bool FEMatrixDecompose(FEVector3& outScale, FEVector4& outRotQuat, FEVector3& outTrans, const FEMatrix& M);
 	FEMatrix FEMatrixTranslation(const FEVector3& Offset);
 	FEMatrix FEMatrixRotationRollPitchYaw(const FEVector3& Angles);
+	FEMatrix FEMatrixRotationQuaternion(const FEVector4& Q);
 	FEMatrix FEMatrixScaling(const FEVector3& Scale);
+	FEVector4 FEQuaternionRotationRollPitchYaw(const FEVector3& Angles);
 	FEVector4 FEQuaternionRotationAxis(const FEVector3 axis, const float angle);
 	FEVector4 FEQuaternionMultiply(const FEVector4 Q1, const FEVector4 Q2);
 	FEVector4 FEQuaternionSlerp(const FEVector4 Q1, const FEVector4 Q2, const float t);
+	FEVector4 FEQuaternionInverse(const FEVector4 Q);
 	FEVectorA FEConvertToAlignData(const FEVector2& V);
 	FEVectorA FEConvertToAlignData(const FEVector3& V);
 	FEVectorA FEConvertToAlignData(const FEVector4& V);
@@ -204,7 +208,7 @@ public:
 	//----------
 	// 전역 함수
 	//----------
-	static FEMatrix Inverse(FEMatrix m, FEVector4* pDeterminant = nullptr);
+	static FEMatrix Inverse(const FEMatrix m, FEVector4* pDeterminant = nullptr);
 
 
 	//----------

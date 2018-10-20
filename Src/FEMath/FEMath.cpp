@@ -50,6 +50,18 @@ const FEVector4 FEVector4::One		( 1.0f,  1.0f,  1.0f, 1.0f);
 const FEMatrix FEMatrix::Identity	(XMMatrixIdentity());
 
 
+bool FEMath::FEMatrixDecompose(FEVector3& outScale, FEVector4& outRotQuat, FEVector3& outTrans, const FEMatrix& M)
+{
+	FEVectorA pos, qRot, scale;
+	bool result;
+	result = XMMatrixDecompose(&pos, &qRot, &scale, FEMath::FEConvertToAlignData(M));
+
+	outTrans = pos;
+	outRotQuat = qRot;
+	outScale = scale;
+
+	return result;
+}
 FEMatrix FEMath::FEMatrixTranslation(const FEVector3& Offset)
 {
 	FEMatrix result;
@@ -62,11 +74,19 @@ FEMatrix FEMath::FEMatrixRotationRollPitchYaw(const FEVector3& Angles)
 	XMStoreFloat4x4(&result, XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&Angles)));
 	return result;
 }
+FEMatrix FEMath::FEMatrixRotationQuaternion(const FEVector4& Q)
+{
+	return XMMatrixRotationQuaternion(XMLoadFloat4(&Q));
+}
 FEMatrix FEMath::FEMatrixScaling(const FEVector3& Scale)
 {
 	FEMatrix result;
 	XMStoreFloat4x4(&result, XMMatrixScalingFromVector(XMLoadFloat3(&Scale)));
 	return result;
+}
+FEVector4 FEMath::FEQuaternionRotationRollPitchYaw(const FEVector3& Angles)
+{
+	return XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3(&Angles));
 }
 FEVector4 FEMath::FEQuaternionRotationAxis(const FEVector3 axis, const float angle)
 {
@@ -82,8 +102,13 @@ FEVector4 FEMath::FEQuaternionMultiply(const FEVector4 Q1, const FEVector4 Q2)
 }
 FEVector4 FEMath::FEQuaternionSlerp(const FEVector4 Q1, const FEVector4 Q2, const float t)
 {
-	FEVector4 ret = FEQuaternionSlerp(FEConvertToAlignData(Q1), FEConvertToAlignData(Q2), t);
+	FEVector4 ret = XMQuaternionSlerp(FEConvertToAlignData(Q1), FEConvertToAlignData(Q2), t);
 
+	return ret;
+}
+FEVector4 FEMath::FEQuaternionInverse(const FEVector4 Q)
+{
+	FEVector4 ret = XMQuaternionInverse(FEConvertToAlignData(Q));
 	return ret;
 }
 
@@ -580,7 +605,7 @@ void FEVector4::Normalize()
 	*this = XMVector4Normalize(FEMath::FEConvertToAlignData(*this));
 }
 
-FEMatrix FEMatrix::Inverse(FEMatrix m, FEVector4* pDeterminant)
+FEMatrix FEMatrix::Inverse(const FEMatrix m, FEVector4* pDeterminant)
 {
 	return FEMath::FEConvertToMatrix(XMMatrixInverse(pDeterminant == nullptr ? nullptr : &FEMath::FEConvertToAlignData(*pDeterminant), FEMath::FEConvertToAlignData(m)));
 }

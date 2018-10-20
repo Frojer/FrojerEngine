@@ -13,7 +13,8 @@ class FETransform :	public FEComponent
 {
 private:
 	FEVector3 _vPos;
-	FEVector3 _vRot;
+	FEVector4 _qRot;
+	FEVector4 _qScaleRot;
 
 public:
 	FEVector3 m_vScale;
@@ -24,16 +25,17 @@ public:
 
 	void Translate(const FEVector3& translation, Space space = Space::Local);
 	void Rotate(const FEVector3& eulerAngles, Space space = Space::Local);
+	void Rotate(const FEVector3& axis, float angle);
 
 	// Get(), Set()
 	void SetPositionWorld(const FEVector3& pos);
 	void SetPositionLocal(const FEVector3& pos);
+	void SetRotationQuaternion(const FEVector4& Q);
 	void SetRotationDegree(const FEVector3& degree);
 	void SetRotationRadian(const FEVector3& radian);
 	FEVector3 GetPositionWorld();
 	FEVector3 GetPositionLocal();
-	FEVector3 GetRotationDegree();
-	FEVector3 GetRotationRadian();
+	FEVector4 GetRotationQuaternion();
 
 	FEVector3 GetLookAt();
 	FEVector3 GetUpVector();

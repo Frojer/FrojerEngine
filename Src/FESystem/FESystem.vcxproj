@@ -71,9 +71,6 @@
     <ClInclude Include="IFEObject.h" />
     <ClInclude Include="IFEScene.h" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{960F5DF9-D8AE-400C-B7E1-18F55BD23BE1}</ProjectGuid>
