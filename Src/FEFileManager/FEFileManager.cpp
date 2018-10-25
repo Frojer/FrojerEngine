@@ -37,7 +37,7 @@ struct ASE_ANIM_SCALE
 {
 	float animTime;
 	FEVector3 scale;
-	FEVector4 qScaleRot;
+	FEVector4 qScaleRot = FEVector4(0.0f, 0.0f, 0.0f, 1.0f);
 };
 
 struct ASE_MESH
@@ -77,7 +77,17 @@ struct ASE_MESH
 	std::vector<ASE_ANIM_SCALE> animScale;
 
 	ASE_MESH()
-		: ID(0), mtrlID(0), vScale(1.0f, 1.0f, 1.0f), vScaleWorld(1.0f, 1.0f, 1.0f), vf(0), TM(FEMatrix::Identity), useAnim(false)
+		: ID(0)
+		, mtrlID(0)
+		, qRotWorld(0.0f, 0.0f, 0.0f, 1.0f)
+		, vScaleWorld(1.0f, 1.0f, 1.0f)
+		, qScaleRotWorld(0.0f, 0.0f, 0.0f, 1.0f)
+		, qRot(0.0f, 0.0f, 0.0f, 1.0f)
+		, vScale(1.0f, 1.0f, 1.0f)
+		, qScaleRot(0.0f, 0.0f, 0.0f, 1.0f)
+		, vf(0)
+		, TM(FEMatrix::Identity)
+		, useAnim(false)
 	{
 	}
 };
@@ -453,7 +463,7 @@ void ConvertASEMaterialFile(tifstream& f, tofstream& o, tstring i_filePath, tstr
 	o << FE_TEXT('\t') << FE_TEXT("Diffuse") << FE_TEXT('\t') << diffuse.x << FE_TEXT('\t') << diffuse.y << FE_TEXT('\t') << diffuse.z << FE_TEXT('\t') << 1.0f - transparency << std::endl;
 	o << FE_TEXT('\t') << FE_TEXT("Ambient") << FE_TEXT('\t') << ambient.x << FE_TEXT('\t') << ambient.y << FE_TEXT('\t') << ambient.z << std::endl;
 	o << FE_TEXT('\t') << FE_TEXT("Specular") << FE_TEXT('\t') << specular.x << FE_TEXT('\t') << specular.y << FE_TEXT('\t') << specular.z << std::endl;
-	o << FE_TEXT('\t') << FE_TEXT("Power = ") << shine * 100 << std::endl;
+	o << FE_TEXT('\t') << FE_TEXT("Power = ") << shine * 1000 * shineStrength << std::endl;
 
 	// 머테리얼 클래스에 따른 처리
 	//if (TCSCMP_SAME(mtrlClass.c_str(), FE_TEXT("Standard")))
@@ -1213,7 +1223,7 @@ bool ConvertASEMeshFile(tstring i_filePath, tstring i_outPath, tstring i_fileNam
 		if ((*iter)->parentName.empty())
 		{
 			root.children.push_back((*iter));
-			(*iter)->vPos = (*iter)->vPosWorld * FEMatrix::Inverse((*iter)->TM);
+			(*iter)->vPos = (*iter)->vPosWorld;
 			(*iter)->qRot = (*iter)->qRotWorld;
 			(*iter)->vScale = (*iter)->vScaleWorld;
 			continue;

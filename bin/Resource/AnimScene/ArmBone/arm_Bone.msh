@@ -1,16 +1,16 @@
 AnimationTime = 3.33333
 Material
 {
-	ID = 4365341086175988693
+	ID = 6221120834205670790
 	Name = "02 - Default"
 	Diffuse	0.9176	1	0	1
 	Ambient	0.9176	1	0
 	Specular	0.9	0.9	0.9
-	Power = 10
+	Power = 0
 	Map 0
 	{
 		Amount = 1
-		MapID = 2792889144586087846
+		MapID = 6969225554915820784
 		Offset	0	0
 		Tiling	1	1
 		Angle	0
@@ -18,16 +18,16 @@ Material
 }
 Material
 {
-	ID = -7642942821067318212
+	ID = -2917245186512036441
 	Name = "01 - Default"
 	Diffuse	0.5216	0.8549	0.4471	1
 	Ambient	0.5216	0.8549	0.4471
 	Specular	0.9	0.9	0.9
-	Power = 10
+	Power = 0
 	Map 0
 	{
 		Amount = 1
-		MapID = 2792889144586087846
+		MapID = 6969225554915820784
 		Offset	0	0
 		Tiling	1	1
 		Angle	0
@@ -35,14 +35,14 @@ Material
 }
 MeshObject
 {
-	ObjectID = 4960449362529275844
-	MeshID = 948953989926171279
+	ObjectID = -3031183549852548244
+	MeshID = 483114358982956472
 	Name = "Bone01"
 	MaterialID = 0
-	Pos = -1.03191e-06	0	1.78814e-07
+	Pos = -0.2248	23.9065	0.3302
 	QRot = -0.504588	0.495351	-0.495351	0.504624
 	Scale = 0.2342	0.2342	0.2342
-	QScaleRot = 0	0	0	0
+	QScaleRot = 0	0	0	1
 	VertexFormat = 5
 	VertexCount = 32
 	58.2421	0.5	-0.491419
@@ -127,14 +127,14 @@ MeshObject
 	UseAnim = 0
 	MeshObject
 	{
-		ObjectID = -7747340099903895777
-		MeshID = -1680292217509770054
+		ObjectID = -8534167550274089441
+		MeshID = -3473955103042092911
 		Name = "Bone02"
 		MaterialID = 0
 		Pos = 13.6404	0	0.00205871
 		QRot = -3.29912e-05	-0.426426	-1.73002e-05	0.904523
 		Scale = 1	1	1
-		QScaleRot = 0	0	0	0
+		QScaleRot = 0	0	0	1
 		VertexFormat = 5
 		VertexCount = 32
 		54.9899	0.5	-0.508564
@@ -219,14 +219,14 @@ MeshObject
 		UseAnim = 0
 		MeshObject
 		{
-			ObjectID = -2780431074701157372
-			MeshID = 3675113445693150187
+			ObjectID = -1267945894528675268
+			MeshID = 7878222076225918678
 			Name = "Bone03"
 			MaterialID = 0
 			Pos = 12.8786	2.79188e-08	-0.00200569
 			QRot = 0	0	0	1
 			Scale = 1	1	1
-			QScaleRot = 0	0	0	0
+			QScaleRot = 0	0	0	1
 			VertexFormat = 5
 			VertexCount = 32
 			10.0007	0.5	-0.5016
@@ -312,14 +312,14 @@ MeshObject
 		}
 		MeshObject
 		{
-			ObjectID = 7599417716862557038
-			MeshID = 8597220595045639417
+			ObjectID = -2040402039469751858
+			MeshID = -1105843046637103802
 			Name = "Box02"
-			MaterialID = 4365341086175988693
+			MaterialID = 6221120834205670790
 			Pos = 11.8023	-0.2524	-0.00184398
 			QRot = 0.500004	-0.500008	0.5	0.499988
 			Scale = 1	1	1
-			QScaleRot = 0	0	0	0
+			QScaleRot = 0	0	0	1
 			VertexFormat = 13
 			VertexCount = 24
 			-11.3214	0.00166702	-12.1285
@@ -412,14 +412,14 @@ MeshObject
 	}
 	MeshObject
 	{
-		ObjectID = -6678630169114303779
-		MeshID = -8456851241996384933
+		ObjectID = -1499826002186087416
+		MeshID = -7230315318176362815
 		Name = "Box01"
-		MaterialID = -7642942821067318212
+		MaterialID = -2917245186512036441
 		Pos = 13.0722	-0.2525	0.0124946
 		QRot = 0.504588	-0.495351	0.495351	0.504624
 		Scale = 1	1	1
-		QScaleRot = 0	0	0	0
+		QScaleRot = 0	0	0	1
 		VertexFormat = 13
 		VertexCount = 24
 		-11.3202	-3.8147e-06	-12.1285

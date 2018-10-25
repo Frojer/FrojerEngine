@@ -10,12 +10,12 @@
 void CameraController::Update()
 {
 	// 이동
-	if (IsKeyDown('W'))		pCam->GetMyObject()->GetTransform()->Translate(pCam->GetMyObject()->GetTransform()->GetLookAt() * FETime::GetDeltaTime() * 5.0f);
-	if (IsKeyDown('S'))		pCam->GetMyObject()->GetTransform()->Translate(pCam->GetMyObject()->GetTransform()->GetLookAt() * FETime::GetDeltaTime() * -5.0f);
-	if (IsKeyDown('A'))		pCam->GetMyObject()->GetTransform()->Translate(pCam->GetMyObject()->GetTransform()->GetRightVector() * FETime::GetDeltaTime() * -5.0f);
-	if (IsKeyDown('D'))		pCam->GetMyObject()->GetTransform()->Translate(pCam->GetMyObject()->GetTransform()->GetRightVector() * FETime::GetDeltaTime() * 5.0f);
-	if (IsKeyDown('Q'))		pCam->GetMyObject()->GetTransform()->Translate(pCam->GetMyObject()->GetTransform()->GetUpVector() * FETime::GetDeltaTime() * 5.0f);
-	if (IsKeyDown('E'))		pCam->GetMyObject()->GetTransform()->Translate(pCam->GetMyObject()->GetTransform()->GetUpVector() * FETime::GetDeltaTime() * -5.0f);
+	if (IsKeyDown('W'))		pCam->GetMyObject()->GetTransform()->Translate(pCam->GetMyObject()->GetTransform()->GetLookAt() * FETime::GetDeltaTime() * 15.0f);
+	if (IsKeyDown('S'))		pCam->GetMyObject()->GetTransform()->Translate(pCam->GetMyObject()->GetTransform()->GetLookAt() * FETime::GetDeltaTime() * -15.0f);
+	if (IsKeyDown('A'))		pCam->GetMyObject()->GetTransform()->Translate(pCam->GetMyObject()->GetTransform()->GetRightVector() * FETime::GetDeltaTime() * -15.0f);
+	if (IsKeyDown('D'))		pCam->GetMyObject()->GetTransform()->Translate(pCam->GetMyObject()->GetTransform()->GetRightVector() * FETime::GetDeltaTime() * 15.0f);
+	if (IsKeyDown('Q'))		pCam->GetMyObject()->GetTransform()->Translate(pCam->GetMyObject()->GetTransform()->GetUpVector() * FETime::GetDeltaTime() * 15.0f);
+	if (IsKeyDown('E'))		pCam->GetMyObject()->GetTransform()->Translate(pCam->GetMyObject()->GetTransform()->GetUpVector() * FETime::GetDeltaTime() * -15.0f);
 
 	// 회전
 	if (IsKeyDown('I'))		pCam->GetMyObject()->GetTransform()->Rotate(FEVector3(-50.0f, 0.0f, 0.0f) * FETime::GetDeltaTime());

@@ -54,7 +54,7 @@ bool FEMath::FEMatrixDecompose(FEVector3& outScale, FEVector4& outRotQuat, FEVec
 {
 	FEVectorA pos, qRot, scale;
 	bool result;
-	result = XMMatrixDecompose(&pos, &qRot, &scale, FEMath::FEConvertToAlignData(M));
+	result = XMMatrixDecompose(&scale, &qRot, &pos, FEMath::FEConvertToAlignData(M));
 
 	outTrans = pos;
 	outRotQuat = qRot;

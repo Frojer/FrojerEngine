@@ -36,7 +36,7 @@ float4 PS_Main(v2p i) : SV_TARGET
     float4 spec;
 	
     diff = FELighting(i.pos3d, i.nor3d);
-    spec = FESpecularLighting(i.pos3d, i.nor3d, 25);
+    spec = FESpecularLighting(i.pos3d, i.nor3d, power);
 
     clip(texDiff.a < 0.25 ? -1 : 1);
     

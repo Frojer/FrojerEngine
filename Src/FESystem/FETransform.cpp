@@ -3,7 +3,7 @@
 using namespace FEMath;
 
 FETransform::FETransform()
-	: _vPos(FEVector3::Zero), _qRot(0.0f, 0.0f, 0.0f, 1.0f), _qScaleRot(FEVector4::Zero), m_vScale(FEVector3::One)
+	: _vPos(FEVector3::Zero), _qRot(0.0f, 0.0f, 0.0f, 1.0f), m_vScale(FEVector3::One)
 {
 }
 

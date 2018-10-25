@@ -1,16 +1,16 @@
 AnimationTime = 3.33333
 Material
 {
-	ID = 8864818147767280674
+	ID = 2898644891373530485
 	Name = "01 - Default"
 	Diffuse	1	1	1	1
 	Ambient	1	1	1
 	Specular	0.9	0.9	0.9
-	Power = 10
+	Power = 0
 	Map 0
 	{
 		Amount = 1
-		MapID = 5857661010572086307
+		MapID = -3703435691688865222
 		Offset	0	0
 		Tiling	1	1
 		Angle	0
@@ -18,28 +18,28 @@ Material
 }
 MeshObject
 {
-	ObjectID = 1899059205238666045
+	ObjectID = 4958392106982883233
 	MeshID = 0
 	Name = "Windmill"
 	MaterialID = 0
 	Pos = 0	0	0
-	Rot = 0	0	0	0
-	Scale = 0	0	0
-	QScaleRot = 0	0	0	0
+	QRot = 0	0	0	1
+	Scale = 1	1	1
+	QScaleRot = 0	0	0	1
 	VertexFormat = 0
 	VertexCount = 0
 	IndexCount = 0
 	UseAnim = 0
 	MeshObject
 	{
-		ObjectID = 404189612597416222
-		MeshID = -4611924840616501856
+		ObjectID = -2346729551300061280
+		MeshID = 7747049584051320567
 		Name = "Body"
-		MaterialID = 8864818147767280674
+		MaterialID = 2898644891373530485
 		Pos = 0	0	0
-		Rot = 0	0	0	0
+		QRot = 0	0	0	1
 		Scale = 1	1	1
-		QScaleRot = 0	0	0	0
+		QScaleRot = 0	0	0	1
 		VertexFormat = 13
 		VertexCount = 12
 		0	0	3
@@ -87,14 +87,14 @@ MeshObject
 	}
 	MeshObject
 	{
-		ObjectID = 3886119666811496097
-		MeshID = 4719892224183286109
+		ObjectID = 4886075880655290572
+		MeshID = -7304950433801033332
 		Name = "Wing"
-		MaterialID = 8864818147767280674
+		MaterialID = 2898644891373530485
 		Pos = 0	0	0
-		Rot = 0	0	0	0
+		QRot = 0	0	0	1
 		Scale = 1	1	1
-		QScaleRot = 0	0	0	0
+		QScaleRot = 0	0	0	1
 		VertexFormat = 13
 		VertexCount = 16
 		-2	0	-0.5

@@ -1,16 +1,16 @@
 AnimationTime = 0.666667
 Material
 {
-	ID = 2252674735397937711
+	ID = -4596342765561986796
 	Name = "6 - Default"
 	Diffuse	0.5882	0.5882	0.5882	1
 	Ambient	0.5882	0.5882	0.5882
 	Specular	0.9	0.9	0.9
-	Power = 10
+	Power = 0
 	Map 0
 	{
 		Amount = 1
-		MapID = 8323195899745602742
+		MapID = 8782744383382603594
 		Offset	0	0
 		Tiling	1	1
 		Angle	0
@@ -18,16 +18,16 @@ Material
 }
 Material
 {
-	ID = 2458976041935648104
+	ID = 5770155885783041051
 	Name = "1 - Default"
 	Diffuse	0.5882	0.5882	0.5882	1
 	Ambient	0.5882	0.5882	0.5882
 	Specular	0.9	0.9	0.9
-	Power = 10
+	Power = 0
 	Map 0
 	{
 		Amount = 1
-		MapID = -1377225915991133200
+		MapID = 1523819052940089061
 		Offset	0	0
 		Tiling	1	1
 		Angle	0
@@ -35,16 +35,16 @@ Material
 }
 Material
 {
-	ID = 2361651450019105089
+	ID = -4981378680250463477
 	Name = "7 - Default"
 	Diffuse	0.5882	0.5882	0.5882	1
 	Ambient	0.5882	0.5882	0.5882
 	Specular	0.9	0.9	0.9
-	Power = 10
+	Power = 0
 	Map 0
 	{
 		Amount = 1
-		MapID = -7528825833570471501
+		MapID = -1448774311049802807
 		Offset	0	0
 		Tiling	1	1
 		Angle	0
@@ -52,16 +52,16 @@ Material
 }
 Material
 {
-	ID = -3901233190452069017
+	ID = 950811346803758818
 	Name = "3 - Default"
 	Diffuse	0.5882	0.5882	0.5882	1
 	Ambient	0.5882	0.5882	0.5882
 	Specular	0.9	0.9	0.9
-	Power = 10
+	Power = 0
 	Map 0
 	{
 		Amount = 1
-		MapID = 5462793732358632658
+		MapID = -7768794512553889775
 		Offset	0	0
 		Tiling	1	1
 		Angle	0
@@ -69,16 +69,16 @@ Material
 }
 Material
 {
-	ID = -8828993528313254522
+	ID = 2507760892386272192
 	Name = "2 - Default"
 	Diffuse	0.5882	0.5882	0.5882	1
 	Ambient	0.5882	0.5882	0.5882
 	Specular	0.9	0.9	0.9
-	Power = 10
+	Power = 0
 	Map 0
 	{
 		Amount = 1
-		MapID = -9223361162413404580
+		MapID = -5225913154880802248
 		Offset	0	0
 		Tiling	1	1
 		Angle	0
@@ -86,16 +86,16 @@ Material
 }
 Material
 {
-	ID = -6773172251545423340
+	ID = 3322849810205977386
 	Name = "8 - Default"
 	Diffuse	0.5882	0.5882	0.5882	1
 	Ambient	0.5882	0.5882	0.5882
 	Specular	0.9	0.9	0.9
-	Power = 10
+	Power = 0
 	Map 0
 	{
 		Amount = 1
-		MapID = -8397397336683235991
+		MapID = -8677920826870989329
 		Offset	0	0
 		Tiling	1	1
 		Angle	0
@@ -103,16 +103,16 @@ Material
 }
 Material
 {
-	ID = -7613054088194488726
+	ID = 7251473061167140752
 	Name = "9 - Default"
 	Diffuse	0.5882	0.5882	0.5882	1
 	Ambient	0.5882	0.5882	0.5882
 	Specular	0.9	0.9	0.9
-	Power = 10
+	Power = 0
 	Map 0
 	{
 		Amount = 1
-		MapID = 2682349659772919600
+		MapID = -3172247085974522306
 		Offset	0	0
 		Tiling	1	1
 		Angle	0
@@ -120,16 +120,16 @@ Material
 }
 Material
 {
-	ID = 2205924765779553930
+	ID = 2390343944831624587
 	Name = "5 - Default"
 	Diffuse	0.5882	0.5882	0.5882	1
 	Ambient	0.5882	0.5882	0.5882
 	Specular	0.9	0.9	0.9
-	Power = 10
+	Power = 0
 	Map 0
 	{
 		Amount = 1
-		MapID = -7753574518221388465
+		MapID = 8642684094721085178
 		Offset	0	0
 		Tiling	1	1
 		Angle	0
@@ -137,16 +137,16 @@ Material
 }
 Material
 {
-	ID = 7912312155189861145
+	ID = 1540878324906657705
 	Name = "4 - Default"
 	Diffuse	0.5882	0.5882	0.5882	1
 	Ambient	0.5882	0.5882	0.5882
 	Specular	0.9	0.9	0.9
-	Power = 10
+	Power = 0
 	Map 0
 	{
 		Amount = 1
-		MapID = -6010522108072372236
+		MapID = -7222378094569853558
 		Offset	0	0
 		Tiling	1	1
 		Angle	0
@@ -154,14 +154,14 @@ Material
 }
 MeshObject
 {
-	ObjectID = 4991138760100749709
-	MeshID = -8809248850359310519
+	ObjectID = -5523200239512465163
+	MeshID = -3921116451050857886
 	Name = "Bip01"
 	MaterialID = 0
-	Pos = 1.49012e-08	0	-3.72529e-09
+	Pos = 0.0299	0.5602	-0.0258
 	QRot = -0.107572	0.698861	-0.107572	0.698891
 	Scale = 1	1	1
-	QScaleRot = 0	0	0	0
+	QScaleRot = 0	0	0	1
 	VertexFormat = 5
 	VertexCount = 0
 	IndexCount = 0
@@ -205,14 +205,14 @@ MeshObject
 	AnimScale = 0
 	MeshObject
 	{
-		ObjectID = 2935870195627741445
-		MeshID = -8263355846278222180
+		ObjectID = -8855517813502614729
+		MeshID = -2977255510352285716
 		Name = "Bip01 Footsteps"
 		MaterialID = 0
 		Pos = 0.160038	-0.507577	-3.72529e-09
 		QRot = 0.107572	-0.698861	0.107572	0.698891
 		Scale = 1	1	1
-		QScaleRot = 0	0	0	0
+		QScaleRot = 0	0	0	1
 		VertexFormat = 5
 		VertexCount = 9
 		0	0	0
@@ -283,14 +283,14 @@ MeshObject
 	}
 	MeshObject
 	{
-		ObjectID = 2273094774759937697
-		MeshID = -5827885659304478014
+		ObjectID = -5087084223049572248
+		MeshID = 8918625048645656102
 		Name = "Bip01 Pelvis"
 		MaterialID = 0
 		Pos = 0.0203368	1.60336e-05	-3.72529e-09
 		QRot = -0.500003	-0.500032	-0.499992	-0.499973
 		Scale = 1	1	1
-		QScaleRot = 0	0	0	0
+		QScaleRot = 0	0	0	1
 		VertexFormat = 5
 		VertexCount = 24
 		-0.0415785	0.0554	-0.0414149
@@ -357,14 +357,14 @@ MeshObject
 		UseAnim = 0
 		MeshObject
 		{
-			ObjectID = -8234191870384488395
-			MeshID = 4714340560691251298
+			ObjectID = 8705069780245605016
+			MeshID = 8864491872401923950
 			Name = "Bip01 Spine"
 			MaterialID = 0
 			Pos = 0.0636374	9.99961e-05	0.0289024
 			QRot = 0.12948	0.00385756	0.0164125	0.991439
 			Scale = 1	1	0.9999
-			QScaleRot = 0	0	0	0
+			QScaleRot = 0	0	0	1
 			VertexFormat = 5
 			VertexCount = 48
 			0.00580762	-0.0683925	-0.0290928
@@ -511,14 +511,14 @@ MeshObject
 			AnimScale = 0
 			MeshObject
 			{
-				ObjectID = -2175338746883105260
-				MeshID = -4550700062409604008
+				ObjectID = -1193685870739126041
+				MeshID = -5611958748619163788
 				Name = "Bip01 Neck"
 				MaterialID = 0
 				Pos = 0.231473	-3.39001e-06	-0.000100481
 				QRot = -1.49012e-08	1.49012e-08	0	1
 				Scale = 1	1	1
-				QScaleRot = 0	0	0	0
+				QScaleRot = 0	0	0	1
 				VertexFormat = 5
 				VertexCount = 24
 				3.12399e-05	0.0143045	-0.0143499
@@ -592,14 +592,14 @@ MeshObject
 				AnimScale = 0
 				MeshObject
 				{
-					ObjectID = -8322700523509707162
-					MeshID = -5891546488973906135
+					ObjectID = -7600359749921819240
+					MeshID = -5732242073879996293
 					Name = "Bip01 Head"
 					MaterialID = 0
 					Pos = 0.0415171	-7.56718e-05	8.52941e-05
 					QRot = -0.12948	-0.00385754	-0.0164125	0.991439
 					Scale = 1	1	1.0001
-					QScaleRot = 0	0	0	0
+					QScaleRot = 0	0	0	1
 					VertexFormat = 5
 					VertexCount = 130
 					0.14771	-0.0042	0.0614276
@@ -956,14 +956,14 @@ MeshObject
 					AnimScale = 0
 					MeshObject
 					{
-						ObjectID = 545699574083503590
-						MeshID = -2842150383402930353
+						ObjectID = 899153446828975625
+						MeshID = 919066766137185140
 						Name = "Bip01 Ponytail1"
 						MaterialID = 0
 						Pos = 0.193622	-3.72529e-09	-0.0367225
 						QRot = -0.219786	0.211198	0.0626744	0.950348
 						Scale = 0.9999	1	1.0001
-						QScaleRot = 0	0	0	0
+						QScaleRot = 0	0	0	1
 						VertexFormat = 5
 						VertexCount = 24
 						2.48555e-05	0.0144015	-0.014405
@@ -1050,14 +1050,14 @@ MeshObject
 						AnimScale = 0
 						MeshObject
 						{
-							ObjectID = -4620323273392865398
-							MeshID = -4237028359495267723
+							ObjectID = 743167751763362623
+							MeshID = 7799274970098776962
 							Name = "ponytail"
-							MaterialID = 2252674735397937711
+							MaterialID = -4596342765561986796
 							Pos = 0.0146717	0.00849315	0.017807
 							QRot = 0.697162	0.675537	0.118319	-0.208843
 							Scale = 1.0001	1.0001	0.9998
-							QScaleRot = 0	0	0	0
+							QScaleRot = 0	0	0	1
 							VertexFormat = 13
 							VertexCount = 134
 							0.0604254	0.110202	0.0481295
@@ -1644,14 +1644,14 @@ MeshObject
 					}
 					MeshObject
 					{
-						ObjectID = 7713866219433562326
-						MeshID = 494674598066144674
+						ObjectID = -777576139012602515
+						MeshID = 8630131437389913705
 						Name = "head"
-						MaterialID = 2458976041935648104
+						MaterialID = 5770155885783041051
 						Pos = 0.0982839	-0.0021	0.00476673
 						QRot = 0.707105	0.707108	-9.51439e-06	1.08257e-05
 						Scale = 1	1	1
-						QScaleRot = 0	0	0	0
+						QScaleRot = 0	0	0	1
 						VertexFormat = 13
 						VertexCount = 47
 						-0.0765	-0.0834473	-0.0725517
@@ -1880,14 +1880,14 @@ MeshObject
 					}
 					MeshObject
 					{
-						ObjectID = 6997043969288952766
-						MeshID = -3850623649080853252
+						ObjectID = 7017205767891858415
+						MeshID = 3776193787123127571
 						Name = "hair"
-						MaterialID = 2252674735397937711
+						MaterialID = -4596342765561986796
 						Pos = 0.153828	-0.0021	-0.138991
 						QRot = 0.707105	0.707108	-9.51439e-06	1.08257e-05
 						Scale = 1	1	1
-						QScaleRot = 0	0	0	0
+						QScaleRot = 0	0	0	1
 						VertexFormat = 13
 						VertexCount = 91
 						0	0.0324988	-0.00862703
@@ -2278,14 +2278,14 @@ MeshObject
 					}
 					MeshObject
 					{
-						ObjectID = 5942614857778320752
-						MeshID = 9007436315274601205
+						ObjectID = 8259046224116872008
+						MeshID = -30919375129968120
 						Name = "hat"
-						MaterialID = 2361651450019105089
+						MaterialID = -4981378680250463477
 						Pos = 0.21721	-0.0023	-0.0111304
 						QRot = 0.707105	0.707108	-9.51439e-06	1.08257e-05
 						Scale = 1	1	1
-						QScaleRot = 0	0	0	0
+						QScaleRot = 0	0	0	1
 						VertexFormat = 13
 						VertexCount = 72
 						-0.1453	0.104416	-0.00692263
@@ -2598,14 +2598,14 @@ MeshObject
 				}
 				MeshObject
 				{
-					ObjectID = -8013245762547719263
-					MeshID = 7646785009159353549
+					ObjectID = -6373157153107682862
+					MeshID = -2819612295225824707
 					Name = "Bip01 L Clavicle"
 					MaterialID = 0
 					Pos = -9.55071e-06	0.0193722	4.39792e-05
 					QRot = 0.707109	0.707104	-0.000354178	-0.000305668
 					Scale = 1	1	1.0002
-					QScaleRot = 0	0	0	0
+					QScaleRot = 0	0	0	1
 					VertexFormat = 5
 					VertexCount = 24
 					-3.87169e-05	0.0138502	-0.0180466
@@ -2692,14 +2692,14 @@ MeshObject
 					AnimScale = 0
 					MeshObject
 					{
-						ObjectID = -7700135725766565125
-						MeshID = -7238073361352555286
+						ObjectID = -3317004432080753383
+						MeshID = 7261331207435973168
 						Name = "Bip01 L UpperArm"
 						MaterialID = 0
 						Pos = 0.0719643	3.59276e-05	-4.51029e-05
 						QRot = 0.249046	-0.0218918	-0.256851	0.933555
 						Scale = 1	1	0.9999
-						QScaleRot = 0	0	0	0
+						QScaleRot = 0	0	0	1
 						VertexFormat = 5
 						VertexCount = 40
 						0.0794771	-0.0173494	-0.0231828
@@ -2834,14 +2834,14 @@ MeshObject
 						AnimScale = 0
 						MeshObject
 						{
-							ObjectID = 6132929498888312846
-							MeshID = 6441791443854545969
+							ObjectID = -154194393916838068
+							MeshID = 256951231907873099
 							Name = "Bip01 L Forearm"
 							MaterialID = 0
 							Pos = 0.193975	-4.96209e-05	4.62458e-05
 							QRot = 1.64509e-05	0.68493	-8.53837e-06	0.728609
 							Scale = 0.9999	1	1
-							QScaleRot = 0	0	0	0
+							QScaleRot = 0	0	0	1
 							VertexFormat = 5
 							VertexCount = 32
 							0.224171	-0.0122537	0.0158905
@@ -2952,14 +2952,14 @@ MeshObject
 							AnimScale = 0
 							MeshObject
 							{
-								ObjectID = 2278331304021944330
-								MeshID = -2307959782894909904
+								ObjectID = 7325616776513242537
+								MeshID = -4006859699456223213
 								Name = "Bip01 L Hand"
 								MaterialID = 0
 								Pos = 0.224145	6.3777e-06	-5.45084e-05
 								QRot = -0.686478	-0.168312	-0.168418	-0.687062
 								Scale = 1.0002	0.9999	1
-								QScaleRot = 0	0	0	0
+								QScaleRot = 0	0	0	1
 								VertexFormat = 5
 								VertexCount = 24
 								-5.25266e-06	0.0276526	-0.00692533
@@ -3042,14 +3042,14 @@ MeshObject
 								AnimScale = 0
 								MeshObject
 								{
-									ObjectID = 1206795337631100738
-									MeshID = 3672737255209798887
+									ObjectID = 3216938829379243818
+									MeshID = 616611408172822582
 									Name = "Bip01 L Finger0"
 									MaterialID = 0
 									Pos = 0.0692035	2.47931e-05	5.57005e-05
 									QRot = 0.062904	-0.0722207	-0.341236	0.935085
 									Scale = 0.9999	1	1
-									QScaleRot = 0	0	0	0
+									QScaleRot = 0	0	0	1
 									VertexFormat = 5
 									VertexCount = 24
 									-2.69488e-05	0.00342715	-0.00353208
@@ -3116,14 +3116,14 @@ MeshObject
 									UseAnim = 0
 									MeshObject
 									{
-										ObjectID = -3353566946938086435
-										MeshID = -2177506109201015035
+										ObjectID = 1792628088244455941
+										MeshID = 6434500703460502096
 										Name = "finger02"
-										MaterialID = -3901233190452069017
+										MaterialID = 950811346803758818
 										Pos = 0.00501434	0.068368	0.010858
 										QRot = -0.626074	0.321489	0.526285	0.47718
 										Scale = 0.9999	1.0001	1
-										QScaleRot = 0	0	0	0
+										QScaleRot = 0	0	0	1
 										VertexFormat = 13
 										VertexCount = 28
 										0.0268131	-0.0022777	0.0642822
@@ -3244,14 +3244,14 @@ MeshObject
 								}
 								MeshObject
 								{
-									ObjectID = -8275812483723789055
-									MeshID = 1644393229587329413
+									ObjectID = -8228901273402865144
+									MeshID = 357217531965590501
 									Name = "hand02"
-									MaterialID = -3901233190452069017
+									MaterialID = 950811346803758818
 									Pos = 0.00916524	0.0584281	0.0161245
 									QRot = 0.625819	-0.321283	-0.526462	-0.477458
 									Scale = 0.9999	1.0001	1.0001
-									QScaleRot = 0	0	0	0
+									QScaleRot = 0	0	0	1
 									VertexFormat = 13
 									VertexCount = 41
 									0.0102352	0.0597796	0.0143624
@@ -3419,14 +3419,14 @@ MeshObject
 							}
 							MeshObject
 							{
-								ObjectID = -5272418114642312991
-								MeshID = -3756856588564547980
+								ObjectID = 3735655781527549036
+								MeshID = -6022356907175235628
 								Name = "lowarm02"
-								MaterialID = -8828993528313254522
+								MaterialID = 2507760892386272192
 								Pos = 0.164478	0.0314808	0.0342108
 								QRot = -0.105282	-0.144827	0.599451	0.780128
 								Scale = 1	1.0001	1
-								QScaleRot = 0	0	0	0
+								QScaleRot = 0	0	0	1
 								VertexFormat = 13
 								VertexCount = 43
 								-0.0597708	0.139347	0.088912
@@ -3605,14 +3605,14 @@ MeshObject
 							}
 							MeshObject
 							{
-								ObjectID = -7857044586936352181
-								MeshID = 5223069367030758488
+								ObjectID = 2957645082342009587
+								MeshID = 2149263203113126154
 								Name = "shield"
-								MaterialID = -6773172251545423340
+								MaterialID = 3322849810205977386
 								Pos = 0.14561	0.0942189	0.0583601
 								QRot = -0.0677118	-0.165701	0.768011	0.614913
 								Scale = 1.0001	1	1.0001
-								QScaleRot = 0	0	0	0
+								QScaleRot = 0	0	0	1
 								VertexFormat = 13
 								VertexCount = 18
 								2.98023e-08	-7.45058e-08	4.47035e-08
@@ -3691,14 +3691,14 @@ MeshObject
 						}
 						MeshObject
 						{
-							ObjectID = 5881589960777784003
-							MeshID = 7327589780131936930
+							ObjectID = -7042258483719237057
+							MeshID = -3361977013960987609
 							Name = "upperarm02"
-							MaterialID = -8828993528313254522
+							MaterialID = 2507760892386272192
 							Pos = 0.120343	0.00791486	0.000717363
 							QRot = 0.0516189	0.0596524	0.606437	0.791209
 							Scale = 1	1	1.0001
-							QScaleRot = 0	0	0	0
+							QScaleRot = 0	0	0	1
 							VertexFormat = 13
 							VertexCount = 28
 							0.0397391	-0.0910821	0.0212422
@@ -3830,14 +3830,14 @@ MeshObject
 						}
 						MeshObject
 						{
-							ObjectID = -722161803019075168
-							MeshID = 2781327370954863769
+							ObjectID = 7004344039037021161
+							MeshID = -6352049956549376552
 							Name = "shoulder02"
-							MaterialID = -8828993528313254522
+							MaterialID = 2507760892386272192
 							Pos = 0.0762642	0.0568701	0.0187798
 							QRot = 0.0516189	0.0596524	0.606437	0.791209
 							Scale = 1	1	1.0001
-							QScaleRot = 0	0	0	0
+							QScaleRot = 0	0	0	1
 							VertexFormat = 13
 							VertexCount = 32
 							0.00314295	0.0649076	-0.0350249
@@ -3979,14 +3979,14 @@ MeshObject
 				}
 				MeshObject
 				{
-					ObjectID = -4950378028962541081
-					MeshID = 3753365018795659506
+					ObjectID = 3022618984987561426
+					MeshID = 6891704166318007669
 					Name = "Bip01 R Clavicle"
 					MaterialID = 0
 					Pos = 3.58678e-05	-0.0194452	7.42288e-05
 					QRot = -0.809008	0.587798	0.000381961	-0.000225455
 					Scale = 1	1	1.0001
-					QScaleRot = 0	0	0	0
+					QScaleRot = 0	0	0	1
 					VertexFormat = 5
 					VertexCount = 24
 					1.82232e-05	0.0138466	-0.0179492
@@ -4073,14 +4073,14 @@ MeshObject
 					AnimScale = 0
 					MeshObject
 					{
-						ObjectID = 8845938961999460178
-						MeshID = -923894376595778806
+						ObjectID = 3121643945191299673
+						MeshID = 292870092129313671
 						Name = "Bip01 R UpperArm"
 						MaterialID = 0
 						Pos = 0.0718802	3.19835e-05	-3.05716e-05
 						QRot = 0.326616	-0.196213	0.572163	0.726259
 						Scale = 1.0001	1	1
-						QScaleRot = 0	0	0	0
+						QScaleRot = 0	0	0	1
 						VertexFormat = 5
 						VertexCount = 40
 						0.194054	0.0196367	-0.0148973
@@ -4215,14 +4215,14 @@ MeshObject
 						AnimScale = 0
 						MeshObject
 						{
-							ObjectID = 7794654696212819838
-							MeshID = -8336794210073806117
+							ObjectID = -1883661331336881661
+							MeshID = -3600529669431117878
 							Name = "Bip01 R Forearm"
 							MaterialID = 0
 							Pos = 0.193951	1.3411e-05	1.67377e-05
 							QRot = 1.39475e-05	0.529634	5.36442e-07	0.848226
 							Scale = 0.9998	1	1
-							QScaleRot = 0	0	0	0
+							QScaleRot = 0	0	0	1
 							VertexFormat = 5
 							VertexCount = 32
 							0.0571002	0.0170022	0.017794
@@ -4333,14 +4333,14 @@ MeshObject
 							AnimScale = 0
 							MeshObject
 							{
-								ObjectID = -1861785408841854333
-								MeshID = 5717917099080240611
+								ObjectID = 6773255910084653475
+								MeshID = 1821937192414360082
 								Name = "Bip01 R Hand"
 								MaterialID = 0
 								Pos = 0.224089	-4.03821e-05	9.02899e-05
 								QRot = -0.686481	0.168346	-0.16851	0.687028
 								Scale = 1.0001	1	1
-								QScaleRot = 0	0	0	0
+								QScaleRot = 0	0	0	1
 								VertexFormat = 5
 								VertexCount = 24
 								2.48849e-05	0.0277416	-0.00693689
@@ -4427,14 +4427,14 @@ MeshObject
 								AnimScale = 0
 								MeshObject
 								{
-									ObjectID = 8396498187282907384
-									MeshID = 3551166408016018222
+									ObjectID = -2402290236313726297
+									MeshID = 187980735494706763
 									Name = "Bip01 R Finger0"
 									MaterialID = 0
 									Pos = 0.0692181	8.79876e-05	8.21352e-05
 									QRot = -0.0629549	-0.0723289	0.341245	0.93507
 									Scale = 1	1.0001	1
-									QScaleRot = 0	0	0	0
+									QScaleRot = 0	0	0	1
 									VertexFormat = 5
 									VertexCount = 24
 									-7.24569e-05	0.00346939	-0.00352637
@@ -4521,14 +4521,14 @@ MeshObject
 									AnimScale = 0
 									MeshObject
 									{
-										ObjectID = -5093714539876410124
-										MeshID = -1019107285861785885
+										ObjectID = 6530231382833877224
+										MeshID = 4055983510734232185
 										Name = "finger01"
-										MaterialID = -3901233190452069017
+										MaterialID = 950811346803758818
 										Pos = 0.00593749	-0.0680842	0.00877428
 										QRot = 0.32164	-0.626192	0.479783	0.523678
 										Scale = 0.9999	1	1
-										QScaleRot = 0	0	0	0
+										QScaleRot = 0	0	0	1
 										VertexFormat = 13
 										VertexCount = 28
 										-0.0324715	-0.0376172	-0.00763893
@@ -4649,14 +4649,14 @@ MeshObject
 								}
 								MeshObject
 								{
-									ObjectID = 2086646521510939880
-									MeshID = 7721848790172748304
+									ObjectID = 661514319892377831
+									MeshID = 5987796107586090422
 									Name = "hand01"
-									MaterialID = -3901233190452069017
+									MaterialID = 950811346803758818
 									Pos = 0.0101561	-0.0585146	0.0137515
 									QRot = 0.321395	-0.626025	0.480045	0.523788
 									Scale = 1	0.9999	1
-									QScaleRot = 0	0	0	0
+									QScaleRot = 0	0	0	1
 									VertexFormat = 13
 									VertexCount = 41
 									-0.0461928	0.0301101	0.0072126
@@ -4823,14 +4823,14 @@ MeshObject
 								}
 								MeshObject
 								{
-									ObjectID = 8018300911978770001
-									MeshID = -2653757679770614185
+									ObjectID = 6941480076713733110
+									MeshID = -8047539794176599498
 									Name = "sword"
-									MaterialID = -7613054088194488726
+									MaterialID = 7251473061167140752
 									Pos = 0.0802736	0.142174	0.000439048
 									QRot = 0.321395	-0.626025	0.480045	0.523788
 									Scale = 1	0.9999	1
-									QScaleRot = 0	0	0	0
+									QScaleRot = 0	0	0	1
 									VertexFormat = 13
 									VertexCount = 104
 									0.00556444	0.0562026	-0.209852
@@ -5203,14 +5203,14 @@ MeshObject
 							}
 							MeshObject
 							{
-								ObjectID = 786713040815472408
-								MeshID = -7130419924387651444
+								ObjectID = 1857021561885772342
+								MeshID = 869277195076713104
 								Name = "lowarm01"
-								MaterialID = -8828993528313254522
+								MaterialID = 2507760892386272192
 								Pos = 0.165429	-0.0340544	0.0347973
 								QRot = -0.142879	-0.103551	0.782049	0.597714
 								Scale = 1.0002	1	1
-								QScaleRot = 0	0	0	0
+								QScaleRot = 0	0	0	1
 								VertexFormat = 13
 								VertexCount = 43
 								0.0538289	0.170699	0.0467983
@@ -5390,14 +5390,14 @@ MeshObject
 						}
 						MeshObject
 						{
-							ObjectID = 7838149652919930687
-							MeshID = 4987957806192266821
+							ObjectID = -2740444026148709772
+							MeshID = -5340492773016235065
 							Name = "shoulder01"
-							MaterialID = -8828993528313254522
+							MaterialID = 2507760892386272192
 							Pos = 0.0775965	-0.0607678	0.0189375
 							QRot = 0.0579084	0.0497472	0.792892	0.604562
 							Scale = 0.9999	1.0001	1
-							QScaleRot = 0	0	0	0
+							QScaleRot = 0	0	0	1
 							VertexFormat = 13
 							VertexCount = 32
 							-0.0655103	0.0141602	-0.0182803
@@ -5537,14 +5537,14 @@ MeshObject
 						}
 						MeshObject
 						{
-							ObjectID = 30891475860821153
-							MeshID = -1219929380221750424
+							ObjectID = -7923341120263927474
+							MeshID = 260098771227086624
 							Name = "upperarm01"
-							MaterialID = -8828993528313254522
+							MaterialID = 2507760892386272192
 							Pos = 0.121577	-0.0115259	0.00116062
 							QRot = 0.0579084	0.0497472	0.792892	0.604562
 							Scale = 0.9999	1.0001	1
-							QScaleRot = 0	0	0	0
+							QScaleRot = 0	0	0	1
 							VertexFormat = 13
 							VertexCount = 28
 							-0.0398003	-0.0910544	0.0212119
@@ -5679,14 +5679,14 @@ MeshObject
 			}
 			MeshObject
 			{
-				ObjectID = 8333703719590748629
-				MeshID = -7439439510608638294
+				ObjectID = -5083000971055976697
+				MeshID = -8495070522948439591
 				Name = "Bip01 L Thigh"
 				MaterialID = 0
 				Pos = -0.0616427	0.048003	-0.042884
 				QRot = 0.13639	-0.127598	-0.98035	0.063482
 				Scale = 1	0.9999	1.0001
-				QScaleRot = 0	0	0	0
+				QScaleRot = 0	0	0	1
 				VertexFormat = 5
 				VertexCount = 40
 				0.104488	0.0308597	0.0389483
@@ -5823,14 +5823,14 @@ MeshObject
 				AnimScale = 0
 				MeshObject
 				{
-					ObjectID = 222026061818704683
-					MeshID = -4311270995899338840
+					ObjectID = -2606237727528061738
+					MeshID = -2174802739128674919
 					Name = "Bip01 L Calf"
 					MaterialID = 0
 					Pos = 0.19223	-1.9269e-05	6.96916e-05
 					QRot = 7.23302e-05	0.735986	-3.84152e-05	0.676997
 					Scale = 1	1.0001	0.9999
-					QScaleRot = 0	0	0	0
+					QScaleRot = 0	0	0	1
 					VertexFormat = 5
 					VertexCount = 32
 					0.0631619	0.031714	-0.0392475
@@ -5941,14 +5941,14 @@ MeshObject
 					AnimScale = 0
 					MeshObject
 					{
-						ObjectID = -4817844280063720383
-						MeshID = 6337950125327606611
+						ObjectID = 5835226154083083817
+						MeshID = 1259522025512964434
 						Name = "Bip01 L Foot"
 						MaterialID = 0
 						Pos = 0.190907	6.2272e-05	-3.87168e-05
 						QRot = 0.0559081	0.167658	0.0264618	0.983903
 						Scale = 0.9999	1	1
-						QScaleRot = 0	0	0	0
+						QScaleRot = 0	0	0	1
 						VertexFormat = 5
 						VertexCount = 24
 						0.0734883	0.0263	0.0928611
@@ -6035,14 +6035,14 @@ MeshObject
 						AnimScale = 0
 						MeshObject
 						{
-							ObjectID = 2745151029951142089
-							MeshID = -6476493738755148367
+							ObjectID = -8776724671231656077
+							MeshID = 1916301143215225339
 							Name = "Bip01 L Toe0"
 							MaterialID = 0
 							Pos = 0.146978	7.45058e-09	0.0928417
 							QRot = 1.30534e-05	0.743174	1.13845e-05	-0.669099
 							Scale = 1.0001	1	1.0001
-							QScaleRot = 0	0	0	0
+							QScaleRot = 0	0	0	1
 							VertexFormat = 5
 							VertexCount = 24
 							0	0.00410001	0
@@ -6129,14 +6129,14 @@ MeshObject
 							AnimScale = 0
 							MeshObject
 							{
-								ObjectID = -4287412314504472413
-								MeshID = 4834686735840556777
+								ObjectID = -6029885267978397685
+								MeshID = -4918978037195058594
 								Name = "toe02"
-								MaterialID = 2205924765779553930
+								MaterialID = 2390343944831624587
 								Pos = 0.0564962	-0.0493	0.0233372
 								QRot = 0.500008	-0.5	-0.499997	0.499994
 								Scale = 1	1	1
-								QScaleRot = 0	0	0	0
+								QScaleRot = 0	0	0	1
 								VertexFormat = 13
 								VertexCount = 19
 								-0.0231	0.0558516	0.116933
@@ -6220,14 +6220,14 @@ MeshObject
 						}
 						MeshObject
 						{
-							ObjectID = -3138215640516905158
-							MeshID = -4238405992378768190
+							ObjectID = -940002274129896149
+							MeshID = -7820550055332755376
 							Name = "shoe02"
-							MaterialID = 2205924765779553930
+							MaterialID = 2390343944831624587
 							Pos = 0.0283308	-0.0392	0.0105752
 							QRot = -0.707098	0.707115	-4.55976e-05	4.06653e-05
 							Scale = 1.0001	0.9999	1
-							QScaleRot = 0	0	0	0
+							QScaleRot = 0	0	0	1
 							VertexFormat = 13
 							VertexCount = 33
 							0.0599	-0.118262	0.058362
@@ -6365,14 +6365,14 @@ MeshObject
 					}
 					MeshObject
 					{
-						ObjectID = -6962707732731303613
-						MeshID = 297052444537271815
+						ObjectID = -8409553736447733867
+						MeshID = 5400757386559224300
 						Name = "lowleg02"
-						MaterialID = 7912312155189861145
+						MaterialID = 1540878324906657705
 						Pos = 0.109968	-0.0223876	0.00821702
 						QRot = -0.753271	0.655734	-0.0426423	0.0278893
 						Scale = 1	1	1.0001
-						QScaleRot = 0	0	0	0
+						QScaleRot = 0	0	0	1
 						VertexFormat = 13
 						VertexCount = 34
 						-0.0370541	0.11355	0.0136754
@@ -6523,14 +6523,14 @@ MeshObject
 				}
 				MeshObject
 				{
-					ObjectID = -8570608084871741054
-					MeshID = 4248375997838904908
+					ObjectID = 4343558173025435750
+					MeshID = -2480515572581096101
 					Name = "upperleg02"
-					MaterialID = 7912312155189861145
+					MaterialID = 1540878324906657705
 					Pos = 0.114371	-0.0118078	0.0277972
 					QRot = -0.753733	0.655278	0.0328127	-0.0376846
 					Scale = 1	1.0001	1
-					QScaleRot = 0	0	0	0
+					QScaleRot = 0	0	0	1
 					VertexFormat = 13
 					VertexCount = 36
 					0.0186043	-0.104791	-0.0222534
@@ -6687,14 +6687,14 @@ MeshObject
 			}
 			MeshObject
 			{
-				ObjectID = -2468423545276539190
-				MeshID = -1589271919589344851
+				ObjectID = 1938087359628262882
+				MeshID = -6608013534223605798
 				Name = "Bip01 R Thigh"
 				MaterialID = 0
 				Pos = -0.0653578	-0.0589289	-0.0144781
 				QRot = 0.309678	0.137601	0.933869	0.114256
 				Scale = 1	1	1.0001
-				QScaleRot = 0	0	0	0
+				QScaleRot = 0	0	0	1
 				VertexFormat = 5
 				VertexCount = 40
 				0.19185	-0.0303785	0.0241825
@@ -6833,14 +6833,14 @@ MeshObject
 				AnimScale = 0
 				MeshObject
 				{
-					ObjectID = 5534284403263149960
-					MeshID = -1609117723484340605
+					ObjectID = -8529159083604393506
+					MeshID = -9050676078400856211
 					Name = "Bip01 R Calf"
 					MaterialID = 0
 					Pos = 0.192237	3.38985e-05	-1.25605e-05
 					QRot = -2.14167e-05	0.120695	-1.27554e-05	0.99269
 					Scale = 0.9999	1	1
-					QScaleRot = 0	0	0	0
+					QScaleRot = 0	0	0	1
 					VertexFormat = 5
 					VertexCount = 32
 					0.0628087	-0.0314431	0.0345952
@@ -6951,14 +6951,14 @@ MeshObject
 					AnimScale = 0
 					MeshObject
 					{
-						ObjectID = 3076993824515642907
-						MeshID = -5832387064754915317
+						ObjectID = 361075994647824947
+						MeshID = 3448015597240108343
 						Name = "Bip01 R Foot"
 						MaterialID = 0
 						Pos = 0.190765	-4.54802e-05	-1.2581e-05
 						QRot = -0.020347	0.0761712	0.0575714	0.995223
 						Scale = 1.0001	1	1
-						QScaleRot = 0	0	0	0
+						QScaleRot = 0	0	0	1
 						VertexFormat = 5
 						VertexCount = 24
 						0.0735695	0.0263	0.0928759
@@ -7045,14 +7045,14 @@ MeshObject
 						AnimScale = 0
 						MeshObject
 						{
-							ObjectID = 5025453344490505400
-							MeshID = -4163911178964385879
+							ObjectID = 7754618940305937240
+							MeshID = 589636984704485791
 							Name = "Bip01 R Toe0"
 							MaterialID = 0
 							Pos = 0.147028	-1.86265e-09	0.092873
 							QRot = -1.40369e-05	0.707086	1.60933e-06	-0.707127
 							Scale = 1	1	1
-							QScaleRot = 0	0	0	0
+							QScaleRot = 0	0	0	1
 							VertexFormat = 5
 							VertexCount = 24
 							-1.26893e-08	0.0042	3.72529e-09
@@ -7135,14 +7135,14 @@ MeshObject
 							AnimScale = 0
 							MeshObject
 							{
-								ObjectID = -6851526485207002850
-								MeshID = 781818267396296303
+								ObjectID = -67629763976748613
+								MeshID = 40059655879010376
 								Name = "toe01"
-								MaterialID = 2205924765779553930
+								MaterialID = 2390343944831624587
 								Pos = 0.0564936	0.0539	0.0233236
 								QRot = -0.499998	0.499998	0.499993	-0.50001
 								Scale = 1	1	1
-								QScaleRot = 0	0	0	0
+								QScaleRot = 0	0	0	1
 								VertexFormat = 13
 								VertexCount = 19
 								0.0249	0.0840183	0.0477662
@@ -7226,14 +7226,14 @@ MeshObject
 						}
 						MeshObject
 						{
-							ObjectID = -1329883195657778930
-							MeshID = 757172102693862319
+							ObjectID = 3769961105165534830
+							MeshID = -2062922010434229743
 							Name = "shoe01"
-							MaterialID = 2205924765779553930
+							MaterialID = 2390343944831624587
 							Pos = 0.0283916	0.0438	0.0105668
 							QRot = 0.707107	-0.707107	-2.47937e-05	2.09957e-05
 							Scale = 1	1	1
-							QScaleRot = 0	0	0	0
+							QScaleRot = 0	0	0	1
 							VertexFormat = 13
 							VertexCount = 33
 							0.0613	-0.0513019	0.0823728
@@ -7371,14 +7371,14 @@ MeshObject
 					}
 					MeshObject
 					{
-						ObjectID = 7649853150503279027
-						MeshID = 3115647073107735874
+						ObjectID = -64962990096216990
+						MeshID = -5648495045878431102
 						Name = "lowleg01"
-						MaterialID = 7912312155189861145
+						MaterialID = 1540878324906657705
 						Pos = 0.11037	0.0264552	0.00833323
 						QRot = 0.668687	-0.741829	0.0297225	-0.0407997
 						Scale = 1.0001	1	0.9999
-						QScaleRot = 0	0	0	0
+						QScaleRot = 0	0	0	1
 						VertexFormat = 13
 						VertexCount = 34
 						0.0346858	0.132917	-0.0304311
@@ -7529,14 +7529,14 @@ MeshObject
 				}
 				MeshObject
 				{
-					ObjectID = -4003901786840505870
-					MeshID = -6846653533685732986
+					ObjectID = 8837669313001542093
+					MeshID = -5652874875916856658
 					Name = "upperleg01"
-					MaterialID = 7912312155189861145
+					MaterialID = 1540878324906657705
 					Pos = 0.114858	0.0158928	0.0278172
 					QRot = 0.668272	-0.742235	-0.0371542	0.0334511
 					Scale = 1	1.0001	1
-					QScaleRot = 0	0	0	0
+					QScaleRot = 0	0	0	1
 					VertexFormat = 13
 					VertexCount = 36
 					-0.000770393	-0.0921516	0.0300575
@@ -7693,14 +7693,14 @@ MeshObject
 			}
 			MeshObject
 			{
-				ObjectID = -5894257714683025433
-				MeshID = -2405372389594982525
+				ObjectID = 795952879946169744
+				MeshID = -8844787709067700609
 				Name = "body"
-				MaterialID = -8828993528313254522
+				MaterialID = 2507760892386272192
 				Pos = 0.126623	-0.0021607	0.0216951
 				QRot = 0.707103	0.707111	-0.000305153	-0.000301868
 				Scale = 1	1	1.0002
-				QScaleRot = 0	0	0	0
+				QScaleRot = 0	0	0	1
 				VertexFormat = 13
 				VertexCount = 53
 				-0.0419653	0.119584	0.0486841
@@ -7951,14 +7951,14 @@ MeshObject
 		}
 		MeshObject
 		{
-			ObjectID = -1192748621357368676
-			MeshID = 3434319008728212561
+			ObjectID = 2764191977700384998
+			MeshID = -644894714417668222
 			Name = "hip"
-			MaterialID = 7912312155189861145
+			MaterialID = 1540878324906657705
 			Pos = -0.00824708	-0.0021	0.0247247
 			QRot = 0.707105	0.707108	-9.51439e-06	1.08257e-05
 			Scale = 1	1	1
-			QScaleRot = 0	0	0	0
+			QScaleRot = 0	0	0	1
 			VertexFormat = 13
 			VertexCount = 33
 			0.1094	0.00251395	0.0435734

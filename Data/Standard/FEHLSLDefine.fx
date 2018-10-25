@@ -105,6 +105,9 @@ float4 FESpecularLighting(float4 pos, float4 nor, float p)
     float4 H;
     float4 spec = 0;
 
+    if (p < 0.0001)
+        return 0;
+
     for (int i = 0; i < FE_LIGHT_SIZE; i++)
     {
         if (light[i].lightType != 0)
@@ -115,7 +118,9 @@ float4 FESpecularLighting(float4 pos, float4 nor, float p)
         L = mul(L, mView);
 
 		// 시선백터 계산.
+        pos.w = 0;
         E = normalize(-pos);
+
 
 		// 하프벡터 계산.
         H = normalize(L + E);

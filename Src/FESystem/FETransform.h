@@ -14,7 +14,6 @@ class FETransform :	public FEComponent
 private:
 	FEVector3 _vPos;
 	FEVector4 _qRot;
-	FEVector4 _qScaleRot;
 
 public:
 	FEVector3 m_vScale;

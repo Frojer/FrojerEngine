@@ -35,6 +35,7 @@ void IFEScene::Update()
 void IFEScene::Render()
 {
 	auto cams = FECamera::GetAllCameras();
+	FEMaterial::_oldDrawID = 0;
 
 	// 라이트 상수버퍼 갱신
 	FEMaterial::UpdateConstantBufferLight();

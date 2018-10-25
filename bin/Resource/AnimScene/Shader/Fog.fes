@@ -1,0 +1,12 @@
+Fog.vso
+Fog.pso
+
+ID = 478328472334
+
+Name = "Fog"
+
+Semantics = 13
+CountTexture = 1
+CountMatrix = 0
+CountVector = 1
+CountScalar = 2

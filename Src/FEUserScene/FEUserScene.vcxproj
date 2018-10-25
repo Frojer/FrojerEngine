@@ -176,6 +176,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AnimScene.h" />
+    <ClInclude Include="AnimSystem.h" />
     <ClInclude Include="CameraController.h" />
     <ClInclude Include="Hero.h" />
     <ClInclude Include="FETEST.h" />
@@ -188,6 +189,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimScene.cpp" />
+    <ClCompile Include="AnimSystem.cpp" />
     <ClCompile Include="CameraController.cpp" />
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="FETEST.cpp" />
