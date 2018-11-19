@@ -51,7 +51,9 @@
     <ClInclude Include="Windmill.h">
       <Filter>Component\Header File</Filter>
     </ClInclude>
-    <ClInclude Include="AnimSystem.h" />
+    <ClInclude Include="AnimSystem.h">
+      <Filter>Component\Header File</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FEUserScene.cpp" />
@@ -79,6 +81,8 @@
     <ClCompile Include="Windmill.cpp">
       <Filter>Component\Source File</Filter>
     </ClCompile>
-    <ClCompile Include="AnimSystem.cpp" />
+    <ClCompile Include="AnimSystem.cpp">
+      <Filter>Component\Source File</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

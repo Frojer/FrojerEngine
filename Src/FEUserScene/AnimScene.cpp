@@ -26,13 +26,14 @@ void AnimScene::Load()
 	FEGameObject* pGrid = new FEGameObject();
 	auto grid = pGrid->AddComponent<Grid>();
 	//FEGameObject* pCam = new FEGameObject(FEVector3(0.0f, 0.0f, -30.0f), FEVector3::Zero, FEVector3::One);
-	FEGameObject* pCam = new FEGameObject(FEVector3(0.0f, 10.0f, -25.0f), FEVector3::Right * FEConvertToRadian(25.0f), FEVector3::One);
+	FEGameObject* pCam = new FEGameObject(FEVector3(0.336164206f, -30.5625572f, 121.563286f), FEVector3::Zero, FEVector3::One);
+	pCam->GetTransform()->SetRotationQuaternion(FEVector4(-0.000103110404f, -0.999918997f, 0.0200819671f, -0.00479840115f));
 	pCam->m_Name = FE_TEXT("Ä«¸Þ¶ó");
 	pCam->AddComponent<CameraController>()->pCam = pCam->AddComponent<FECamera>();
 
 	FEGameObject* pLight = new FEGameObject(FEVector3::Zero, FEVector3::Zero, FEVector3::One);
 	pLight->m_Name = FE_TEXT("Direction Light");
-	pLight->GetTransform()->SetRotationDegree(FEVector3(75.0f, 15.0f, 0.0f));
+	pLight->GetTransform()->SetRotationQuaternion(FEVector4(0.955412388f, 0.0348797776f, -0.125784650f, 0.264960259f));
 	auto light = pLight->AddComponent<FELight>();
 	pSysCom->pLight = pLight;
 
@@ -67,6 +68,7 @@ void AnimScene::Load()
 			renderer->m_pMaterial->SetScalar(1, 120.0f);
 		}
 	}
+	pHero->GetTransform()->SetPositionLocal(FEVector3(0.240021259f, -44.7897606f, 94.1677628f));
 	pHero->GetTransform()->Rotate(FEVector3::Up * 180);
 	pHero->GetTransform()->m_vScale = FEVector3::One * 10;
 	pSysCom->Hero = pHero;

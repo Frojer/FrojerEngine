@@ -14,6 +14,7 @@ typedef unsigned long       DWORD;
 typedef unsigned short      WORD;
 typedef unsigned int		UINT;
 typedef long long			INT64;
+typedef unsigned long long	UINT64;
 
 
 ///////////////////////

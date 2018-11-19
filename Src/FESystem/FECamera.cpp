@@ -19,7 +19,14 @@ FECamera::FECamera()
 
 FECamera::~FECamera()
 {
-
+	FOR_STL(FECamera::_vCam)
+	{
+		if ((*iter) == this)
+		{
+			FECamera::_vCam.erase(iter);
+			break;
+		}
+	}
 }
 
 

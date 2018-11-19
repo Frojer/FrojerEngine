@@ -71,4 +71,5 @@ void IFEScene::Release()
 
 	_hierarchyList.clear();
 	_mapObj.clear();
+	_renderMap.clear();
 }

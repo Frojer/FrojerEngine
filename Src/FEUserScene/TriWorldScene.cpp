@@ -29,7 +29,8 @@ void TriWorldScene::Load()
 	auto pSysCom = pSystem->AddComponent<TriWorldSystem>();
 
 	// 카메라 생성
-	FEGameObject* pCam = new FEGameObject(FEVector3(0.0f, 5.0f, -30.0f), FEVector3::Zero, FEVector3::One);
+	FEGameObject* pCam = new FEGameObject(FEVector3(-6.83591080f, 9.19818401f, -21.5910091f), FEVector3::Zero, FEVector3::One);
+	pCam->GetTransform()->SetRotationQuaternion(FEVector4(0.212332159f, 0.306440085f, -0.0703246295f, 0.925235093f));
 	pCam->AddComponent<CameraController>()->pCam = pCam->AddComponent<FECamera>();
 
 	// 그리드 생성하기
@@ -39,13 +40,13 @@ void TriWorldScene::Load()
 	pSysCom->m_pGrid = grid;
 
 	// 터레인 만들기
-	FEGameObject* pTerrain = FEGameObject::CopyObject(FEGameObject::FindPrefab(5697116093628749358));
+	FEGameObject* pTerrain = FEGameObject::CopyObject(FEGameObject::FindPrefab(4417013628616341411));
 	pTerrain->GetTransform()->m_vScale = FEVector3(0.5f, 0.5f, 0.5f);
-	pSysCom->m_pTerrainMtrl = pTerrain->GetChildren().begin()->second->GetRenderer()->m_pMaterial;
+	pSysCom->m_pTerrainMtrl = pTerrain->GetRenderer()->m_pMaterial;
 	pSysCom->m_pTerrainMtrl->SetShader(FEShader::Find(FE_TEXT("WinterShader")));
 	pSysCom->m_pTerrainMtrl->SetVector(0, FEVector4(0.0f, 0.0f, 10.0f, 10.0f));
 	pSysCom->m_pTerrainMtrl->SetVector(1, AUTUMN_COLOR);
-	pSysCom->m_pTerrainMtrl->SetTexture(1, FETexture::Find(1658363954890942618));
+	pSysCom->m_pTerrainMtrl->SetTexture(1, FETexture::Find(5721527515870738053));
 	//FEVector2 offset;
 	//FEVector2 tiling;
 	//pTerrain->GetChildren().begin()->second->GetRenderer()->m_pMaterial->GetTextureOffset(0, offset);
@@ -54,14 +55,14 @@ void TriWorldScene::Load()
 	//pTerrain->GetChildren().begin()->second->GetRenderer()->m_pMaterial->SetVector(0, FEVector4(offset, tiling));
 
 	// 나무 만들기
-	FEGameObject* pTree = FEGameObject::CopyObject(FEGameObject::FindPrefab(-4863405685890633829));
+	FEGameObject* pTree = FEGameObject::CopyObject(FEGameObject::FindPrefab(-1394610338352907823));
 	pSysCom->m_pTrees[0] = pTree;
-	pTree->GetChildren().begin()->second->GetRenderer()->SetRenderPriority(2);
-	pSysCom->m_pTreeMtrl = pTree->GetChildren().begin()->second->GetRenderer()->m_pMaterial;
+	pTree->GetRenderer()->SetRenderPriority(2);
+	pSysCom->m_pTreeMtrl = pTree->GetRenderer()->m_pMaterial;
 	pSysCom->m_pTreeMtrl->SetShader(FEShader::Find(FE_TEXT("WinterShader")));
 	pSysCom->m_pTreeMtrl->SetVector(0, FEVector4(0.0f, 0.0f, 1.0f, 1.0f));
 	pSysCom->m_pTreeMtrl->SetVector(1, AUTUMN_COLOR);
-	pSysCom->m_pTreeMtrl->SetTexture(1, FETexture::Find(-8342061839902120095));
+	pSysCom->m_pTreeMtrl->SetTexture(1, FETexture::Find(3048992087290116511));
 	
 	srand(GetTickCount());
 	for (int i = 1; i < TREE_MAX; i++)
@@ -71,7 +72,7 @@ void TriWorldScene::Load()
 		pos.z = (rand() % 100) - 50;
 		pTree = FEGameObject::CopyObject(pTree);
 		pTree->GetTransform()->SetPositionWorld(pos);
-		pTree->GetTransform()->SetRotationDegree(FEVector3(0.0f, 180.0f, 0.0f));
+		//pTree->GetTransform()->SetRotationDegree(FEVector3(0.0f, 180.0f, 0.0f));
 
 		pSysCom->m_pTrees[i] = pTree;
 	}
@@ -83,7 +84,7 @@ void TriWorldScene::Load()
 	bd.RenderTarget[0].DestBlend = FE_BLEND_INV_SRC_ALPHA;
 	
 	// 일반 풍차 만들기
-	FEGameObject* pWindmill = FEGameObject::CopyObject(FEGameObject::FindPrefab(8507257348452055230));
+	FEGameObject* pWindmill = FEGameObject::CopyObject(FEGameObject::FindPrefab(6289458781704997571));
 	pWindmill->GetChildren().begin()->second->GetRenderer()->SetRenderPriority(3);
 	pWindmill->GetChildren().begin()->second->GetRenderer()->SetBlendState(bd);
 	pWindmill->GetChildren().begin()->second->GetRenderer()->m_renderType = RENDER_TYPE_TWOFACE;
@@ -91,7 +92,7 @@ void TriWorldScene::Load()
 	pSysCom->m_pWindmillMtrl->SetShader(FEShader::Find(FE_TEXT("WinterShader")));
 	pSysCom->m_pWindmillMtrl->SetVector(0, FEVector4(0.0f, 0.0f, 1.0f, 1.0f));
 	pSysCom->m_pWindmillMtrl->SetVector(1, FEVector4::One);
-	pSysCom->m_pWindmillMtrl->SetTexture(1, FETexture::Find(-2299588805160112115));
+	pSysCom->m_pWindmillMtrl->SetTexture(1, FETexture::Find(-5009514137093084626));
 	auto wmComp = pWindmill->AddComponent<Windmill>();
 	wmComp->m_pSystem = pSysCom;
 	wmComp->m_type = WINDMILL_NORMAL;
@@ -104,7 +105,7 @@ void TriWorldScene::Load()
 	pWindmill->GetTransform()->Rotate(FEVector3(0.0f, 180.0f, 0.0f));
 
 	// 삼단 풍차 만들기
-	pWindmill = FEGameObject::CopyObject(FEGameObject::FindPrefab(8507257348452055230));
+	pWindmill = FEGameObject::CopyObject(FEGameObject::FindPrefab(6289458781704997571));
 	pWindmill->GetChildren().begin()->second->GetRenderer()->SetRenderPriority(3);
 	pWindmill->GetChildren().begin()->second->GetRenderer()->SetBlendState(bd);
 	pWindmill->GetChildren().begin()->second->GetRenderer()->m_renderType = RENDER_TYPE_TWOFACE;
@@ -132,7 +133,7 @@ void TriWorldScene::Load()
 	pWindmill->GetTransform()->Rotate(FEVector3(0.0f, 180.0f, 0.0f));
 
 	// 삼단 풍차 타입 2 만들기
-	pWindmill = FEGameObject::CopyObject(FEGameObject::FindPrefab(8507257348452055230));
+	pWindmill = FEGameObject::CopyObject(FEGameObject::FindPrefab(6289458781704997571));
 	pWindmill->GetChildren().begin()->second->GetRenderer()->SetRenderPriority(3);
 	pWindmill->GetChildren().begin()->second->GetRenderer()->SetBlendState(bd);
 	pWindmill->GetChildren().begin()->second->GetRenderer()->m_renderType = RENDER_TYPE_TWOFACE;
@@ -161,43 +162,45 @@ void TriWorldScene::Load()
 	pWindmill->GetTransform()->Rotate(FEVector3(0.0f, 180.0f, 0.0f));
 
 	// 영웅 만들기
-	FEGameObject* pHero = FEGameObject::CopyObject(FEGameObject::FindPrefab(6576196112351069742));
-	pHero->GetTransform()->SetRotationDegree(FEVector3(-90.0f, -90.0f, 0.0f));
+	FEGameObject* pHero = FEGameObject::CopyObject(FEGameObject::FindPrefab(6640943049090391582));
+	pHero->GetTransform()->SetPositionLocal(FEVector3(2.20766687f, 0.0f, -13.5519924f));
+	pHero->GetTransform()->SetRotationQuaternion(FEVector4(0.0f, -0.0416140929f, 0.000000000f, -0.999135017f));
 	pHero->AddComponent<Hero>()->m_pHero = pHero;
 	auto heroChildren = pHero->GetChildren();
 	for (auto iter = heroChildren.begin(); iter != heroChildren.end(); iter++)
 	{
 		(*iter).second->GetRenderer()->m_pMaterial->SetShader(FEShader::Find(239857098132532));
+		(*iter).second->GetRenderer()->m_renderType = RENDER_TYPE_TWOFACE;
 		tstring name = (*iter).second->GetRenderer()->m_pMaterial->m_Name;
 
 		if (name == FE_TEXT("01_Weapon"))
 		{
-			(*iter).second->GetRenderer()->m_pMaterial->SetTexture(1, FETexture::Find(-5353454438910911562));
+			(*iter).second->GetRenderer()->m_pMaterial->SetTexture(1, FETexture::Find(-3456410373712560427));
 			pSysCom->m_pHeroMtrl[0] = (*iter).second->GetRenderer()->m_pMaterial;
 		}
 		else if (name == FE_TEXT("02_Body"))
 		{
-			(*iter).second->GetRenderer()->m_pMaterial->SetTexture(1, FETexture::Find(44271754137392169));
+			(*iter).second->GetRenderer()->m_pMaterial->SetTexture(1, FETexture::Find(4387018058212695514));
 			pSysCom->m_pHeroMtrl[1] = (*iter).second->GetRenderer()->m_pMaterial;
 		}
 		else if (name == FE_TEXT("03_Armor"))
 		{
-			(*iter).second->GetRenderer()->m_pMaterial->SetTexture(1, FETexture::Find(4944513887461841849));
+			(*iter).second->GetRenderer()->m_pMaterial->SetTexture(1, FETexture::Find(2832331587261179096));
 			pSysCom->m_pHeroMtrl[2] = (*iter).second->GetRenderer()->m_pMaterial;
 		}
 		else if (name == FE_TEXT("04-Head"))
 		{
-			(*iter).second->GetRenderer()->m_pMaterial->SetTexture(1, FETexture::Find(5655988242469624978));
+			(*iter).second->GetRenderer()->m_pMaterial->SetTexture(1, FETexture::Find(-7742163606095368462));
 			pSysCom->m_pHeroMtrl[3] = (*iter).second->GetRenderer()->m_pMaterial;
 		}
 		else if (name == FE_TEXT("05-HeadGear"))
 		{
-			(*iter).second->GetRenderer()->m_pMaterial->SetTexture(1, FETexture::Find(-2147603919002659658));
+			(*iter).second->GetRenderer()->m_pMaterial->SetTexture(1, FETexture::Find(-3498842328099961521));
 			pSysCom->m_pHeroMtrl[4] = (*iter).second->GetRenderer()->m_pMaterial;
 		}
 		else if (name == FE_TEXT("06-Pack"))
 		{
-			(*iter).second->GetRenderer()->m_pMaterial->SetTexture(1, FETexture::Find(-2001513419937601028));
+			(*iter).second->GetRenderer()->m_pMaterial->SetTexture(1, FETexture::Find(4959284352556493848));
 			pSysCom->m_pHeroMtrl[5] = (*iter).second->GetRenderer()->m_pMaterial;
 		}
 	}
@@ -213,7 +216,7 @@ void TriWorldScene::Load()
 	// Point Light 만들기
 	FEGameObject* pPointLight = new FEGameObject();
 	pPointLight->SetParent(pHero);
-	pPointLight->GetTransform()->SetPositionLocal(FEVector3(1.5f, 0.0f, 1.0f));
+	pPointLight->GetTransform()->SetPositionLocal(FEVector3(1.0f, 1.0f, 0.0f));
 	pPointLight->GetTransform()->m_vScale = FEVector3(0.02f, 0.02f, 0.02f);
 	auto pointLitCom = pPointLight->AddComponent<FELight>();
 	pointLitCom->m_diffuse = FEVector4(1.0f, 0.40784f, 0.090196f, 1.0f);
@@ -221,19 +224,19 @@ void TriWorldScene::Load()
 	pointLitCom->m_range = 15.0f;
 	pointLitCom->m_lightType = FE_LIGHT_TYPE_POINT;
 
-	FEGameObject* pTorch = FEGameObject::CopyObject(FEGameObject::FindPrefab(6379430736193720248));
+	FEGameObject* pTorch = FEGameObject::CopyObject(FEGameObject::FindPrefab(6180508671031374862));
 	pTorch->SetParent(pPointLight);
 	pTorch->GetRenderer()->m_pMaterial->SetShader(FEShader::Find(2465136134763));
 
 	// 박스 만들기
-	FEGameObject* pBox = FEGameObject::CopyObject(FEGameObject::FindPrefab(2460141765634699607));
-	pBox->GetChildren().begin()->second->GetRenderer()->SetRenderPriority(0);
-	pSysCom->m_pBoxMtrl = pBox->GetChildren().begin()->second->GetRenderer()->m_pMaterial;
+	FEGameObject* pBox = FEGameObject::CopyObject(FEGameObject::FindPrefab(-6008426018645421450));
+	pBox->GetRenderer()->SetRenderPriority(0);
+	pSysCom->m_pBoxMtrl = pBox->GetRenderer()->m_pMaterial;
 	pSysCom->m_pBoxMtrl->SetShader(FEShader::Find(FE_TEXT("Box")));
 	pSysCom->m_pBoxMtrl->SetVector(0, AUTUMN_COLOR);
-	pSysCom->m_pBoxMtrl->SetTexture(1, FETexture::Find(1790542892283644886));
-	pSysCom->m_pBoxMtrl->SetTexture(2, FETexture::Find(-9117736830242202577));
-	pSysCom->m_pBoxMtrl->SetTexture(3, FETexture::Find(3226161949705243547));
+	pSysCom->m_pBoxMtrl->SetTexture(1, FETexture::Find(4940300976105062166));
+	pSysCom->m_pBoxMtrl->SetTexture(2, FETexture::Find(8496873953192865247));
+	pSysCom->m_pBoxMtrl->SetTexture(3, FETexture::Find(-690700366506641043));
 	pBox->GetTransform()->SetPositionWorld(FEVector3(-3.0f, 1.0f, -25.0f));
 	
 	pSysCom->m_pDirectionalLight = light;

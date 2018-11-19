@@ -47,6 +47,8 @@ void TriWorldSystem::Update()
 	if (IsKeyUp(VK_F6))		if (++m_timeSlot == TIME_MAX)	m_timeSlot = 0;
 	// 계절 변경
 	if (IsKeyUp(VK_F7))		if (++m_season == SEASON_MAX)	m_season = 0;
+	// 씬 변경
+	if (IsKeyUp(VK_F8))		FESceneManager::GetInstance()->LoadScene(1);
 
 	// 그리드 On/Off
 	if (IsKeyUp('1'))	m_pGrid->x = !m_pGrid->x;
@@ -158,5 +160,5 @@ void TriWorldSystem::Update()
 
 	// 샘플러 설정
 	FE_SAMPLER_STATE_FLAG sd;
-	m_pTerrain->GetChildren().begin()->second->GetRenderer()->m_pMaterial->SetSamplerState(0, sd);
+	m_pTerrain->GetRenderer()->m_pMaterial->SetSamplerState(0, sd);
 }

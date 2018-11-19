@@ -31,7 +31,7 @@ public:
 	BYTE m_season;
 
 	float m_cold = 1.0f;
-	bool m_bDrawNormal = true;
+	bool m_bDrawNormal = false;
 
 	Grid* m_pGrid;
 

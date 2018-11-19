@@ -36,15 +36,16 @@ void FERenderer::Render()
 		case RENDER_TYPE_TWOFACE:
 			auto cullMode = GetCullMode();
 
-			// 뒷면을 먼저 그린후
-			SetCullMode(CULL_FRONT);
-			pRenderer->SetRSState(_RSState);
 			pRenderer->SetDSState(_DSState, m_stencilRef);
 			pRenderer->SetBlendState(_BlendState);
+
+			// 뒷면을 먼저 그린후
+			SetCullMode(CULL_BACK);
+			pRenderer->SetRSState(_RSState);
 			pRenderer->DrawIndexed(m_pMesh->m_indics.size() * 3, 0, 0);
 
 			// 앞면을 그린다
-			SetCullMode(CULL_BACK);
+			SetCullMode(CULL_FRONT);
 			pRenderer->SetRSState(_RSState);
 			pRenderer->DrawIndexed(m_pMesh->m_indics.size() * 3, 0, 0);
 

@@ -9,6 +9,9 @@
 
 void AnimSystem::Update()
 {
+	// ¾À º¯°æ
+	if (IsKeyUp(VK_F8))		FESceneManager::GetInstance()->LoadScene((UINT)0);
+
 	// È¸Àü
 	if (IsKeyDown('T'))		pLight->GetTransform()->Rotate(FEVector3(-50.0f, 0.0f, 0.0f) * FETime::GetDeltaTime());
 	if (IsKeyDown('G'))		pLight->GetTransform()->Rotate(FEVector3(50.0f, 0.0f, 0.0f) * FETime::GetDeltaTime());
