@@ -28,10 +28,10 @@
 
 
 # 01_EngineFlowChart.png
-![Alt text](/01_EngineFlowChart.png)
+![Alt text](01_EngineFlowChart.png)
 
 # 02_RendererDiagram.png
-![Alt text](/02_RendererDiagram.png)
+![Alt text](02_RendererDiagram.png)
 
 # 03_ObjectDiagram.png
-![Alt text](/03_ObjectDiagram.png)
+![Alt text]("03_Object Diagram.png")
