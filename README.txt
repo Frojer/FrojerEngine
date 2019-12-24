@@ -1,27 +1,29 @@
- - »ç¿ë¹ý -
-1, DataÆú´õ¿¡ »ç¿ëÇÒ ¸®¼Ò½ºµéÀ» ´ã´Â´Ù
-2. SDK/FEFileConverter/FEFileConverter.bat ÆÄÀÏÀ» ½ÇÇà½ÃÄÑ ¸®¼Ò½ºµéÀ» ÄÁ¹öÆÃÇÑ´Ù (°æ·Î´Â bin/Resource)
-    2.a ÇöÀç ¼ÎÀÌ´õÄÚµå´Â ÀÚµ¿À¸·Î Á¦ÀÛÀ» ¸øÇÏ¹Ç·Î ¼öµ¿À¸·Î Çü½Ä¿¡ ¸Â°Ô Áý¾î³Ö´Â´Ù (FEShaderSyntax.fes Âü°í)
-    2.b »õ·Î¿î ¸ÓÅ×¸®¾óÀ» ÆÄÀÏÇü½ÄÀ¸·Î ÀúÀåÇÏ°í½Í´Ù¸é ¼öµ¿À¸·Î Çü½Ä¿¡ ¸Â°Ô Áý¾î³Ö´Â´Ù (FEMaterialSyntax.fem Âü°í)
-3. Scene »ý¼º (ÃßÈÄ¿¡ .scene ¸®¼Ò½º ÆÄÀÏÀ» ÅëÇØ ÀÐµµ·Ï ¼öÁ¤ ÇÊ¿ä)
-    3.a ¼Ö·ç¼ÇÀÇ UserSceneÇÁ·ÎÁ§Æ®¿¡ IFEScenn Å¬·¡½º¸¦ »ó¼Ó¹Þ´Â Å¬·¡½º¸¦ ÀÛ¼ºÇÑ´Ù
-    3.b ÀÛ¼ºÇÑ Å¬·¡½º¿¡ virtual void Load() override; ÇÔ¼ö¸¦ Ãß°¡ÇÑ´Ù. (¾ÀÀ» ·ÎµåÇÒ¶§ ÀÌ ÇÔ¼ö°¡ È£ÃâµÈ´Ù)
-    3.c Load() ÇÔ¼ö¿¡¼­ ¾ÀÀ» ±¸¼ºÇÑ´Ù (¿ÀºêÁ§Æ® Ãß°¡, ¹× ¿ÀºêÁ§Æ®¿¡ ÄÄÆ÷³ÍÆ® Ãß°¡)
-    3.d FEUserScene.cppÆÄÀÏ ³»ÀÇ LoadUserScene() ÇÔ¼ö¿¡ pSM->AddScene(new SceneClass); ³Ö¾îÁØ´Ù (Add ¼ø¼­´ë·Î Index ¸Å°ÜÁü)
-4. ºôµå ÈÄ ½ÇÇàÇÑ´Ù
+*** 01, 02, 03ë²ˆ ì´ë¯¸ì§€ íŒŒì¼ì— ê°¼ëžµí•œ ìˆœì„œë„ê°€ ë“¤ì–´ìžˆìŠµë‹ˆë‹¤. ***
 
- - TriWorld(bin\Game.exe) Á¶ÀÛ¹ý - 
-¹æÇâÅ° ÁÂ¿ìÅ° : YÃà È¸Àü
-¹æÇâÅ° »óÇÏÅ° : Àü/ÈÄÁø
-C/V : ÁÖÀÎ°ø(µå¿öÇÁ) À§/¾Æ·¡ ÀÌµ¿
-Z/X : È½ºÒ (Æ÷ÀÎÆ®¶óÀÌÆ®) ¹Ý°æ Áõ/°¨¼Ò
+- ì‚¬ìš©ë²• -
+1, Dataí´ë”ì— ì‚¬ìš©í•  ë¦¬ì†ŒìŠ¤ë“¤ì„ ë‹´ëŠ”ë‹¤
+2. SDK/FEFileConverter/FEFileConverter.bat íŒŒì¼ì„ ì‹¤í–‰ì‹œì¼œ ë¦¬ì†ŒìŠ¤ë“¤ì„ ì»¨ë²„íŒ…í•œë‹¤ (ê²½ë¡œëŠ” bin/Resource)
+    2.a í˜„ìž¬ ì…°ì´ë”ì½”ë“œëŠ” ìžë™ìœ¼ë¡œ ì œìž‘ì„ ëª»í•˜ë¯€ë¡œ ìˆ˜ë™ìœ¼ë¡œ í˜•ì‹ì— ë§žê²Œ ì§‘ì–´ë„£ëŠ”ë‹¤ (FEShaderSyntax.fes ì°¸ê³ )
+    2.b ìƒˆë¡œìš´ ë¨¸í…Œë¦¬ì–¼ì„ íŒŒì¼í˜•ì‹ìœ¼ë¡œ ì €ìž¥í•˜ê³ ì‹¶ë‹¤ë©´ ìˆ˜ë™ìœ¼ë¡œ í˜•ì‹ì— ë§žê²Œ ì§‘ì–´ë„£ëŠ”ë‹¤ (FEMaterialSyntax.fem ì°¸ê³ )
+3. Scene ìƒì„± (ì¶”í›„ì— .scene ë¦¬ì†ŒìŠ¤ íŒŒì¼ì„ í†µí•´ ì½ë„ë¡ ìˆ˜ì • í•„ìš”)
+    3.a ì†”ë£¨ì…˜ì˜ UserSceneí”„ë¡œì íŠ¸ì— IFEScenn í´ëž˜ìŠ¤ë¥¼ ìƒì†ë°›ëŠ” í´ëž˜ìŠ¤ë¥¼ ìž‘ì„±í•œë‹¤
+    3.b ìž‘ì„±í•œ í´ëž˜ìŠ¤ì— virtual void Load() override; í•¨ìˆ˜ë¥¼ ì¶”ê°€í•œë‹¤. (ì”¬ì„ ë¡œë“œí• ë•Œ ì´ í•¨ìˆ˜ê°€ í˜¸ì¶œëœë‹¤)
+    3.c Load() í•¨ìˆ˜ì—ì„œ ì”¬ì„ êµ¬ì„±í•œë‹¤ (ì˜¤ë¸Œì íŠ¸ ì¶”ê°€, ë° ì˜¤ë¸Œì íŠ¸ì— ì»´í¬ë„ŒíŠ¸ ì¶”ê°€)
+    3.d FEUserScene.cppíŒŒì¼ ë‚´ì˜ LoadUserScene() í•¨ìˆ˜ì— pSM->AddScene(new SceneClass); ë„£ì–´ì¤€ë‹¤ (Add ìˆœì„œëŒ€ë¡œ Index ë§¤ê²¨ì§)
+4. ë¹Œë“œ í›„ ì‹¤í–‰í•œë‹¤
 
-1/2/3 : x/y/z ±×¸®µå On/Off
-4 : ³ë¸» ½Ã°¢È­ On/Off
+ - TriWorld(bin\Game.exe) ì¡°ìž‘ë²• - 
+ë°©í–¥í‚¤ ì¢Œìš°í‚¤ : Yì¶• íšŒì „
+ë°©í–¥í‚¤ ìƒí•˜í‚¤ : ì „/í›„ì§„
+C/V : ì£¼ì¸ê³µ(ë“œì›Œí”„) ìœ„/ì•„ëž˜ ì´ë™
+Z/X : íšŸë¶ˆ (í¬ì¸íŠ¸ë¼ì´íŠ¸) ë°˜ê²½ ì¦/ê°ì†Œ
 
-F6 : ½Ã°£ º¯°æ
-F7 : °èÀý º¯°æ
-F8 : Scene º¯°æ (AnimSceneÀ¸·Î)
+1/2/3 : x/y/z ê·¸ë¦¬ë“œ On/Off
+4 : ë…¸ë§ ì‹œê°í™” On/Off
 
-WASD : Ä«¸Þ¶ó ÀÌµ¿
-IJKL : Ä«¸Þ¶ó È¸Àü
+F6 : ì‹œê°„ ë³€ê²½
+F7 : ê³„ì ˆ ë³€ê²½
+F8 : Scene ë³€ê²½ (AnimSceneìœ¼ë¡œ)
+
+WASD : ì¹´ë©”ë¼ ì´ë™
+IJKL : ì¹´ë©”ë¼ íšŒì „
