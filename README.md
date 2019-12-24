@@ -1,6 +1,4 @@
-# 01, 02, 03번 이미지 파일에 갼략한 순서도가 들어있습니다.
-
-## - 사용법 - 
+# 사용법
 1. Data폴더에 사용할 리소스들을 담는다
 2. SDK/FEFileConverter/FEFileConverter.bat 파일을 실행시켜 리소스들을 컨버팅한다 (경로는 bin/Resource)
     2.a 현재 셰이더코드는 자동으로 제작을 못하므로 수동으로 형식에 맞게 집어넣는다 (FEShaderSyntax.fes 참고)
@@ -12,7 +10,7 @@
     3.d FEUserScene.cpp파일 내의 LoadUserScene() 함수에 pSM->AddScene(new SceneClass); 넣어준다 (Add 순서대로 Index 매겨짐)
 4. 빌드 후 실행한다
 
-## - TriWorld(bin\Game.exe) 조작법 - 
+# TriWorld(bin\Game.exe) 조작법
 * 방향키 좌우키 : Y축 회전
 * 방향키 상하키 : 전/후진
 * C/V : 주인공(드워프) 위/아래 이동
@@ -32,8 +30,8 @@
 # 01_EngineFlowChart.png
 ![Alt text](/01_EngineFlowChart.png)
 
-# 02_Renderer Diagram.png
-![Alt text](/02_Renderer Diagram.png)
+# 02_RendererDiagram.png
+![Alt text](/02_RendererDiagram.png)
 
-# 03_Object Diagram.png
-![Alt text](/03_Object Diagram.png)
+# 03_ObjectDiagram.png
+![Alt text](/03_ObjectDiagram.png)
