@@ -34,4 +34,4 @@
 ![Alt text](02_RendererDiagram.png)
 
 # 03_ObjectDiagram.png
-![Alt text]("03_Object Diagram.png")
+![Alt text](03_ObjectDiagram.png)
