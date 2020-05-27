@@ -1,3 +1,6 @@
+# 개발 환경
+Visual Studio (Windows SDK : 10.0.17134.0, 플랫폼 도구 집합 : VS2017(v141))
+
 # 사용법
 1. Data폴더에 사용할 리소스들을 담는다
 2. SDK/FEFileConverter/FEFileConverter.bat 파일을 실행시켜 리소스들을 컨버팅한다 (경로는 bin/Resource)
